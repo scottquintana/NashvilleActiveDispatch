@@ -9,15 +9,17 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    let tableView = UITableView()
-    let imageView = UIImageView()
-    var currentAlerts: [NPAData] = []
+    private let tableView = UITableView()
+    private let imageView = UIImageView()
+    private var pullControl = UIRefreshControl()
+    private var currentAlerts: [NPAData] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Nashville Crime Alerts"
 
         configureTableView()
+        configureHeaderImage()
         loadAlerts()
     }
     
@@ -31,15 +33,21 @@ class ViewController: UIViewController {
         tableView.register(NPACell.self, forCellReuseIdentifier: NPACell.reuseID)
         tableView.contentInset = UIEdgeInsets(top: 100, left: 0, bottom: 0, right: 0)
         
+        pullControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        pullControl.addTarget(self, action: #selector(refreshTableView), for: .valueChanged)
         
+        tableView.refreshControl = pullControl
+        
+    }
+        
+    private func configureHeaderImage() {
         let image = UIImage(named: "nashville")
         imageView.image = image
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
-        imageView.alpha = 0.7
+        imageView.alpha = 0.5
         imageView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 200)
         view.addSubview(imageView)
-        
     }
     
     
@@ -60,6 +68,15 @@ class ViewController: UIViewController {
             }
         }
     }
+    
+    
+    @objc private func refreshTableView(_ sender: Any) {
+        loadAlerts()
+        pullControl.endRefreshing()
+    }
+    
+    
+    
 }
 
 //MARK: - TableView Extensions
