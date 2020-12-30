@@ -10,6 +10,7 @@ import UIKit
 class ViewController: UIViewController {
     
     let tableView = UITableView()
+    let imageView = UIImageView()
     var currentAlerts: [NPAData] = []
 
     override func viewDidLoad() {
@@ -28,6 +29,17 @@ class ViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(NPACell.self, forCellReuseIdentifier: NPACell.reuseID)
+        tableView.contentInset = UIEdgeInsets(top: 100, left: 0, bottom: 0, right: 0)
+        
+        
+        let image = UIImage(named: "nashville")
+        imageView.image = image
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        imageView.alpha = 0.7
+        imageView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 200)
+        view.addSubview(imageView)
+        
     }
     
     
@@ -62,6 +74,10 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         cell.set(alert: currentAlerts[indexPath.row])
         return cell
     }
-    
-    
+        
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let y = -scrollView.contentOffset.y
+        let height = max(y, 85)
+        imageView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: height)
+    }
 }

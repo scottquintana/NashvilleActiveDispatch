@@ -26,9 +26,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     private func configureNavigationBar() {
-        navController?.navigationBar.barTintColor = .darkGray
-        navController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
-        
+        if let navBar = navController?.navigationBar {
+            navBar.prefersLargeTitles = true
+            navBar.isTranslucent = true
+            navBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+        }
     }
     
     
