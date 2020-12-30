@@ -12,7 +12,9 @@ class ViewController: UIViewController {
     private let tableView = UITableView()
     private let imageView = UIImageView()
     private var pullControl = UIRefreshControl()
-    private var currentAlerts: [NPAData] = []
+    
+    var alertViewModels = [ViewModel]()
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,6 +41,7 @@ class ViewController: UIViewController {
         tableView.refreshControl = pullControl
         
     }
+    
         
     private func configureHeaderImage() {
         let image = UIImage(named: "nashville")
@@ -58,7 +61,7 @@ class ViewController: UIViewController {
             switch result {
             case .success(let alerts):
                 print("success")
-                self.currentAlerts = alerts
+                self.alertViewModels = alerts.map({ return ViewModel(alert: $0)})
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
                 }
@@ -83,12 +86,13 @@ class ViewController: UIViewController {
 
 extension ViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return currentAlerts.count
+        return alertViewModels.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: NPACell.reuseID) as! NPACell
-        cell.set(alert: currentAlerts[indexPath.row])
+        let alert = alertViewModels[indexPath.row]
+        cell.alertViewModel = alert
         return cell
     }
         

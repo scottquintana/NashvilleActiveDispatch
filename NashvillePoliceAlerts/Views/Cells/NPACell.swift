@@ -11,6 +11,12 @@ class NPACell: UITableViewCell {
 
     static let reuseID = "NPACell"
     
+    var alertViewModel: ViewModel! {
+        didSet {
+            addressLabel.text = "Address: \(alertViewModel.streetAddress)"
+        }
+    }
+    
     let addressLabel = UILabel()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -20,11 +26,6 @@ class NPACell: UITableViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    
-    func set(alert: NPAData) {
-        addressLabel.text = "Address: \(alert.address)"
     }
     
     
