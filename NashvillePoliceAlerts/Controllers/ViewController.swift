@@ -19,7 +19,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Nashville Crime Alerts"
-
+        view.backgroundColor = Colors.backgroundBlue
         configureTableView()
         configureHeaderImage()
         loadAlerts()
@@ -30,6 +30,7 @@ class ViewController: UIViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.frame = view.bounds
         tableView.rowHeight = 100
+        tableView.backgroundColor = .clear
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(NPACell.self, forCellReuseIdentifier: NPACell.reuseID)

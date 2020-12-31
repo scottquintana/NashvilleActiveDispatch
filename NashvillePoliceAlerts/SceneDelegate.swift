@@ -29,7 +29,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         if let navBar = navController?.navigationBar {
             navBar.prefersLargeTitles = true
             navBar.isTranslucent = true
-            navBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+            navBar.titleTextAttributes = [.foregroundColor: UIColor.label]
         }
     }
 }

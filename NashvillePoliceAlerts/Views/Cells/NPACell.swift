@@ -21,6 +21,7 @@ class NPACell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        backgroundColor = .clear
         configure()
     }
     
@@ -29,15 +30,31 @@ class NPACell: UITableViewCell {
     }
     
     
-    private func configure(){
-        addSubview(addressLabel)
+    private func configure() {
+        let containerView = GradientView()
+        contentView.addSubview(containerView)
+        
+        containerView.clipsToBounds = true
+        containerView.layer.cornerRadius = 24
+        
+        containerView.addSubview(addressLabel)
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        
         addressLabel.translatesAutoresizingMaskIntoConstraints = false
         addressLabel.textColor = .label
         
+        let padding: CGFloat = 8
+        
         NSLayoutConstraint.activate([
-            addressLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            addressLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            addressLabel.widthAnchor.constraint(equalTo: self.widthAnchor),
+            
+            containerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: padding),
+            containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
+            containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
+            containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -padding),
+            
+            addressLabel.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
+            addressLabel.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
+            addressLabel.widthAnchor.constraint(equalTo: containerView.widthAnchor),
             addressLabel.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
