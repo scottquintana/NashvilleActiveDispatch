@@ -7,20 +7,20 @@
 
 import UIKit
 
-class NPACell: UITableViewCell {
+class NADCell: UITableViewCell {
 
-    static let reuseID = "NPACell"
+    static let reuseID = "NADCell"
     
     let alertImage = UIImageView()
     let callTimeLabel = AlertBodyLabel(fontSize: 12)
     let incidentLabel = AlertTitleLabel(fontSize: 18)
-    let addressLabel = AlertBodyLabel(fontSize: 14)
+    let locationLabel = AlertBodyLabel(fontSize: 14)
     
     var alertViewModel: ViewModel! {
         didSet {
             callTimeLabel.text = alertViewModel.callReceivedTime
             incidentLabel.text = alertViewModel.incident
-            addressLabel.text = "Address: \(alertViewModel.streetAddress)"
+            locationLabel.text = alertViewModel.locationString
         }
     }
     
@@ -56,9 +56,7 @@ class NPACell: UITableViewCell {
         containerView.addSubview(alertImage)
         containerView.translatesAutoresizingMaskIntoConstraints = false
         
-       // containerView.addSubview(addressLabel)
-        addressLabel.translatesAutoresizingMaskIntoConstraints = false
-        addressLabel.textColor = .label
+        containerView.addSubview(locationLabel)
         
         let padding: CGFloat = 6
         
@@ -82,12 +80,12 @@ class NPACell: UITableViewCell {
             alertImage.centerXAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 40),
             alertImage.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
             alertImage.widthAnchor.constraint(equalToConstant: 40),
-            alertImage.heightAnchor.constraint(equalToConstant: 40)
+            alertImage.heightAnchor.constraint(equalToConstant: 40),
             
-//            addressLabel.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
-//            addressLabel.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
-//            addressLabel.widthAnchor.constraint(equalTo: containerView.widthAnchor),
-//            addressLabel.heightAnchor.constraint(equalToConstant: 50)
+            locationLabel.topAnchor.constraint(equalTo: incidentLabel.bottomAnchor, constant: padding),
+            locationLabel.leadingAnchor.constraint(equalTo: alertImage.trailingAnchor, constant: 16),
+            locationLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -12),
+            locationLabel.heightAnchor.constraint(equalToConstant: 16)
         ])
     }
 }

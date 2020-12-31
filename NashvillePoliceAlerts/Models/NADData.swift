@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct NPAData: Codable {
+struct NADData: Codable {
     let incidentTypeCode: String
     let incidentType: String
     let callReceived: String

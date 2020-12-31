@@ -18,7 +18,7 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Nashville Crime Alerts"
+        title = "Nashville Active Dispatch"
         view.backgroundColor = Colors.backgroundBlue
         configureTableView()
         configureHeaderImage()
@@ -33,7 +33,7 @@ class ViewController: UIViewController {
         tableView.backgroundColor = .clear
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(NPACell.self, forCellReuseIdentifier: NPACell.reuseID)
+        tableView.register(NADCell.self, forCellReuseIdentifier: NADCell.reuseID)
         tableView.contentInset = UIEdgeInsets(top: 100, left: 0, bottom: 0, right: 0)
         
         pullControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
@@ -94,7 +94,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: NPACell.reuseID) as! NPACell
+        let cell = tableView.dequeueReusableCell(withIdentifier: NADCell.reuseID) as! NADCell
         let alert = alertViewModels[indexPath.row]
         cell.alertViewModel = alert
         return cell

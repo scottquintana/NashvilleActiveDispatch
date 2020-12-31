@@ -17,8 +17,8 @@
 		5E79999C259BD1A60079D0A6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E79999B259BD1A60079D0A6 /* ViewController.swift */; };
 		5E7999A1259BD1AB0079D0A6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5E7999A0259BD1AB0079D0A6 /* Assets.xcassets */; };
 		5E7999A4259BD1AB0079D0A6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5E7999A2259BD1AB0079D0A6 /* LaunchScreen.storyboard */; };
-		5E7999AE259BD4170079D0A6 /* NPAData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7999AD259BD4170079D0A6 /* NPAData.swift */; };
-		5E7999B1259BDD840079D0A6 /* NPACell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7999B0259BDD840079D0A6 /* NPACell.swift */; };
+		5E7999AE259BD4170079D0A6 /* NADData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7999AD259BD4170079D0A6 /* NADData.swift */; };
+		5E7999B1259BDD840079D0A6 /* NADCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7999B0259BDD840079D0A6 /* NADCell.swift */; };
 		5E7999B9259BE05E0079D0A6 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7999B8259BE05E0079D0A6 /* NetworkManager.swift */; };
 		5EE442ED259D8E6600DFA672 /* AlertBodyLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE442EC259D8E6600DFA672 /* AlertBodyLabel.swift */; };
 /* End PBXBuildFile section */
@@ -29,15 +29,15 @@
 		5E325C2E259D408500FE50A6 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		5E325C31259D4EC100FE50A6 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		5E325C35259D5AD700FE50A6 /* AlertTitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertTitleLabel.swift; sourceTree = "<group>"; };
-		5E799994259BD1A60079D0A6 /* NashvillePoliceAlerts.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NashvillePoliceAlerts.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5E799994259BD1A60079D0A6 /* NashvilleActiveDispatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NashvilleActiveDispatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E799997259BD1A60079D0A6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5E799999259BD1A60079D0A6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		5E79999B259BD1A60079D0A6 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		5E7999A0259BD1AB0079D0A6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5E7999A3259BD1AB0079D0A6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5E7999A5259BD1AB0079D0A6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		5E7999AD259BD4170079D0A6 /* NPAData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NPAData.swift; sourceTree = "<group>"; };
-		5E7999B0259BDD840079D0A6 /* NPACell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NPACell.swift; sourceTree = "<group>"; };
+		5E7999AD259BD4170079D0A6 /* NADData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NADData.swift; sourceTree = "<group>"; };
+		5E7999B0259BDD840079D0A6 /* NADCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NADCell.swift; sourceTree = "<group>"; };
 		5E7999B8259BE05E0079D0A6 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		5EE442EC259D8E6600DFA672 /* AlertBodyLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertBodyLabel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -90,7 +90,7 @@
 		5E799995259BD1A60079D0A6 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				5E799994259BD1A60079D0A6 /* NashvillePoliceAlerts.app */,
+				5E799994259BD1A60079D0A6 /* NashvilleActiveDispatch.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -132,7 +132,7 @@
 		5E7999B5259BE0260079D0A6 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				5E7999AD259BD4170079D0A6 /* NPAData.swift */,
+				5E7999AD259BD4170079D0A6 /* NADData.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -150,7 +150,7 @@
 		5E7999B7259BE0460079D0A6 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				5E7999B0259BDD840079D0A6 /* NPACell.swift */,
+				5E7999B0259BDD840079D0A6 /* NADCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -158,9 +158,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		5E799993259BD1A60079D0A6 /* NashvillePoliceAlerts */ = {
+		5E799993259BD1A60079D0A6 /* NashvilleActiveDispatch */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 5E7999A8259BD1AB0079D0A6 /* Build configuration list for PBXNativeTarget "NashvillePoliceAlerts" */;
+			buildConfigurationList = 5E7999A8259BD1AB0079D0A6 /* Build configuration list for PBXNativeTarget "NashvilleActiveDispatch" */;
 			buildPhases = (
 				5E799990259BD1A60079D0A6 /* Sources */,
 				5E799991259BD1A60079D0A6 /* Frameworks */,
@@ -170,9 +170,9 @@
 			);
 			dependencies = (
 			);
-			name = NashvillePoliceAlerts;
+			name = NashvilleActiveDispatch;
 			productName = NashvillePoliceAlerts;
-			productReference = 5E799994259BD1A60079D0A6 /* NashvillePoliceAlerts.app */;
+			productReference = 5E799994259BD1A60079D0A6 /* NashvilleActiveDispatch.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -189,7 +189,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 5E79998F259BD1A60079D0A6 /* Build configuration list for PBXProject "NashvillePoliceAlerts" */;
+			buildConfigurationList = 5E79998F259BD1A60079D0A6 /* Build configuration list for PBXProject "NashvilleActiveDispatch" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -202,7 +202,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				5E799993259BD1A60079D0A6 /* NashvillePoliceAlerts */,
+				5E799993259BD1A60079D0A6 /* NashvilleActiveDispatch */,
 			);
 		};
 /* End PBXProject section */
@@ -227,9 +227,9 @@
 				5E7999B9259BE05E0079D0A6 /* NetworkManager.swift in Sources */,
 				5E325C2C259D2A8D00FE50A6 /* DateHelper.swift in Sources */,
 				5E325C32259D4EC200FE50A6 /* GradientView.swift in Sources */,
-				5E7999B1259BDD840079D0A6 /* NPACell.swift in Sources */,
+				5E7999B1259BDD840079D0A6 /* NADCell.swift in Sources */,
 				5E79999C259BD1A60079D0A6 /* ViewController.swift in Sources */,
-				5E7999AE259BD4170079D0A6 /* NPAData.swift in Sources */,
+				5E7999AE259BD4170079D0A6 /* NADData.swift in Sources */,
 				5E799998259BD1A60079D0A6 /* AppDelegate.swift in Sources */,
 				5E325C36259D5AD800FE50A6 /* AlertTitleLabel.swift in Sources */,
 				5E79999A259BD1A60079D0A6 /* SceneDelegate.swift in Sources */,
@@ -410,7 +410,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		5E79998F259BD1A60079D0A6 /* Build configuration list for PBXProject "NashvillePoliceAlerts" */ = {
+		5E79998F259BD1A60079D0A6 /* Build configuration list for PBXProject "NashvilleActiveDispatch" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5E7999A6259BD1AB0079D0A6 /* Debug */,
@@ -419,7 +419,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		5E7999A8259BD1AB0079D0A6 /* Build configuration list for PBXNativeTarget "NashvillePoliceAlerts" */ = {
+		5E7999A8259BD1AB0079D0A6 /* Build configuration list for PBXNativeTarget "NashvilleActiveDispatch" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5E7999A9259BD1AB0079D0A6 /* Debug */,

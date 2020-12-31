@@ -8,7 +8,7 @@
 import Foundation
 
 class ViewModel {
-    let alertData: NPAData!
+    let alertData: NADData!
         
     var incident: String {
         return alertData.incidentType.capitalized
@@ -34,6 +34,10 @@ class ViewModel {
         return alertData.city.capitalized
     }
     
+    var locationString: String {
+        return "\(neighborhood) - \(streetAddress)"
+    }
+    
     var streetAddress: String {
         return "\(alertData.address.capitalized)"
     }
@@ -42,7 +46,7 @@ class ViewModel {
         return "\(streetAddress) Nashville, TN"
     }
     
-    init(alert: NPAData) {
+    init(alert: NADData) {
         self.alertData = alert
     }
     

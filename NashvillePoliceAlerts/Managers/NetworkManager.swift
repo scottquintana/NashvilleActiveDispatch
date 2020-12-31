@@ -14,7 +14,7 @@ class NetworkManager {
     
     let baseURL = "https://data.nashville.gov/resource/qywv-8sc2.json"
     
-    func getAlerts(completed: @escaping (Result<[NPAData], Error>) -> Void) {
+    func getAlerts(completed: @escaping (Result<[NADData], Error>) -> Void) {
         guard let url = URL(string: baseURL) else { return }
         
         let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
@@ -35,7 +35,7 @@ class NetworkManager {
                 let decoder = JSONDecoder()
                 decoder.keyDecodingStrategy = .convertFromSnakeCase
                 decoder.dateDecodingStrategy = .iso8601
-                let alerts = try decoder.decode([NPAData].self, from: data)
+                let alerts = try decoder.decode([NADData].self, from: data)
                 completed(.success(alerts))
             } catch {
                 print("decoding error")
