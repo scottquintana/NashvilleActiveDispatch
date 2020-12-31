@@ -21,6 +21,8 @@ class NADCell: UITableViewCell {
             callTimeLabel.text = alertViewModel.callReceivedTime
             incidentLabel.text = alertViewModel.incident
             locationLabel.text = alertViewModel.locationString
+            alertImage.image = alertViewModel.incidentBadge.symbol
+            alertImage.tintColor = alertViewModel.incidentBadge.color
         }
     }
     
@@ -48,8 +50,7 @@ class NADCell: UITableViewCell {
         callTimeLabel.textAlignment = .center
         
         containerView.addSubview(incidentLabel)
-        alertImage.image = SFSymbols.bell
-        alertImage.tintColor = Colors.accentGold
+ 
         alertImage.translatesAutoresizingMaskIntoConstraints = false
         
         

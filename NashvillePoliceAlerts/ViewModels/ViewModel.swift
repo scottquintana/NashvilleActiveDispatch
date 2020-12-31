@@ -5,7 +5,7 @@
 //  Created by Scott Quintana on 12/30/20.
 //
 
-import Foundation
+import UIKit
 
 class ViewModel {
     let alertData: NADData!
@@ -44,6 +44,21 @@ class ViewModel {
     
     var fullAddress: String {
         return "\(streetAddress) Nashville, TN"
+    }
+    
+    var incidentBadge: AlertBadge {
+        switch alertData.incidentTypeCode {
+        case "70A":
+            return AlertBadge(color: Colors.accentGreen, symbol: SFSymbols.residence!)
+        case "71A":
+            return AlertBadge(color: Colors.accentLightPurple, symbol: SFSymbols.business!)
+        case "64P":
+            return AlertBadge(color: Colors.accentRed, symbol: SFSymbols.medical!)
+        case "83P":
+            return AlertBadge(color: Colors.accentGold, symbol: SFSymbols.triangleExclamation!)
+        default:
+            return AlertBadge(color: Colors.accentGold, symbol: SFSymbols.bell!)
+        }
     }
     
     init(alert: NADData) {
