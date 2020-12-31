@@ -11,6 +11,7 @@
 		5E325C2C259D2A8D00FE50A6 /* DateHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E325C2B259D2A8D00FE50A6 /* DateHelper.swift */; };
 		5E325C2F259D408600FE50A6 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E325C2E259D408500FE50A6 /* Constants.swift */; };
 		5E325C32259D4EC200FE50A6 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E325C31259D4EC100FE50A6 /* GradientView.swift */; };
+		5E325C36259D5AD800FE50A6 /* AlertTitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E325C35259D5AD700FE50A6 /* AlertTitleLabel.swift */; };
 		5E799998259BD1A60079D0A6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E799997259BD1A60079D0A6 /* AppDelegate.swift */; };
 		5E79999A259BD1A60079D0A6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E799999259BD1A60079D0A6 /* SceneDelegate.swift */; };
 		5E79999C259BD1A60079D0A6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E79999B259BD1A60079D0A6 /* ViewController.swift */; };
@@ -19,6 +20,7 @@
 		5E7999AE259BD4170079D0A6 /* NPAData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7999AD259BD4170079D0A6 /* NPAData.swift */; };
 		5E7999B1259BDD840079D0A6 /* NPACell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7999B0259BDD840079D0A6 /* NPACell.swift */; };
 		5E7999B9259BE05E0079D0A6 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7999B8259BE05E0079D0A6 /* NetworkManager.swift */; };
+		5EE442ED259D8E6600DFA672 /* AlertBodyLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE442EC259D8E6600DFA672 /* AlertBodyLabel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +28,7 @@
 		5E325C2B259D2A8D00FE50A6 /* DateHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateHelper.swift; sourceTree = "<group>"; };
 		5E325C2E259D408500FE50A6 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		5E325C31259D4EC100FE50A6 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
+		5E325C35259D5AD700FE50A6 /* AlertTitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertTitleLabel.swift; sourceTree = "<group>"; };
 		5E799994259BD1A60079D0A6 /* NashvillePoliceAlerts.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NashvillePoliceAlerts.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E799997259BD1A60079D0A6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5E799999259BD1A60079D0A6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -36,6 +39,7 @@
 		5E7999AD259BD4170079D0A6 /* NPAData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NPAData.swift; sourceTree = "<group>"; };
 		5E7999B0259BDD840079D0A6 /* NPACell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NPACell.swift; sourceTree = "<group>"; };
 		5E7999B8259BE05E0079D0A6 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		5EE442EC259D8E6600DFA672 /* AlertBodyLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertBodyLabel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +68,15 @@
 				5E325C2E259D408500FE50A6 /* Constants.swift */,
 			);
 			path = Utilities;
+			sourceTree = "<group>";
+		};
+		5E325C34259D5AB100FE50A6 /* Labels */ = {
+			isa = PBXGroup;
+			children = (
+				5E325C35259D5AD700FE50A6 /* AlertTitleLabel.swift */,
+				5EE442EC259D8E6600DFA672 /* AlertBodyLabel.swift */,
+			);
+			path = Labels;
 			sourceTree = "<group>";
 		};
 		5E79998B259BD1A50079D0A6 = {
@@ -127,6 +140,7 @@
 		5E7999B6259BE03F0079D0A6 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				5E325C34259D5AB100FE50A6 /* Labels */,
 				5E7999B7259BE0460079D0A6 /* Cells */,
 				5E325C31259D4EC100FE50A6 /* GradientView.swift */,
 			);
@@ -217,7 +231,9 @@
 				5E79999C259BD1A60079D0A6 /* ViewController.swift in Sources */,
 				5E7999AE259BD4170079D0A6 /* NPAData.swift in Sources */,
 				5E799998259BD1A60079D0A6 /* AppDelegate.swift in Sources */,
+				5E325C36259D5AD800FE50A6 /* AlertTitleLabel.swift in Sources */,
 				5E79999A259BD1A60079D0A6 /* SceneDelegate.swift in Sources */,
+				5EE442ED259D8E6600DFA672 /* AlertBodyLabel.swift in Sources */,
 				5E325C28259D25FE00FE50A6 /* ViewModel.swift in Sources */,
 				5E325C2F259D408600FE50A6 /* Constants.swift in Sources */,
 			);

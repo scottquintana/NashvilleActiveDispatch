@@ -15,6 +15,7 @@ class ViewModel {
     }
     
     var callReceivedDate: String {
+       
         return DateHelper.convertStringToDateString(alertData.callReceived)
     }
     

@@ -34,6 +34,7 @@ class NetworkManager {
             do {
                 let decoder = JSONDecoder()
                 decoder.keyDecodingStrategy = .convertFromSnakeCase
+                decoder.dateDecodingStrategy = .iso8601
                 let alerts = try decoder.decode([NPAData].self, from: data)
                 completed(.success(alerts))
             } catch {
