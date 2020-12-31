@@ -63,6 +63,9 @@ class ViewController: UIViewController {
             case .success(let alerts):
                 print("success")
                 self.alertViewModels = alerts.map({ return ViewModel(alert: $0)})
+                self.alertViewModels.sort { (vm, vm2) -> Bool in
+                    vm.callReceivedTime > vm2.callReceivedTime
+                }
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
                 }

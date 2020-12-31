@@ -40,7 +40,6 @@ class DateHelper {
 
     static func convertStringToTimeString(_ string: String) -> String {
         let time = incomingDateString.date(from: string)!
-        print(time)
         return timeDateFormatter.string(from: time)
     }
 

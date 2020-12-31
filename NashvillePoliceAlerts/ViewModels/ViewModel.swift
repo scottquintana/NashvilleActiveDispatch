@@ -15,8 +15,7 @@ class ViewModel {
     }
     
     var callReceivedDate: String {
-       
-        return DateHelper.convertStringToDateString(alertData.callReceived)
+      return DateHelper.convertStringToDateString(alertData.callReceived)
     }
     
     var callReceivedTime: String {
@@ -29,6 +28,10 @@ class ViewModel {
     
     var lastUpdatedTime: String {
         return DateHelper.convertStringToTimeString(alertData.lastUpdated)
+    }
+    
+    var neighborhood: String {
+        return alertData.city.capitalized
     }
     
     var streetAddress: String {

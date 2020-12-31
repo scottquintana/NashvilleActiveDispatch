@@ -13,7 +13,7 @@ class NPACell: UITableViewCell {
     
     let alertImage = UIImageView()
     let callTimeLabel = AlertBodyLabel(fontSize: 12)
-    let incidentLabel = AlertTitleLabel(fontSize: 20)
+    let incidentLabel = AlertTitleLabel(fontSize: 18)
     let addressLabel = AlertBodyLabel(fontSize: 14)
     
     var alertViewModel: ViewModel! {
@@ -29,6 +29,7 @@ class NPACell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         backgroundColor = .clear
+        selectionStyle = .none
         configure()
     }
     
@@ -76,7 +77,7 @@ class NPACell: UITableViewCell {
             incidentLabel.topAnchor.constraint(equalTo: callTimeLabel.bottomAnchor, constant: padding),
             incidentLabel.leadingAnchor.constraint(equalTo: alertImage.trailingAnchor, constant: 16),
             incidentLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -12),
-            incidentLabel.heightAnchor.constraint(equalToConstant: 22),
+            incidentLabel.heightAnchor.constraint(equalToConstant: 20),
             
             alertImage.centerXAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 40),
             alertImage.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),

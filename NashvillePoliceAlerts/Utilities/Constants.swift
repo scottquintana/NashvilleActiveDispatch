@@ -18,5 +18,6 @@ enum Colors {
 }
 
 enum SFSymbols {
-    static let bell = UIImage(systemName: "exclamationmark.triangle.fill") 
+    //static let bell = UIImage(systemName: "exclamationmark.triangle.fill")
+    static let bell = UIImage(systemName: "bell.circle.fill") 
 }
