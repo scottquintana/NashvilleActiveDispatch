@@ -23,6 +23,7 @@
 		5EE442ED259D8E6600DFA672 /* AlertBodyLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE442EC259D8E6600DFA672 /* AlertBodyLabel.swift */; };
 		5EE442F5259E892100DFA672 /* AlertBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE442F4259E892100DFA672 /* AlertBadge.swift */; };
 		5EE442F825A27AC500DFA672 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE442F725A27AC300DFA672 /* MapViewController.swift */; };
+		5EE442FB25A3C35E00DFA672 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE442FA25A3C35D00DFA672 /* LocationManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +45,7 @@
 		5EE442EC259D8E6600DFA672 /* AlertBodyLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertBodyLabel.swift; sourceTree = "<group>"; };
 		5EE442F4259E892100DFA672 /* AlertBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertBadge.swift; sourceTree = "<group>"; };
 		5EE442F725A27AC300DFA672 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
+		5EE442FA25A3C35D00DFA672 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,6 +123,7 @@
 			isa = PBXGroup;
 			children = (
 				5E7999B8259BE05E0079D0A6 /* NetworkManager.swift */,
+				5EE442FA25A3C35D00DFA672 /* LocationManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -232,6 +235,7 @@
 			files = (
 				5E7999B9259BE05E0079D0A6 /* NetworkManager.swift in Sources */,
 				5E325C2C259D2A8D00FE50A6 /* DateHelper.swift in Sources */,
+				5EE442FB25A3C35E00DFA672 /* LocationManager.swift in Sources */,
 				5E325C32259D4EC200FE50A6 /* GradientView.swift in Sources */,
 				5E7999B1259BDD840079D0A6 /* NADCell.swift in Sources */,
 				5E79999C259BD1A60079D0A6 /* ViewController.swift in Sources */,

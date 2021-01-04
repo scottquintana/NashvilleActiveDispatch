@@ -6,10 +6,12 @@
 //
 
 import UIKit
+import CoreLocation
 
 class ViewModel {
     let alertData: NADData!
-        
+    var incidentLocation = CLLocationCoordinate2D()
+    
     var incident: String {
         return alertData.incidentType.capitalized
     }
@@ -46,6 +48,13 @@ class ViewModel {
         return "\(streetAddress) Nashville, TN"
     }
     
+    func getLocation(address: String) {
+        LocationManager.coordinates(forAddress: fullAddress) { location in
+            guard let location = location else { return }
+            self.incidentLocation = location
+        }
+    }
+    
     var incidentBadge: AlertBadge {
         switch alertData.incidentTypeCode {
         case "70A":
@@ -67,6 +76,7 @@ class ViewModel {
     
     init(alert: NADData) {
         self.alertData = alert
+        getLocation(address: fullAddress)
     }
     
 }

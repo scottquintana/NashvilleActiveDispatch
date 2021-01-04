@@ -18,7 +18,7 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Nashville Active Dispatch"
+        title = "Active Dispatch"
         view.backgroundColor = Colors.backgroundBlue
         configureTableView()
         configureHeaderImage()
@@ -33,6 +33,7 @@ class ViewController: UIViewController {
         tableView.backgroundColor = .clear
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.separatorStyle = .none
         tableView.register(NADCell.self, forCellReuseIdentifier: NADCell.reuseID)
         tableView.contentInset = UIEdgeInsets(top: 100, left: 0, bottom: 0, right: 0)
         
@@ -101,9 +102,12 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        
         let mapVC = MapViewController()
         let vm = alertViewModels[indexPath.row]
         mapVC.viewModel = vm
+        mapVC.addAnnotation(for: vm.incidentLocation)
         present(mapVC, animated: true)
     }
     
