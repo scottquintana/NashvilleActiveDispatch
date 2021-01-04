@@ -99,6 +99,12 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         cell.alertViewModel = alert
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let mapVC = MapViewController()
+        present(mapVC, animated: true)
+    }
+    
         
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let y = -scrollView.contentOffset.y

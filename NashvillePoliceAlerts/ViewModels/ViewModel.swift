@@ -49,13 +49,17 @@ class ViewModel {
     var incidentBadge: AlertBadge {
         switch alertData.incidentTypeCode {
         case "70A":
-            return AlertBadge(color: Colors.accentGreen, symbol: SFSymbols.residence!)
+            return AlertBadge(color: Colors.accentGreen, symbol: SFSymbols.bell!)
         case "71A":
             return AlertBadge(color: Colors.accentLightPurple, symbol: SFSymbols.business!)
         case "64P":
             return AlertBadge(color: Colors.accentRed, symbol: SFSymbols.medical!)
         case "83P":
-            return AlertBadge(color: Colors.accentGold, symbol: SFSymbols.triangleExclamation!)
+            return AlertBadge(color: Colors.accentGold, symbol: SFSymbols.sheildExclamation!)
+        case "87T":
+            return AlertBadge(color: Colors.accentGreen, symbol: SFSymbols.treeDown!)
+        case "87W":
+            return AlertBadge(color: Colors.accentRed, symbol: SFSymbols.wiresDown!)
         default:
             return AlertBadge(color: Colors.accentGold, symbol: SFSymbols.bell!)
         }

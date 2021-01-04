@@ -29,4 +29,8 @@ enum SFSymbols {
     static let residence = UIImage(systemName: "house.circle.fill")
     static let business = UIImage(systemName: "building.2.crop.circle.fill")
     static let medical = UIImage(systemName: "cross.circle.fill")
+    static let wiresDown = UIImage(systemName: "bolt.circle.fill")
+    static let treeDown = UIImage(systemName: "arrow.down.right.circle.fill")
+    static let sheildExclamation = UIImage(systemName: "exclamationmark.shield.fill")
+    static let map = UIImage(systemName: "map.fill")
 }
