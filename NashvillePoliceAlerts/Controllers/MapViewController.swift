@@ -11,6 +11,14 @@ import CoreLocation
 
 class MapViewController: UIViewController {
     
+    var viewModel: ViewModel?
+    
+    var color1: CGColor {
+        return viewModel?.incidentBadge.color.cgColor ?? Colors.gradientTop.cgColor
+    }
+    
+    var gradientView: GradientView!
+    
     let locationManager = CLLocationManager()
     let mapView = MKMapView()
     
@@ -18,26 +26,51 @@ class MapViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        gradientView = GradientView(cgColor1: color1, cgColor2: Colors.gradientBottom.cgColor)
+        view.layer.cornerRadius = 26
+        configureUI()
         configureMap()
         checkLocationServices()
         
        
     }
     
+    private func configureUI() {
+        view.addSubview(gradientView)
+        
+        let path = UIBezierPath(roundedRect:view.bounds, byRoundingCorners:[.topRight, .topLeft], cornerRadii: CGSize(width: 30, height:  30))
+        let maskLayer = CAShapeLayer()
+
+        maskLayer.path = path.cgPath
+        view.layer.mask = maskLayer
+        
+        NSLayoutConstraint.activate([
+            gradientView.topAnchor.constraint(equalTo: view.topAnchor),
+            gradientView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            gradientView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            gradientView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            
+        ])
+    }
+    
 
     private func configureMap() {
-        view.addSubview(mapView)
+        gradientView.addSubview(mapView)
+        gradientView.translatesAutoresizingMaskIntoConstraints = false
+        
         mapView.isRotateEnabled = false
         mapView.mapType = .standard
         mapView.isZoomEnabled = true
+        mapView.layer.cornerRadius = 24
         
         mapView.translatesAutoresizingMaskIntoConstraints = false
         
+        let padding: CGFloat = 6
         NSLayoutConstraint.activate([
-            mapView.topAnchor.constraint(equalTo: view.topAnchor),
-            mapView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            mapView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            mapView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            mapView.topAnchor.constraint(equalTo: gradientView.topAnchor, constant: 30),
+            mapView.leadingAnchor.constraint(equalTo: gradientView.leadingAnchor, constant: padding),
+            mapView.trailingAnchor.constraint(equalTo: gradientView.trailingAnchor, constant: -padding),
+            mapView.bottomAnchor.constraint(equalTo: gradientView.bottomAnchor, constant: -45)
         ])
     }
     
