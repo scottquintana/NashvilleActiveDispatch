@@ -70,7 +70,7 @@ class MapViewController: UIViewController {
             addressLabel.leadingAnchor.constraint(equalTo: gradientView.leadingAnchor, constant: padding),
             addressLabel.trailingAnchor.constraint(equalTo: gradientView.trailingAnchor, constant: -padding),
             addressLabel.heightAnchor.constraint(equalToConstant: 20),
-            addressLabel.bottomAnchor.constraint(equalTo: gradientView.bottomAnchor, constant: -30),
+            addressLabel.bottomAnchor.constraint(equalTo: gradientView.bottomAnchor, constant: -45),
             
         ])
     }
