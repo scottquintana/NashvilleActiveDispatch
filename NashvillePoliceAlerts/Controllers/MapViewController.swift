@@ -12,26 +12,33 @@ import CoreLocation
 class MapViewController: UIViewController {
     
     var viewModels: [ViewModel]!
-    var selectedIndex: Int! {
+    var selectedIndex: Int? {
         didSet {
-            updateMapFocus(incident: viewModels[selectedIndex])
+            if selectedIndex != nil {
+                self.updateMapFocus(incident: viewModels[selectedIndex!])
+            }
         }
     }
-    var selectedVM: ViewModel {
-        return viewModels[selectedIndex]
+    
+    var selectedVM: ViewModel? {
+        if selectedIndex != nil {
+            return viewModels[selectedIndex!]
+        } else { return nil }
     }
     
     var color1: CGColor!
     
     var gradientView: GradientView!
-    
+    let reuseID = "annotation"
     let mapView = MKMapView()
     let addressLabel = AlertTitleLabel(fontSize: 18)
     let regionInMeters: Double = 2000
+    let leftArrowButton = UIButton()
     let rightArrowButton = UIButton()
+    var allAnnotations: [ADPointAnnotation] = []
     
     var pinAnnotationView:MKPinAnnotationView!
-
+    
     init(incidents: [ViewModel]){
         viewModels = incidents
         super.init(nibName: nil, bundle: nil)
@@ -43,7 +50,7 @@ class MapViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        color1 = selectedVM.incidentBadge.color.cgColor ?? Colors.gradientTop.cgColor
+        color1 = selectedVM?.incidentBadge.color.cgColor ?? Colors.gradientTop.cgColor
         configureUI()
         configureMap()
         loadIncidents()
@@ -64,17 +71,17 @@ class MapViewController: UIViewController {
         gradientView.addSubview(mapView)
         gradientView.addSubview(addressLabel)
         
-        mapView.isRotateEnabled = false
-        mapView.mapType = .standard
-        mapView.isZoomEnabled = true
-        mapView.layer.cornerRadius = 24
-        mapView.delegate = self
-        mapView.register(MKMarkerAnnotationView.self, forAnnotationViewWithReuseIdentifier: "pin")
         
         mapView.translatesAutoresizingMaskIntoConstraints = false
         
-        addressLabel.text = selectedVM.streetAddress ?? "No address"
+        addressLabel.text = selectedVM?.streetAddress ?? ""
         addressLabel.textAlignment = .center
+        
+        leftArrowButton.setTitle("<<", for: .normal)
+        
+        leftArrowButton.translatesAutoresizingMaskIntoConstraints = false
+        leftArrowButton.addTarget(self, action: #selector(leftArrowTapped), for: .touchUpInside)
+        gradientView.addSubview(leftArrowButton)
         
         rightArrowButton.setTitle(">>", for: .normal)
         rightArrowButton.translatesAutoresizingMaskIntoConstraints = false
@@ -93,59 +100,82 @@ class MapViewController: UIViewController {
             mapView.leadingAnchor.constraint(equalTo: gradientView.leadingAnchor, constant: padding),
             mapView.trailingAnchor.constraint(equalTo: gradientView.trailingAnchor, constant: -padding),
             mapView.bottomAnchor.constraint(equalTo: addressLabel.topAnchor, constant: -padding),
-        
-            addressLabel.leadingAnchor.constraint(equalTo: gradientView.leadingAnchor, constant: padding),
+            
+            addressLabel.leadingAnchor.constraint(equalTo: leftArrowButton.trailingAnchor, constant: padding),
             addressLabel.trailingAnchor.constraint(equalTo: rightArrowButton.leadingAnchor, constant: -padding),
             addressLabel.heightAnchor.constraint(equalToConstant: 20),
             addressLabel.bottomAnchor.constraint(equalTo: gradientView.bottomAnchor, constant: -45),
             
+            leftArrowButton.leadingAnchor.constraint(equalTo: gradientView.leadingAnchor, constant: padding),
+            leftArrowButton.trailingAnchor.constraint(equalTo: addressLabel.leadingAnchor, constant: -padding),
+            leftArrowButton.heightAnchor.constraint(equalToConstant: 20),
+            leftArrowButton.bottomAnchor.constraint(equalTo: gradientView.bottomAnchor, constant: -45),
+            
             rightArrowButton.leadingAnchor.constraint(equalTo: addressLabel.trailingAnchor, constant: padding),
             rightArrowButton.trailingAnchor.constraint(equalTo: gradientView.trailingAnchor, constant: -padding),
             rightArrowButton.heightAnchor.constraint(equalToConstant: 20),
-            rightArrowButton.bottomAnchor.constraint(equalTo: gradientView.bottomAnchor, constant: -45),
+            rightArrowButton.bottomAnchor.constraint(equalTo: gradientView.bottomAnchor, constant: -45)
             
         ])
     }
     
-
+    
     private func configureMap() {
-        
-        
+        mapView.isRotateEnabled = false
+        mapView.mapType = .standard
+        mapView.isZoomEnabled = true
+        mapView.layer.cornerRadius = 24
+        mapView.delegate = self
+        mapView.register(MKMarkerAnnotationView.self, forAnnotationViewWithReuseIdentifier: reuseID)
     }
-
+    
     private func loadIncidents() {
-        guard let viewModels = viewModels else { return }
-        //var annotations: [ADPointAnnotation] = []
         for (index, incident) in viewModels.enumerated() {
             addAnnotation(for: incident, index: index)
         }
-        
-        
     }
-    @objc private func rightArrowTapped() {
-        if selectedIndex == viewModels.count - 1 {
-            selectedIndex = 0
-        } else {
-            selectedIndex += 1
+    
+    
+    @objc private func leftArrowTapped() {
+        if selectedIndex != nil {
+            if selectedIndex == 0 {
+                selectedIndex = viewModels.endIndex - 1
+            } else {
+                selectedIndex? -= 1
+            }
         }
     }
+    
+    
+    @objc private func rightArrowTapped() {
+        if selectedIndex != nil {
+            if selectedIndex == viewModels.count - 1 {
+                selectedIndex = 0
+            } else {
+                selectedIndex? += 1
+            }
+        }
+    }
+    
     
     private func updateGradientColor(color: CGColor) {
         color1 = color
         configureUI()
     }
     
-    func addAnnotation(for location: ViewModel, index: Int) {
+    
+    private func addAnnotation(for location: ViewModel, index: Int) {
         let annotation = ADPointAnnotation()
         
         annotation.coordinate = location.incidentLocation
         annotation.title = location.incident
         annotation.index = index
         
-        pinAnnotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "pin")
+        pinAnnotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseID)
+        allAnnotations.append(annotation)
         mapView.addAnnotation(pinAnnotationView.annotation!)
         
-
+        
     }
     
     
@@ -157,31 +187,33 @@ class MapViewController: UIViewController {
         addressLabel.text = incident.streetAddress
         updateGradientColor(color: incident.incidentBadge.color.cgColor)
     }
-
+    
 }
+
+//MARK: - MapView Extensions
 
 extension MapViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         guard let anno = view.annotation as? ADPointAnnotation else { return }
         selectedIndex = anno.index
+        
+    }
+    
+    func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
+        selectedIndex = nil
+        configureUI()
     }
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         guard let anno = annotation as? ADPointAnnotation else { return nil }
-        let reuseIdentifier = "pin"
-        let annotationView = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: reuseIdentifier)
+        
+        let annotationView = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: reuseID)
         let badgeInfo = viewModels[anno.index!].incidentBadge
         
         annotationView.markerTintColor = badgeInfo.color
         annotationView.glyphImage = badgeInfo.symbol
         annotationView.titleVisibility = .adaptive
-   
         
-//        let customPointAnnotation = annotation as! ADPointAnnotation
-//        let icon = SFSymbols.flag
-//        icon?.withTintColor(Colors.accentRed)
-//        annotationView?.image = icon
-
         return annotationView
     }
 }
