@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5E03054825A523D00092AEE5 /* ADPointAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E03054725A523D00092AEE5 /* ADPointAnnotation.swift */; };
 		5E325C28259D25FE00FE50A6 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E325C27259D25FE00FE50A6 /* ViewModel.swift */; };
 		5E325C2C259D2A8D00FE50A6 /* DateHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E325C2B259D2A8D00FE50A6 /* DateHelper.swift */; };
 		5E325C2F259D408600FE50A6 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E325C2E259D408500FE50A6 /* Constants.swift */; };
@@ -27,6 +28,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5E03054725A523D00092AEE5 /* ADPointAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ADPointAnnotation.swift; sourceTree = "<group>"; };
 		5E325C27259D25FE00FE50A6 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		5E325C2B259D2A8D00FE50A6 /* DateHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateHelper.swift; sourceTree = "<group>"; };
 		5E325C2E259D408500FE50A6 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -152,6 +154,7 @@
 				5E325C34259D5AB100FE50A6 /* Labels */,
 				5E7999B7259BE0460079D0A6 /* Cells */,
 				5E325C31259D4EC100FE50A6 /* GradientView.swift */,
+				5E03054725A523D00092AEE5 /* ADPointAnnotation.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -245,6 +248,7 @@
 				5E79999A259BD1A60079D0A6 /* SceneDelegate.swift in Sources */,
 				5EE442ED259D8E6600DFA672 /* AlertBodyLabel.swift in Sources */,
 				5EE442F5259E892100DFA672 /* AlertBadge.swift in Sources */,
+				5E03054825A523D00092AEE5 /* ADPointAnnotation.swift in Sources */,
 				5E325C28259D25FE00FE50A6 /* ViewModel.swift in Sources */,
 				5E325C2F259D408600FE50A6 /* Constants.swift in Sources */,
 				5EE442F825A27AC500DFA672 /* MapViewController.swift in Sources */,

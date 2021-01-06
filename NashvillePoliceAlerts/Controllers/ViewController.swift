@@ -104,10 +104,10 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         
-        let mapVC = MapViewController()
-        let vm = alertViewModels[indexPath.row]
-        mapVC.viewModel = vm
-        mapVC.addAnnotation(for: vm.incidentLocation)
+        let mapVC = MapViewController(incidents: alertViewModels)
+        
+        mapVC.selectedIndex = indexPath.row
+        
         present(mapVC, animated: true)
     }
     

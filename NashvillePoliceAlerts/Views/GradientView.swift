@@ -27,5 +27,10 @@ class GradientView: UIView {
         self.layer.insertSublayer(gradient, at: 0)
         
     }
+    
+    func updateColor(newTop: CGColor) {
+        color1 = newTop
+        layoutSubviews()
+    }
 
 }
