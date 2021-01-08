@@ -8,7 +8,7 @@
 import UIKit
 
 enum Colors {
-    static let backgroundBlue = UIColor(red: 0.06, green: 0.06, blue: 0.27, alpha: 1.00)
+    static let backgroundBlue = UIColor(red: 0.06, green: 0.05, blue: 0.27, alpha: 1.00)
     static let gradientTop = UIColor(red: 0.14, green: 0.13, blue: 0.38, alpha: 1.00)
     static let gradientBottom = UIColor(red: 0.19, green: 0.19, blue: 0.46, alpha: 1.00)
     static let buttonBlue = UIColor(red: 0.20, green: 0.33, blue: 0.98, alpha: 1.00)

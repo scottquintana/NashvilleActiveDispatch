@@ -15,11 +15,11 @@ class ViewController: UIViewController {
     let mapButton = ADMapButton()
     
     var alertViewModels = [IncidentViewModel]()
-    
 
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Active Dispatch"
+        
         view.backgroundColor = Colors.backgroundBlue
         configureTableView()
         configureHeaderImage()
@@ -49,7 +49,7 @@ class ViewController: UIViewController {
     
         
     private func configureHeaderImage() {
-        let image = UIImage(named: "nashville")
+        let image = UIImage(named: "nashvilleHeader")
         imageView.image = image
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
@@ -68,9 +68,11 @@ class ViewController: UIViewController {
         mapButton.layer.shadowOpacity = 0.4
         mapButton.layer.shadowOffset = CGSize(width: 0, height: 3)
         mapButton.layer.shadowColor = UIColor.black.cgColor
+        
         mapButton.addTarget(self, action: #selector(viewAllOnMap), for: .touchUpInside)
         
         view.addSubview(mapButton)
+        
     }
     
     

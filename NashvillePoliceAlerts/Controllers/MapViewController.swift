@@ -39,6 +39,7 @@ class MapViewController: UIViewController {
     let leftArrowButton = ADArrowButton(direction: .left)
     let rightArrowButton = ADArrowButton(direction: .right)
     let addressLabel = AlertTitleLabel(fontSize: 18)
+    let timeLabel = AlertBodyLabel(fontSize: 14)
 
    
     init(incidents: [IncidentViewModel]){
@@ -64,6 +65,10 @@ class MapViewController: UIViewController {
         if selectedIndex == nil {
             updateMapFocus(incident: nil)
         }
+        
+        if viewModels.count == 0 {
+            presentADAlertOnMainThread(title: "Alert.", message: "There are no active incidents!", buttonTitle: "Ok.")
+        }
    }
 
     
@@ -78,7 +83,7 @@ class MapViewController: UIViewController {
         
         view.layer.mask = maskLayer
         view.layer.cornerRadius = 26
-        view.addSubviews(gradientView, leftArrowButton, rightArrowButton, closeButton, mapView, addressLabel)
+        view.addSubviews(gradientView, leftArrowButton, rightArrowButton, closeButton, mapView, addressLabel, timeLabel)
         
         let padding: CGFloat = 10
         
@@ -101,16 +106,21 @@ class MapViewController: UIViewController {
             addressLabel.leadingAnchor.constraint(equalTo: leftArrowButton.trailingAnchor, constant: padding),
             addressLabel.trailingAnchor.constraint(equalTo: rightArrowButton.leadingAnchor, constant: -padding),
             addressLabel.heightAnchor.constraint(equalToConstant: 20),
-            addressLabel.bottomAnchor.constraint(equalTo: gradientView.bottomAnchor, constant: -45),
+            addressLabel.bottomAnchor.constraint(equalTo: timeLabel.topAnchor, constant: -5),
+            
+            timeLabel.leadingAnchor.constraint(equalTo: leftArrowButton.trailingAnchor, constant: padding),
+            timeLabel.trailingAnchor.constraint(equalTo: rightArrowButton.leadingAnchor, constant: -padding),
+            timeLabel.heightAnchor.constraint(equalToConstant: 16),
+            timeLabel.bottomAnchor.constraint(equalTo: gradientView.bottomAnchor, constant: -45),
             
             leftArrowButton.leadingAnchor.constraint(equalTo: gradientView.leadingAnchor, constant: 20),
-            leftArrowButton.widthAnchor.constraint(equalToConstant: 24),
-            leftArrowButton.heightAnchor.constraint(equalToConstant: 24),
+            leftArrowButton.widthAnchor.constraint(equalToConstant: 36),
+            leftArrowButton.heightAnchor.constraint(equalToConstant: 36),
             leftArrowButton.bottomAnchor.constraint(equalTo: gradientView.bottomAnchor, constant: -45),
             
-            rightArrowButton.heightAnchor.constraint(equalToConstant: 24),
+            rightArrowButton.heightAnchor.constraint(equalToConstant: 36),
             rightArrowButton.trailingAnchor.constraint(equalTo: gradientView.trailingAnchor, constant: -20),
-            rightArrowButton.widthAnchor.constraint(equalToConstant: 24),
+            rightArrowButton.widthAnchor.constraint(equalToConstant: 36),
             rightArrowButton.bottomAnchor.constraint(equalTo: gradientView.bottomAnchor, constant: -45)
        ])
     }
@@ -142,6 +152,9 @@ class MapViewController: UIViewController {
     private func configureLabels() {
         addressLabel.text = selectedVM?.streetAddress ?? ""
         addressLabel.textAlignment = .center
+        
+        timeLabel.text = selectedVM?.callReceivedTime ?? ""
+        timeLabel.textAlignment = .center
     }
     
     
@@ -149,12 +162,12 @@ class MapViewController: UIViewController {
         for (index, incident) in viewModels.enumerated() {
             addAnnotation(for: incident, index: index)
         }
-        
-        
     }
     
     
     @objc private func leftArrowTapped() {
+        if viewModels.count == 0 { return }
+        
         if selectedIndex != nil {
             if selectedIndex == 0 {
                 selectedIndex = viewModels.endIndex - 1
@@ -168,6 +181,8 @@ class MapViewController: UIViewController {
     
     
     @objc private func rightArrowTapped() {
+        if viewModels.count == 0 { return }
+        
         if selectedIndex != nil {
             if selectedIndex == viewModels.count - 1 {
                 selectedIndex = 0
@@ -178,6 +193,7 @@ class MapViewController: UIViewController {
             selectedIndex = 0
         }
     }
+    
     
     @objc private func dismissVC() {
         dismiss(animated: true)
@@ -210,7 +226,7 @@ class MapViewController: UIViewController {
             let center = incident.incidentLocation
             let region = MKCoordinateRegion(center: center, latitudinalMeters: regionInMeters, longitudinalMeters: regionInMeters)
             mapView.setRegion(region, animated: true)
-            addressLabel.text = incident.streetAddress
+            configureLabels()
             updateGradientColor(color: incident.incidentBadge.color.cgColor)
         } else {
             mapView.showAnnotations(allAnnotations, animated: true)
