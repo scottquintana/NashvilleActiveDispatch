@@ -29,6 +29,7 @@
 		5E7999AE259BD4170079D0A6 /* IncidentData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7999AD259BD4170079D0A6 /* IncidentData.swift */; };
 		5E7999B1259BDD840079D0A6 /* ADCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7999B0259BDD840079D0A6 /* ADCell.swift */; };
 		5E7999B9259BE05E0079D0A6 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7999B8259BE05E0079D0A6 /* NetworkManager.swift */; };
+		5E8019E825A8BCB400BDBA39 /* ADMapButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E8019E725A8BCB400BDBA39 /* ADMapButton.swift */; };
 		5EE442ED259D8E6600DFA672 /* AlertBodyLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE442EC259D8E6600DFA672 /* AlertBodyLabel.swift */; };
 		5EE442F5259E892100DFA672 /* AlertBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE442F4259E892100DFA672 /* AlertBadge.swift */; };
 		5EE442F825A27AC500DFA672 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE442F725A27AC300DFA672 /* MapViewController.swift */; };
@@ -60,6 +61,7 @@
 		5E7999AD259BD4170079D0A6 /* IncidentData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncidentData.swift; sourceTree = "<group>"; };
 		5E7999B0259BDD840079D0A6 /* ADCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ADCell.swift; sourceTree = "<group>"; };
 		5E7999B8259BE05E0079D0A6 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		5E8019E725A8BCB400BDBA39 /* ADMapButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ADMapButton.swift; sourceTree = "<group>"; };
 		5EE442EC259D8E6600DFA672 /* AlertBodyLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertBodyLabel.swift; sourceTree = "<group>"; };
 		5EE442F4259E892100DFA672 /* AlertBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertBadge.swift; sourceTree = "<group>"; };
 		5EE442F725A27AC300DFA672 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
@@ -92,6 +94,7 @@
 				5E03055225A7BBF50092AEE5 /* ADTextButton.swift */,
 				5E03056325A7CA2D0092AEE5 /* ADCloseButton.swift */,
 				5E03056625A7D6310092AEE5 /* ADArrowButton.swift */,
+				5E8019E725A8BCB400BDBA39 /* ADMapButton.swift */,
 			);
 			path = Btns;
 			sourceTree = "<group>";
@@ -291,6 +294,7 @@
 				5E79999A259BD1A60079D0A6 /* SceneDelegate.swift in Sources */,
 				5EE442ED259D8E6600DFA672 /* AlertBodyLabel.swift in Sources */,
 				5E03055825A7C1640092AEE5 /* UIView+Ext.swift in Sources */,
+				5E8019E825A8BCB400BDBA39 /* ADMapButton.swift in Sources */,
 				5EE442F5259E892100DFA672 /* AlertBadge.swift in Sources */,
 				5E03056025A7C4D30092AEE5 /* UIViewController+Ext.swift in Sources */,
 				5E03055C25A7C2800092AEE5 /* ADAlertVC.swift in Sources */,

@@ -48,13 +48,6 @@ class IncidentViewModel {
         return "\(streetAddress) Nashville, TN"
     }
     
-    func getLocation(address: String) {
-        LocationManager.coordinates(forAddress: fullAddress) { location in
-            guard let location = location else { return }
-            self.incidentLocation = location
-        }
-    }
-    
     var incidentBadge: AlertBadge {
         switch alertData.incidentTypeCode {
         case "53P":
@@ -79,6 +72,14 @@ class IncidentViewModel {
     init(alert: IncidentData) {
         self.alertData = alert
         getLocation(address: fullAddress)
+    }
+    
+    
+    func getLocation(address: String) {
+        LocationManager.coordinates(forAddress: fullAddress) { location in
+            guard let location = location else { return }
+            self.incidentLocation = location
+        }
     }
     
 }

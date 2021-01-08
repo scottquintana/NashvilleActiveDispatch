@@ -12,6 +12,7 @@ class ViewController: UIViewController {
     private let tableView = UITableView()
     private let imageView = UIImageView()
     private var pullControl = UIRefreshControl()
+    let mapButton = ADMapButton()
     
     var alertViewModels = [IncidentViewModel]()
     
@@ -22,6 +23,7 @@ class ViewController: UIViewController {
         view.backgroundColor = Colors.backgroundBlue
         configureTableView()
         configureHeaderImage()
+        configureMapButton()
         loadAlerts()
     }
     
@@ -57,6 +59,21 @@ class ViewController: UIViewController {
     }
     
     
+    private func configureMapButton() {
+        mapButton.frame = CGRect(x: view.frame.width - 80, y: view.frame.height - 120, width: 60, height: 60)
+        mapButton.layer.cornerRadius = mapButton.bounds.size.width / 2
+        mapButton.clipsToBounds = true
+        mapButton.layer.masksToBounds = false
+        mapButton.layer.shadowRadius = 5
+        mapButton.layer.shadowOpacity = 0.4
+        mapButton.layer.shadowOffset = CGSize(width: 0, height: 3)
+        mapButton.layer.shadowColor = UIColor.black.cgColor
+        mapButton.addTarget(self, action: #selector(viewAllOnMap), for: .touchUpInside)
+        
+        view.addSubview(mapButton)
+    }
+    
+    
     private func loadAlerts() {
         NetworkManager.shared.getAlerts { [weak self] result in
             guard let self = self else { return }
@@ -82,6 +99,12 @@ class ViewController: UIViewController {
     @objc private func refreshTableView(_ sender: Any) {
         loadAlerts()
         pullControl.endRefreshing()
+    }
+    
+    
+    @objc private func viewAllOnMap() {
+        let mapVC = MapViewController(incidents: alertViewModels)
+        present(mapVC, animated: true)
     }
 }
 

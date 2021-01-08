@@ -59,8 +59,11 @@ class MapViewController: UIViewController {
         configureButtons()
         configureMap()
         configureLabels()
-        
         loadIncidents()
+        
+        if selectedIndex == nil {
+            updateMapFocus(incident: nil)
+        }
    }
 
     
@@ -109,8 +112,7 @@ class MapViewController: UIViewController {
             rightArrowButton.trailingAnchor.constraint(equalTo: gradientView.trailingAnchor, constant: -20),
             rightArrowButton.widthAnchor.constraint(equalToConstant: 24),
             rightArrowButton.bottomAnchor.constraint(equalTo: gradientView.bottomAnchor, constant: -45)
-            
-        ])
+       ])
     }
     
     
@@ -120,12 +122,11 @@ class MapViewController: UIViewController {
         leftArrowButton.translatesAutoresizingMaskIntoConstraints = false
         leftArrowButton.addTarget(self, action: #selector(leftArrowTapped), for: .touchUpInside)
         
-        
-        
         rightArrowButton.translatesAutoresizingMaskIntoConstraints = false
         rightArrowButton.addTarget(self, action: #selector(rightArrowTapped), for: .touchUpInside)
        
     }
+    
     
     private func configureMap() {
         mapView.translatesAutoresizingMaskIntoConstraints = false
@@ -137,6 +138,7 @@ class MapViewController: UIViewController {
         mapView.register(MKMarkerAnnotationView.self, forAnnotationViewWithReuseIdentifier: reuseID)
     }
     
+    
     private func configureLabels() {
         addressLabel.text = selectedVM?.streetAddress ?? ""
         addressLabel.textAlignment = .center
@@ -147,6 +149,8 @@ class MapViewController: UIViewController {
         for (index, incident) in viewModels.enumerated() {
             addAnnotation(for: incident, index: index)
         }
+        
+        
     }
     
     
@@ -157,6 +161,8 @@ class MapViewController: UIViewController {
             } else {
                 selectedIndex? -= 1
             }
+        } else {
+            selectedIndex = 0
         }
     }
     
@@ -168,6 +174,8 @@ class MapViewController: UIViewController {
             } else {
                 selectedIndex? += 1
             }
+        } else {
+            selectedIndex = 0
         }
     }
     
@@ -197,12 +205,16 @@ class MapViewController: UIViewController {
     }
     
     
-    private func updateMapFocus(incident: IncidentViewModel) {
-        let center = incident.incidentLocation
-        let region = MKCoordinateRegion(center: center, latitudinalMeters: regionInMeters, longitudinalMeters: regionInMeters)
-        mapView.setRegion(region, animated: true)
-        addressLabel.text = incident.streetAddress
-        updateGradientColor(color: incident.incidentBadge.color.cgColor)
+    private func updateMapFocus(incident: IncidentViewModel?) {
+        if let incident = incident {
+            let center = incident.incidentLocation
+            let region = MKCoordinateRegion(center: center, latitudinalMeters: regionInMeters, longitudinalMeters: regionInMeters)
+            mapView.setRegion(region, animated: true)
+            addressLabel.text = incident.streetAddress
+            updateGradientColor(color: incident.incidentBadge.color.cgColor)
+        } else {
+            mapView.showAnnotations(allAnnotations, animated: true)
+        }
     }
 }
 
@@ -219,6 +231,7 @@ extension MapViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
         selectedIndex = nil
         configureUI()
+        configureLabels()
     }
     
     

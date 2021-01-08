@@ -49,6 +49,7 @@ class ADCell: UITableViewCell {
         containerView.layer.cornerRadius = 24
         containerView.translatesAutoresizingMaskIntoConstraints = false
         containerView.addSubviews(callTimeLabel, incidentLabel, alertImage, locationLabel)
+        
         callTimeLabel.textAlignment = .center
         alertImage.translatesAutoresizingMaskIntoConstraints = false
         
