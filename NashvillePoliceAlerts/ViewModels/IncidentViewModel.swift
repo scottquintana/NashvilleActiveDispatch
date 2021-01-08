@@ -8,11 +8,11 @@
 import UIKit
 import CoreLocation
 
-class ViewModel {
-    let alertData: NADData!
+class IncidentViewModel {
+    let alertData: IncidentData!
     var incidentLocation = CLLocationCoordinate2D()
     
-    var incident: String {
+    var incidentDescription: String {
         return alertData.incidentType.capitalized
     }
     
@@ -57,24 +57,26 @@ class ViewModel {
     
     var incidentBadge: AlertBadge {
         switch alertData.incidentTypeCode {
+        case "53P":
+            return AlertBadge(color: Colors.accentRed, symbol: SFSymbols.bell!)
         case "70A":
             return AlertBadge(color: Colors.accentGreen, symbol: SFSymbols.bell!)
         case "71A":
             return AlertBadge(color: Colors.accentLightPurple, symbol: SFSymbols.business!)
         case "64P":
-            return AlertBadge(color: Colors.accentRed, symbol: SFSymbols.medical!)
-        case "83P":
-            return AlertBadge(color: Colors.accentGold, symbol: SFSymbols.sheildExclamation!)
+            return AlertBadge(color: Colors.accentGold, symbol: SFSymbols.medical!)
+        case "83P", "51P":
+            return AlertBadge(color: Colors.accentRed, symbol: SFSymbols.sheildExclamation!)
         case "87T":
             return AlertBadge(color: Colors.accentGreen, symbol: SFSymbols.treeDown!)
         case "87W":
-            return AlertBadge(color: Colors.accentRed, symbol: SFSymbols.wiresDown!)
+            return AlertBadge(color: Colors.accentGold, symbol: SFSymbols.wiresDown!)
         default:
             return AlertBadge(color: Colors.accentGold, symbol: SFSymbols.bell!)
         }
     }
     
-    init(alert: NADData) {
+    init(alert: IncidentData) {
         self.alertData = alert
         getLocation(address: fullAddress)
     }

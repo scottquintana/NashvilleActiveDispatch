@@ -13,7 +13,7 @@ class ViewController: UIViewController {
     private let imageView = UIImageView()
     private var pullControl = UIRefreshControl()
     
-    var alertViewModels = [ViewModel]()
+    var alertViewModels = [IncidentViewModel]()
     
 
     override func viewDidLoad() {
@@ -34,7 +34,7 @@ class ViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.separatorStyle = .none
-        tableView.register(NADCell.self, forCellReuseIdentifier: NADCell.reuseID)
+        tableView.register(ADCell.self, forCellReuseIdentifier: ADCell.reuseID)
         tableView.contentInset = UIEdgeInsets(top: 100, left: 0, bottom: 0, right: 0)
         
         pullControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
@@ -63,7 +63,7 @@ class ViewController: UIViewController {
             switch result {
             case .success(let alerts):
                 print("success")
-                self.alertViewModels = alerts.map({ return ViewModel(alert: $0)})
+                self.alertViewModels = alerts.map({ return IncidentViewModel(alert: $0)})
                 self.alertViewModels.sort { (vm, vm2) -> Bool in
                     vm.callReceivedTime > vm2.callReceivedTime
                 }
@@ -94,20 +94,19 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         return alertViewModels.count
     }
     
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: NADCell.reuseID) as! NADCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: ADCell.reuseID) as! ADCell
         let alert = alertViewModels[indexPath.row]
         cell.alertViewModel = alert
         return cell
     }
     
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        
         let mapVC = MapViewController(incidents: alertViewModels)
-        
         mapVC.selectedIndex = indexPath.row
-        
+
         present(mapVC, animated: true)
     }
     

@@ -1,5 +1,5 @@
 //
-//  NPAData.swift
+//  IncidentData.swift
 //  NashvillePoliceAlerts
 //
 //  Created by Scott Quintana on 12/29/20.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct NADData: Codable {
+struct IncidentData: Codable {
     let incidentTypeCode: String
     let incidentType: String
     let callReceived: String

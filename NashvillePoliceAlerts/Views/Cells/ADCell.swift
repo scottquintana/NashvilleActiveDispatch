@@ -7,19 +7,19 @@
 
 import UIKit
 
-class NADCell: UITableViewCell {
+class ADCell: UITableViewCell {
 
-    static let reuseID = "NADCell"
+    static let reuseID = "ADCell"
     
     let alertImage = UIImageView()
     let callTimeLabel = AlertBodyLabel(fontSize: 12)
     let incidentLabel = AlertTitleLabel(fontSize: 18)
     let locationLabel = AlertBodyLabel(fontSize: 14)
     
-    var alertViewModel: ViewModel! {
+    var alertViewModel: IncidentViewModel! {
         didSet {
             callTimeLabel.text = alertViewModel.callReceivedTime
-            incidentLabel.text = alertViewModel.incident
+            incidentLabel.text = alertViewModel.incidentDescription
             locationLabel.text = alertViewModel.locationString
             alertImage.image = alertViewModel.incidentBadge.symbol
             alertImage.tintColor = alertViewModel.incidentBadge.color
