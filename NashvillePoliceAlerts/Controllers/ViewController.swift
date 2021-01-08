@@ -25,6 +25,7 @@ class ViewController: UIViewController {
         loadAlerts()
     }
     
+    
     private func configureTableView() {
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -62,8 +63,8 @@ class ViewController: UIViewController {
             
             switch result {
             case .success(let alerts):
-                print("success")
                 self.alertViewModels = alerts.map({ return IncidentViewModel(alert: $0)})
+                
                 self.alertViewModels.sort { (vm, vm2) -> Bool in
                     vm.callReceivedTime > vm2.callReceivedTime
                 }
@@ -82,9 +83,6 @@ class ViewController: UIViewController {
         loadAlerts()
         pullControl.endRefreshing()
     }
-    
-    
-    
 }
 
 //MARK: - TableView Extensions

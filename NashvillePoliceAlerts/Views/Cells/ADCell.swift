@@ -25,15 +25,14 @@ class ADCell: UITableViewCell {
             alertImage.tintColor = alertViewModel.incidentBadge.color
         }
     }
-    
-    
+
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        backgroundColor = .clear
-        selectionStyle = .none
+
         configure()
     }
+    
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -41,23 +40,17 @@ class ADCell: UITableViewCell {
     
     
     private func configure() {
+        backgroundColor = .clear
+        selectionStyle = .none
+        
         let containerView = GradientView()
         contentView.addSubview(containerView)
         containerView.clipsToBounds = true
         containerView.layer.cornerRadius = 24
-        
-        containerView.addSubview(callTimeLabel)
-        callTimeLabel.textAlignment = .center
-        
-        containerView.addSubview(incidentLabel)
- 
-        alertImage.translatesAutoresizingMaskIntoConstraints = false
-        
-        
-        containerView.addSubview(alertImage)
         containerView.translatesAutoresizingMaskIntoConstraints = false
-        
-        containerView.addSubview(locationLabel)
+        containerView.addSubviews(callTimeLabel, incidentLabel, alertImage, locationLabel)
+        callTimeLabel.textAlignment = .center
+        alertImage.translatesAutoresizingMaskIntoConstraints = false
         
         let padding: CGFloat = 6
         
