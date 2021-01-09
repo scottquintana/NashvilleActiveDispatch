@@ -1,5 +1,5 @@
 //
-//  ViewModel.swift
+//  IncidentViewModel.swift
 //  NashvillePoliceAlerts
 //
 //  Created by Scott Quintana on 12/30/20.

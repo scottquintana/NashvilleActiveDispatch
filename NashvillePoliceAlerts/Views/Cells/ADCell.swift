@@ -1,5 +1,5 @@
 //
-//  NPACell.swift
+//  ADCell.swift
 //  NashvillePoliceAlerts
 //
 //  Created by Scott Quintana on 12/29/20.

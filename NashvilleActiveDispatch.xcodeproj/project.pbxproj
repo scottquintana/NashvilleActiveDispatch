@@ -88,7 +88,7 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		5E03056225A7C9860092AEE5 /* Btns */ = {
+		5E03056225A7C9860092AEE5 /* Buttons */ = {
 			isa = PBXGroup;
 			children = (
 				5E03055225A7BBF50092AEE5 /* ADTextButton.swift */,
@@ -96,7 +96,7 @@
 				5E03056625A7D6310092AEE5 /* ADArrowButton.swift */,
 				5E8019E725A8BCB400BDBA39 /* ADMapButton.swift */,
 			);
-			path = Btns;
+			path = Buttons;
 			sourceTree = "<group>";
 		};
 		5E325C26259D25EC00FE50A6 /* ViewModels */ = {
@@ -192,7 +192,7 @@
 		5E7999B6259BE03F0079D0A6 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				5E03056225A7C9860092AEE5 /* Btns */,
+				5E03056225A7C9860092AEE5 /* Buttons */,
 				5E325C34259D5AB100FE50A6 /* Labels */,
 				5E7999B7259BE0460079D0A6 /* Cells */,
 				5E325C31259D4EC100FE50A6 /* GradientView.swift */,
