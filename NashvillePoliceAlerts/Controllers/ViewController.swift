@@ -9,36 +9,69 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    let tableView = UITableView()
-    let imageView = UIImageView()
-    var currentAlerts: [NPAData] = []
+    private let tableView = UITableView()
+    private let imageView = UIImageView()
+    private var pullControl = UIRefreshControl()
+    let mapButton = ADMapButton()
+    
+    var alertViewModels = [IncidentViewModel]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Nashville Crime Alerts"
-
+        title = "Active Dispatch"
+        
+        view.backgroundColor = Colors.backgroundBlue
         configureTableView()
+        configureHeaderImage()
+        configureMapButton()
         loadAlerts()
     }
+    
     
     private func configureTableView() {
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.frame = view.bounds
         tableView.rowHeight = 100
+        tableView.backgroundColor = .clear
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(NPACell.self, forCellReuseIdentifier: NPACell.reuseID)
+        tableView.separatorStyle = .none
+        tableView.register(ADCell.self, forCellReuseIdentifier: ADCell.reuseID)
         tableView.contentInset = UIEdgeInsets(top: 100, left: 0, bottom: 0, right: 0)
         
+        pullControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        pullControl.addTarget(self, action: #selector(refreshTableView), for: .valueChanged)
         
-        let image = UIImage(named: "nashville")
+        tableView.refreshControl = pullControl
+        
+    }
+    
+        
+    private func configureHeaderImage() {
+        let image = UIImage(named: "nashvilleHeader")
         imageView.image = image
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
-        imageView.alpha = 0.7
+        imageView.alpha = 0.5
         imageView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 200)
         view.addSubview(imageView)
+    }
+    
+    
+    private func configureMapButton() {
+        mapButton.frame = CGRect(x: view.frame.width - 80, y: view.frame.height - 120, width: 60, height: 60)
+        mapButton.layer.cornerRadius = mapButton.bounds.size.width / 2
+        mapButton.clipsToBounds = true
+        mapButton.layer.masksToBounds = false
+        mapButton.layer.shadowRadius = 5
+        mapButton.layer.shadowOpacity = 0.4
+        mapButton.layer.shadowOffset = CGSize(width: 0, height: 3)
+        mapButton.layer.shadowColor = UIColor.black.cgColor
+        
+        mapButton.addTarget(self, action: #selector(viewAllOnMap), for: .touchUpInside)
+        
+        view.addSubview(mapButton)
         
     }
     
@@ -49,8 +82,11 @@ class ViewController: UIViewController {
             
             switch result {
             case .success(let alerts):
-                print("success")
-                self.currentAlerts = alerts
+                self.alertViewModels = alerts.map({ return IncidentViewModel(alert: $0)})
+                
+                self.alertViewModels.sort { (vm, vm2) -> Bool in
+                    vm.callReceivedTime > vm2.callReceivedTime
+                }
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
                 }
@@ -60,20 +96,43 @@ class ViewController: UIViewController {
             }
         }
     }
+    
+    
+    @objc private func refreshTableView(_ sender: Any) {
+        loadAlerts()
+        pullControl.endRefreshing()
+    }
+    
+    
+    @objc private func viewAllOnMap() {
+        let mapVC = MapViewController(incidents: alertViewModels)
+        present(mapVC, animated: true)
+    }
 }
 
 //MARK: - TableView Extensions
 
 extension ViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return currentAlerts.count
+        return alertViewModels.count
     }
     
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: NPACell.reuseID) as! NPACell
-        cell.set(alert: currentAlerts[indexPath.row])
+        let cell = tableView.dequeueReusableCell(withIdentifier: ADCell.reuseID) as! ADCell
+        let alert = alertViewModels[indexPath.row]
+        cell.alertViewModel = alert
         return cell
     }
+    
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let mapVC = MapViewController(incidents: alertViewModels)
+        mapVC.selectedIndex = indexPath.row
+
+        present(mapVC, animated: true)
+    }
+    
         
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let y = -scrollView.contentOffset.y
