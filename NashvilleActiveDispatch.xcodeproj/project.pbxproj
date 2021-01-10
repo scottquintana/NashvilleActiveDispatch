@@ -129,7 +129,7 @@
 		5E79998B259BD1A50079D0A6 = {
 			isa = PBXGroup;
 			children = (
-				5E799996259BD1A60079D0A6 /* NashvillePoliceAlerts */,
+				5E799996259BD1A60079D0A6 /* NashvilleActiveDispatch */,
 				5E799995259BD1A60079D0A6 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -142,7 +142,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		5E799996259BD1A60079D0A6 /* NashvillePoliceAlerts */ = {
+		5E799996259BD1A60079D0A6 /* NashvilleActiveDispatch */ = {
 			isa = PBXGroup;
 			children = (
 				5E03055625A7C14A0092AEE5 /* Extensions */,
@@ -158,7 +158,7 @@
 				5E7999A2259BD1AB0079D0A6 /* LaunchScreen.storyboard */,
 				5E7999A5259BD1AB0079D0A6 /* Info.plist */,
 			);
-			path = NashvillePoliceAlerts;
+			path = NashvilleActiveDispatch;
 			sourceTree = "<group>";
 		};
 		5E7999B3259BE0160079D0A6 /* Managers */ = {
@@ -444,7 +444,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 5PKBVW8P3C;
-				INFOPLIST_FILE = NashvillePoliceAlerts/Info.plist;
+				INFOPLIST_FILE = NashvilleActiveDispatch/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -463,7 +463,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 5PKBVW8P3C;
-				INFOPLIST_FILE = NashvillePoliceAlerts/Info.plist;
+				INFOPLIST_FILE = NashvilleActiveDispatch/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
