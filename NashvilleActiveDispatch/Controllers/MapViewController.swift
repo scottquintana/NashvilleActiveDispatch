@@ -1,6 +1,6 @@
 //
 //  MapViewController.swift
-//  NashvilleActiveDispatch
+//  Active Dispatch
 //
 //  Created by Scott Quintana on 1/3/21.
 //
@@ -33,16 +33,13 @@ class MapViewController: UIViewController {
     
     var gradientView: GradientView!
     let mapView = MKMapView()
+    let mapNavigationView = MapNavigationView()
+    
     var pinAnnotationView:MKPinAnnotationView!
     
     let closeButton = ADCloseButton()
-    let leftArrowButton = ADArrowButton(direction: .left)
-    let rightArrowButton = ADArrowButton(direction: .right)
-    let addressLabel = AlertTitleLabel(fontSize: 18)
-    let timeLabel = AlertBodyLabel(fontSize: 14)
-
    
-    init(incidents: [IncidentViewModel]){
+    init(incidents: [IncidentViewModel]) {
         viewModels = incidents
         super.init(nibName: nil, bundle: nil)
     }
@@ -55,11 +52,11 @@ class MapViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        mapNavigationView.delegate = self
         configureUI()
         configureButtons()
         configureMap()
-        configureLabels()
+        
         loadIncidents()
         
         if selectedIndex == nil {
@@ -83,7 +80,7 @@ class MapViewController: UIViewController {
         
         view.layer.mask = maskLayer
         view.layer.cornerRadius = 26
-        view.addSubviews(gradientView, leftArrowButton, rightArrowButton, closeButton, mapView, addressLabel, timeLabel)
+        view.addSubviews(gradientView, closeButton, mapView, mapNavigationView)
         
         let padding: CGFloat = 10
         
@@ -101,40 +98,18 @@ class MapViewController: UIViewController {
             mapView.topAnchor.constraint(equalTo: closeButton.bottomAnchor, constant: padding),
             mapView.leadingAnchor.constraint(equalTo: gradientView.leadingAnchor, constant: padding),
             mapView.trailingAnchor.constraint(equalTo: gradientView.trailingAnchor, constant: -padding),
-            mapView.bottomAnchor.constraint(equalTo: addressLabel.topAnchor, constant: -padding),
+            mapView.bottomAnchor.constraint(equalTo: mapNavigationView.topAnchor, constant: -padding),
             
-            addressLabel.leadingAnchor.constraint(equalTo: leftArrowButton.trailingAnchor, constant: padding),
-            addressLabel.trailingAnchor.constraint(equalTo: rightArrowButton.leadingAnchor, constant: -padding),
-            addressLabel.heightAnchor.constraint(equalToConstant: 20),
-            addressLabel.bottomAnchor.constraint(equalTo: timeLabel.topAnchor, constant: -5),
-            
-            timeLabel.leadingAnchor.constraint(equalTo: leftArrowButton.trailingAnchor, constant: padding),
-            timeLabel.trailingAnchor.constraint(equalTo: rightArrowButton.leadingAnchor, constant: -padding),
-            timeLabel.heightAnchor.constraint(equalToConstant: 16),
-            timeLabel.bottomAnchor.constraint(equalTo: gradientView.bottomAnchor, constant: -45),
-            
-            leftArrowButton.leadingAnchor.constraint(equalTo: gradientView.leadingAnchor, constant: 20),
-            leftArrowButton.widthAnchor.constraint(equalToConstant: 36),
-            leftArrowButton.heightAnchor.constraint(equalToConstant: 36),
-            leftArrowButton.bottomAnchor.constraint(equalTo: gradientView.bottomAnchor, constant: -45),
-            
-            rightArrowButton.heightAnchor.constraint(equalToConstant: 36),
-            rightArrowButton.trailingAnchor.constraint(equalTo: gradientView.trailingAnchor, constant: -20),
-            rightArrowButton.widthAnchor.constraint(equalToConstant: 36),
-            rightArrowButton.bottomAnchor.constraint(equalTo: gradientView.bottomAnchor, constant: -45)
+            mapNavigationView.heightAnchor.constraint(equalToConstant: 41),
+            mapNavigationView.leadingAnchor.constraint(equalTo: gradientView.leadingAnchor),
+            mapNavigationView.trailingAnchor.constraint(equalTo: gradientView.trailingAnchor),
+            mapNavigationView.bottomAnchor.constraint(equalTo: gradientView.bottomAnchor, constant: -45)
        ])
     }
     
     
     private func configureButtons() {
         closeButton.addTarget(self, action: #selector(dismissVC), for: .touchUpInside)
-        
-        leftArrowButton.translatesAutoresizingMaskIntoConstraints = false
-        leftArrowButton.addTarget(self, action: #selector(leftArrowTapped), for: .touchUpInside)
-        
-        rightArrowButton.translatesAutoresizingMaskIntoConstraints = false
-        rightArrowButton.addTarget(self, action: #selector(rightArrowTapped), for: .touchUpInside)
-       
     }
     
     
@@ -145,23 +120,51 @@ class MapViewController: UIViewController {
         mapView.isZoomEnabled = true
         mapView.layer.cornerRadius = 24
         mapView.delegate = self
+        mapView.showsUserLocation = true
         mapView.register(MKMarkerAnnotationView.self, forAnnotationViewWithReuseIdentifier: reuseID)
     }
     
-    
-    private func configureLabels() {
-        addressLabel.text = selectedVM?.streetAddress ?? ""
-        addressLabel.textAlignment = .center
-        
-        timeLabel.text = selectedVM?.callReceivedTime ?? ""
-        timeLabel.textAlignment = .center
-    }
-    
-    
+   
     private func loadIncidents() {
         for (index, incident) in viewModels.enumerated() {
             addAnnotation(for: incident, index: index)
         }
+    }
+    
+    
+    private func updateGradientColor(color: CGColor) {
+        color1 = color
+        configureUI()
+    }
+    
+    
+    private func addAnnotation(for location: IncidentViewModel, index: Int) {
+        let annotation = ADPointAnnotation()
+        annotation.coordinate = location.incidentLocation.coordinate
+        annotation.title = location.incidentDescription
+        annotation.index = index
+        
+        pinAnnotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseID)
+        allAnnotations.append(annotation)
+        mapView.addAnnotation(pinAnnotationView.annotation!)
+    }
+    
+    
+    private func updateMapFocus(incident: IncidentViewModel?) {
+        if let incident = incident {
+            let center = incident.incidentLocation.coordinate
+            let region = MKCoordinateRegion(center: center, latitudinalMeters: regionInMeters, longitudinalMeters: regionInMeters)
+            mapView.setRegion(region, animated: true)
+            updateLabels()
+            updateGradientColor(color: incident.incidentBadge.color.cgColor)
+        } else {
+            mapView.showAnnotations(allAnnotations, animated: true)
+        }
+    }
+    
+    
+    private func updateLabels() {
+        mapNavigationView.set(address: selectedVM?.streetAddress, time: selectedVM?.callReceivedTime)
     }
     
     
@@ -198,40 +201,6 @@ class MapViewController: UIViewController {
     @objc private func dismissVC() {
         dismiss(animated: true)
     }
-    
-    
-    private func updateGradientColor(color: CGColor) {
-        color1 = color
-        configureUI()
-    }
-    
-    
-    private func addAnnotation(for location: IncidentViewModel, index: Int) {
-        let annotation = ADPointAnnotation()
-        
-        annotation.coordinate = location.incidentLocation
-        annotation.title = location.incidentDescription
-        annotation.index = index
-        
-        pinAnnotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseID)
-        allAnnotations.append(annotation)
-        mapView.addAnnotation(pinAnnotationView.annotation!)
-        
-        
-    }
-    
-    
-    private func updateMapFocus(incident: IncidentViewModel?) {
-        if let incident = incident {
-            let center = incident.incidentLocation
-            let region = MKCoordinateRegion(center: center, latitudinalMeters: regionInMeters, longitudinalMeters: regionInMeters)
-            mapView.setRegion(region, animated: true)
-            configureLabels()
-            updateGradientColor(color: incident.incidentBadge.color.cgColor)
-        } else {
-            mapView.showAnnotations(allAnnotations, animated: true)
-        }
-    }
 }
 
 //MARK: - MapView Extensions
@@ -240,14 +209,13 @@ extension MapViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         guard let anno = view.annotation as? ADPointAnnotation else { return }
         selectedIndex = anno.index
-        
     }
     
     
     func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
         selectedIndex = nil
         configureUI()
-        configureLabels()
+        updateLabels()
     }
     
     
@@ -262,10 +230,24 @@ extension MapViewController: MKMapViewDelegate {
         } else {
             annotationView.displayPriority = .defaultLow
         }
+        
         annotationView.markerTintColor = badgeInfo.color
         annotationView.glyphImage = badgeInfo.symbol
         annotationView.titleVisibility = .adaptive
         
         return annotationView
+    }
+}
+
+//MARK: - MapNavigation Delegate Extension
+
+extension MapViewController: MapNavigationViewDelegate {
+    func didPressArrowButton(direction: ArrowDirection) {
+        switch direction {
+        case .left:
+            leftArrowTapped()
+        case .right:
+            rightArrowTapped()
+        }
     }
 }

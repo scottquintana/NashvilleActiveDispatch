@@ -1,6 +1,6 @@
 //
 //  ADError.swift
-//  NashvilleActiveDispatch
+//  Active Dispatch
 //
 //  Created by Scott Quintana on 1/7/21.
 //

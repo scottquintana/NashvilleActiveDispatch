@@ -1,6 +1,6 @@
 //
 //  DateHelper.swift
-//  NashvillePoliceAlerts
+//  Active Dispatch
 //
 //  Created by Scott Quintana on 12/30/20.
 //
@@ -41,5 +41,16 @@ class DateHelper {
     static func convertStringToTimeString(_ string: String) -> String {
         let time = incomingDateString.date(from: string)!
         return timeDateFormatter.string(from: time)
+    }
+}
+
+extension TimeInterval {
+    func format(using units: NSCalendar.Unit) -> String? {
+        let formatter = DateComponentsFormatter()
+        formatter.allowedUnits = units
+        formatter.unitsStyle = .abbreviated
+        formatter.zeroFormattingBehavior = .pad
+
+        return formatter.string(from: self)
     }
 }

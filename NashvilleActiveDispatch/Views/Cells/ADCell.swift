@@ -1,11 +1,12 @@
 //
 //  ADCell.swift
-//  NashvillePoliceAlerts
+//  Active Dispatch
 //
 //  Created by Scott Quintana on 12/29/20.
 //
 
 import UIKit
+import CoreLocation
 
 class ADCell: UITableViewCell {
 
@@ -15,12 +16,25 @@ class ADCell: UITableViewCell {
     let callTimeLabel = AlertBodyLabel(fontSize: 12)
     let incidentLabel = AlertTitleLabel(fontSize: 18)
     let locationLabel = AlertBodyLabel(fontSize: 14)
+    var currentLocation: CLLocation! {
+        return LocationManager.shared.currentLocation
+    }
+    
+    var distanceAway: String? {
+        guard let distanceInMeters = currentLocation?.distance(from: alertViewModel.incidentLocation) else { return "" }
+        let distance = Measurement(value: distanceInMeters, unit: UnitLength.meters)
+        let miles = distance.converted(to: .miles)
+        let milesString = String(format: "%.1f", miles.value)
+        return "\(alertViewModel.neighborhood) - \(milesString) mi. away"
+    }
     
     var alertViewModel: IncidentViewModel! {
         didSet {
-            callTimeLabel.text = alertViewModel.callReceivedTime
+            callTimeLabel.text = alertViewModel.timeSinceCall
             incidentLabel.text = alertViewModel.incidentDescription
-            locationLabel.text = alertViewModel.locationString
+            if currentLocation == nil {
+                locationLabel.text = "Calculating distance..."
+            } else { locationLabel.text = distanceAway }
             alertImage.image = alertViewModel.incidentBadge.symbol
             alertImage.tintColor = alertViewModel.incidentBadge.color
         }
@@ -29,11 +43,9 @@ class ADCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-
         configure()
     }
-    
-    
+   
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -49,7 +61,6 @@ class ADCell: UITableViewCell {
         containerView.layer.cornerRadius = 24
         containerView.translatesAutoresizingMaskIntoConstraints = false
         containerView.addSubviews(callTimeLabel, incidentLabel, alertImage, locationLabel)
-        
         callTimeLabel.textAlignment = .center
         alertImage.translatesAutoresizingMaskIntoConstraints = false
         

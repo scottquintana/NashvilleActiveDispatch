@@ -1,6 +1,6 @@
 //
 //  LocationManager.swift
-//  NashvilleActiveDispatch
+//  Active Dispatch
 //
 //  Created by Scott Quintana on 1/4/21.
 //
@@ -8,8 +8,26 @@
 import Foundation
 import CoreLocation
 
+protocol LocationManagerDelegate: class {
+    func didUpdateCurrentLocation()
+}
+
 class LocationManager: NSObject {
     
+    weak var delegate: LocationManagerDelegate?
+    
+    static let shared: LocationManager = {
+        let instance = LocationManager()
+        return instance
+    }()
+    
+    var currentLocation: CLLocation?
+    
+    var coords: CLLocation? {
+        return currentLocation
+    }
+    
+    var timer = 0
     private let locationManager = CLLocationManager()
     
     override init() {
@@ -22,6 +40,7 @@ class LocationManager: NSObject {
     private func setupLocationManager() {
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.pausesLocationUpdatesAutomatically = true
     }
     
     
@@ -29,17 +48,10 @@ class LocationManager: NSObject {
         if CLLocationManager.locationServicesEnabled() {
             setupLocationManager()
             checkLocationAuthorization()
-    
+            
         } else {
             print(ADError.invalidLocation)
         }
-    }
-    
-    private func centerViewOnLocation() {
-//        if let location = locationManager.location?.coordinate {
-//            let region = MKCoordinateRegion(center: location, latitudinalMeters: regionInMeters, longitudinalMeters: regionInMeters)
-//            mapView.setRegion(region, animated: true)
-//        }
     }
     
     private func checkLocationAuthorization() {
@@ -54,14 +66,17 @@ class LocationManager: NSObject {
         case .authorizedAlways:
             print("always")
         case .authorizedWhenInUse:
-            centerViewOnLocation()
             locationManager.startUpdatingLocation()
         default:
             break
         }
     }
     
-    static func coordinates(forAddress address: String, completion: @escaping (CLLocationCoordinate2D?) -> Void) {
+    func getLocation() -> CLLocation? {
+        let coords = self.currentLocation
+        return coords
+    }
+    static func coordinates(forAddress address: String, completion: @escaping (CLLocation?) -> Void) {
         let geocoder = CLGeocoder()
         geocoder.geocodeAddressString(address) {
             (placemarks, error) in
@@ -70,7 +85,7 @@ class LocationManager: NSObject {
                 completion(nil)
                 return
             }
-            completion(placemarks?.first?.location?.coordinate)
+            completion(placemarks?.first?.location)
         }
     }
 }
@@ -79,12 +94,12 @@ extension LocationManager: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
         
-//        let center = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
-//        let region = MKCoordinateRegion(center: center, latitudinalMeters: regionInMeters, longitudinalMeters: regionInMeters)
-//        mapView.setRegion(region, animated: true)
+        self.currentLocation = location
+        delegate?.didUpdateCurrentLocation()
+    
     }
     
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-//        checkLocationAuthorization()
+        checkLocationAuthorization()
     }
 }
