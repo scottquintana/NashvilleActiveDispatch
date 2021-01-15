@@ -1,6 +1,6 @@
 //
 //  ADCell.swift
-//  NashvillePoliceAlerts
+//  Active Dispatch
 //
 //  Created by Scott Quintana on 12/29/20.
 //
@@ -16,18 +16,16 @@ class ADCell: UITableViewCell {
     let callTimeLabel = AlertBodyLabel(fontSize: 12)
     let incidentLabel = AlertTitleLabel(fontSize: 18)
     let locationLabel = AlertBodyLabel(fontSize: 14)
-    var currentLocation: CLLocation? {
-        return LocationManager.shared.coords
+    var currentLocation: CLLocation! {
+        return LocationManager.shared.currentLocation
     }
     
-    
     var distanceAway: String? {
-        print(currentLocation)
         guard let distanceInMeters = currentLocation?.distance(from: alertViewModel.incidentLocation) else { return "" }
         let distance = Measurement(value: distanceInMeters, unit: UnitLength.meters)
         let miles = distance.converted(to: .miles)
         let milesString = String(format: "%.1f", miles.value)
-        return "\(milesString) mi. away"
+        return "\(alertViewModel.neighborhood) - \(milesString) mi. away"
     }
     
     var alertViewModel: IncidentViewModel! {

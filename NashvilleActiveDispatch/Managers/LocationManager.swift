@@ -1,13 +1,12 @@
 //
 //  LocationManager.swift
-//  NashvilleActiveDispatch
+//  Active Dispatch
 //
 //  Created by Scott Quintana on 1/4/21.
 //
 
 import Foundation
 import CoreLocation
-import Combine
 
 protocol LocationManagerDelegate: class {
     func didUpdateCurrentLocation()
@@ -33,7 +32,6 @@ class LocationManager: NSObject {
     
     override init() {
         super.init()
-        print("initialized")
         setupLocationManager()
         checkLocationServices()
     }

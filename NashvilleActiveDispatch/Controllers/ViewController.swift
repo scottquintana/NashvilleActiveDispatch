@@ -1,6 +1,6 @@
 //
 //  ViewController.swift
-//  NashvillePoliceAlerts
+//  Active Dispatch
 //
 //  Created by Scott Quintana on 12/29/20.
 //
@@ -25,7 +25,7 @@ class ViewController: UIViewController {
         title = "Active Dispatch"
         locationManager.delegate = self
         view.backgroundColor = Colors.backgroundBlue
-        print("VC")
+    
         configureTableView()
         configureHeaderImage()
         configureMapButton()
@@ -49,7 +49,6 @@ class ViewController: UIViewController {
         pullControl.addTarget(self, action: #selector(refreshTableView), for: .valueChanged)
         
         tableView.refreshControl = pullControl
-       
     }
     
         
@@ -151,7 +150,6 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
 
 extension ViewController: LocationManagerDelegate {
     func didUpdateCurrentLocation() {
-        print("update")
         DispatchQueue.main.async {
             self.tableView.reloadData()
         }
