@@ -64,9 +64,9 @@ class IncidentViewModel {
         switch alertData.incidentTypeCode {
         case "52P", "53P":
             return AlertBadge(color: Colors.accentRed, symbol: SFSymbols.bell!)
-        case "70A":
+        case "70A", "70P":
             return AlertBadge(color: Colors.accentGreen, symbol: SFSymbols.bell!)
-        case "71A":
+        case "71A", "71P":
             return AlertBadge(color: Colors.accentLightPurple, symbol: SFSymbols.business!)
         case "64P":
             return AlertBadge(color: Colors.accentGold, symbol: SFSymbols.personExclamation!)
