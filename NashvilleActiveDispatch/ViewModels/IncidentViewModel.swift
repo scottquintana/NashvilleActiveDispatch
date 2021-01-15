@@ -10,14 +10,26 @@ import CoreLocation
 
 class IncidentViewModel {
     let alertData: IncidentData!
-    var incidentLocation = CLLocationCoordinate2D()
+    var incidentLocation = CLLocation()
     
     var incidentDescription: String {
         return alertData.incidentType.capitalized
     }
     
+    var timeSinceCall: String {
+        let callDate = DateHelper.incomingDateString.date(from: alertData.callReceived)
+        let timeInterval: TimeInterval = (callDate?.timeIntervalSince(Date()))!
+        let timeSince = abs(timeInterval)
+        if timeSince < 3599 {
+            return "\(timeSince.format(using: [.minute])!) ago"
+        } else {
+            return "\(timeSince.format(using: [.hour, .minute])!) ago"
+            
+        }
+    }
+    
     var callReceivedDate: String {
-      return DateHelper.convertStringToDateString(alertData.callReceived)
+        return DateHelper.convertStringToDateString(alertData.callReceived)
     }
     
     var callReceivedTime: String {
@@ -47,7 +59,7 @@ class IncidentViewModel {
     var fullAddress: String {
         return "\(streetAddress) Nashville, TN"
     }
-    
+        
     var incidentBadge: AlertBadge {
         switch alertData.incidentTypeCode {
         case "52P", "53P":
@@ -74,6 +86,7 @@ class IncidentViewModel {
     init(alert: IncidentData) {
         self.alertData = alert
         getLocation(address: fullAddress)
+   
     }
     
     

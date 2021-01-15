@@ -6,21 +6,26 @@
 //
 
 import UIKit
+import Combine
+import CoreLocation
 
 class ViewController: UIViewController {
     
     private let tableView = UITableView()
     private let imageView = UIImageView()
     private var pullControl = UIRefreshControl()
-    let mapButton = ADMapButton()
     
+    let locationManager = LocationManager()
+    
+    let mapButton = ADMapButton()
     var alertViewModels = [IncidentViewModel]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Active Dispatch"
-        
+        locationManager.delegate = self
         view.backgroundColor = Colors.backgroundBlue
+        print("VC")
         configureTableView()
         configureHeaderImage()
         configureMapButton()
@@ -44,7 +49,7 @@ class ViewController: UIViewController {
         pullControl.addTarget(self, action: #selector(refreshTableView), for: .valueChanged)
         
         tableView.refreshControl = pullControl
-        
+       
     }
     
         
@@ -87,12 +92,13 @@ class ViewController: UIViewController {
                 self.alertViewModels.sort { (vm, vm2) -> Bool in
                     vm.callReceivedTime > vm2.callReceivedTime
                 }
+                
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
                 }
                 
             case .failure(let error):
-                print(error)
+                self.presentADAlertOnMainThread(title: "Networking error.", message: error.rawValue, buttonTitle: "Ok.")
             }
         }
     }
@@ -101,6 +107,7 @@ class ViewController: UIViewController {
     @objc private func refreshTableView(_ sender: Any) {
         loadAlerts()
         pullControl.endRefreshing()
+        
     }
     
     
@@ -122,6 +129,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: ADCell.reuseID) as! ADCell
         let alert = alertViewModels[indexPath.row]
         cell.alertViewModel = alert
+        
         return cell
     }
     
@@ -138,5 +146,15 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         let y = -scrollView.contentOffset.y
         let height = max(y, 85)
         imageView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: height)
+    }
+}
+
+extension ViewController: LocationManagerDelegate {
+    func didUpdateCurrentLocation() {
+        print("update")
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+
     }
 }

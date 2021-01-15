@@ -38,11 +38,6 @@ class MapViewController: UIViewController {
     var pinAnnotationView:MKPinAnnotationView!
     
     let closeButton = ADCloseButton()
-//    let leftArrowButton = ADArrowButton(direction: .left)
-//    let rightArrowButton = ADArrowButton(direction: .right)
-//    let addressLabel = AlertTitleLabel(fontSize: 18)
-//    let timeLabel = AlertBodyLabel(fontSize: 14)
-
    
     init(incidents: [IncidentViewModel]) {
         viewModels = incidents
@@ -125,6 +120,7 @@ class MapViewController: UIViewController {
         mapView.isZoomEnabled = true
         mapView.layer.cornerRadius = 24
         mapView.delegate = self
+        mapView.showsUserLocation = true
         mapView.register(MKMarkerAnnotationView.self, forAnnotationViewWithReuseIdentifier: reuseID)
     }
     
@@ -144,7 +140,7 @@ class MapViewController: UIViewController {
     
     private func addAnnotation(for location: IncidentViewModel, index: Int) {
         let annotation = ADPointAnnotation()
-        annotation.coordinate = location.incidentLocation
+        annotation.coordinate = location.incidentLocation.coordinate
         annotation.title = location.incidentDescription
         annotation.index = index
         
@@ -156,7 +152,7 @@ class MapViewController: UIViewController {
     
     private func updateMapFocus(incident: IncidentViewModel?) {
         if let incident = incident {
-            let center = incident.incidentLocation
+            let center = incident.incidentLocation.coordinate
             let region = MKCoordinateRegion(center: center, latitudinalMeters: regionInMeters, longitudinalMeters: regionInMeters)
             mapView.setRegion(region, animated: true)
             updateLabels()
