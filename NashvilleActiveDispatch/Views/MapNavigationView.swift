@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol MapNavigationViewDelegate: class {
+protocol MapNavigationViewDelegate: AnyObject {
     func didPressArrowButton (direction: ArrowDirection)
 }
 
