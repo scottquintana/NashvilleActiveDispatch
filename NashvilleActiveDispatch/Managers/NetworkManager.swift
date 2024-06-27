@@ -12,7 +12,7 @@ struct NetworkManager {
     
     private init() {}  
     
-    let baseURL = "https://data.nashville.gov/resource/qywv-8sc2.json"
+    let baseURL = "https://services2.arcgis.com/HdTo6HJqh92wn4D8/arcgis/rest/services/Metro_Nashville_Police_Department_Active_Dispatch_Table_view/FeatureServer/0/query?outFields=*&where=1%3D1&f=geojson"
     
     func getAlerts(completed: @escaping (Result<[IncidentData], ADError>) -> Void) {
         guard let url = URL(string: baseURL) else { return }
@@ -36,7 +36,8 @@ struct NetworkManager {
                 let decoder = JSONDecoder()
                 decoder.keyDecodingStrategy = .convertFromSnakeCase
                 decoder.dateDecodingStrategy = .iso8601
-                let alerts = try decoder.decode([IncidentData].self, from: data)
+                let payload = try decoder.decode(DispatchPayload.self, from: data)
+                let alerts = payload.features.map { $0.properties }
                 completed(.success(alerts))
             } catch {
                 completed(.failure(.invalidData))

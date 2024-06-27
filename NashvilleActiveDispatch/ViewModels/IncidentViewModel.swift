@@ -13,39 +13,37 @@ class IncidentViewModel {
     var incidentLocation = CLLocation()
     
     var incidentDescription: String {
-        return alertData.incidentType.capitalized
+        return alertData.incidentTypeName.capitalized
     }
     
     var timeSinceCall: String {
-        let callDate = DateHelper.incomingDateString.date(from: alertData.callReceived)
-        let timeInterval: TimeInterval = (callDate?.timeIntervalSince(Date()))!
-        let timeSince = abs(timeInterval)
-        if timeSince < 3599 {
-            return "\(timeSince.format(using: [.minute])!) ago"
+        let callDate = DateHelper.convertInt64ToDate(alertData.callReceivedTime)
+        let timeInterval: TimeInterval = abs(callDate.timeIntervalSinceNow)
+        if timeInterval < 3599 {
+            return "\(timeInterval.format(using: [.minute])!) ago"
         } else {
-            return "\(timeSince.format(using: [.hour, .minute])!) ago"
-            
+            return "\(timeInterval.format(using: [.hour, .minute])!) ago"
         }
     }
     
     var callReceivedDate: String {
-        return DateHelper.convertStringToDateString(alertData.callReceived)
+        return DateHelper.convertInt64ToDateString(alertData.callReceivedTime)
     }
     
     var callReceivedTime: String {
-        return DateHelper.convertStringToTimeString(alertData.callReceived)
+        return DateHelper.convertInt64ToTimeString(alertData.callReceivedTime)
     }
     
     var lastUpdatedDate: String {
-        return DateHelper.convertStringToDateString(alertData.lastUpdated)
+        return DateHelper.convertInt64ToDateString(alertData.lastUpdated)
     }
     
     var lastUpdatedTime: String {
-        return DateHelper.convertStringToTimeString(alertData.lastUpdated)
+        return DateHelper.convertInt64ToTimeString(alertData.lastUpdated)
     }
     
     var neighborhood: String {
-        return alertData.city.capitalized
+        return alertData.cityName.capitalized
     }
     
     var locationString: String {
@@ -53,7 +51,7 @@ class IncidentViewModel {
     }
     
     var streetAddress: String {
-        return "\(alertData.address.capitalized)"
+        return "\(alertData.location.capitalized)"
     }
     
     var fullAddress: String {
