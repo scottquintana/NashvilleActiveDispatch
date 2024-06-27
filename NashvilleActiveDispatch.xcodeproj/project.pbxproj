@@ -16,6 +16,7 @@
 		5E03056025A7C4D30092AEE5 /* UIViewController+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E03055F25A7C4D30092AEE5 /* UIViewController+Ext.swift */; };
 		5E03056425A7CA2D0092AEE5 /* ADCloseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E03056325A7CA2D0092AEE5 /* ADCloseButton.swift */; };
 		5E03056725A7D6310092AEE5 /* ADArrowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E03056625A7D6310092AEE5 /* ADArrowButton.swift */; };
+		5E1647F22C2DC7BE007D1FBB /* NashvilleActiveDispatchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1647F12C2DC7BE007D1FBB /* NashvilleActiveDispatchTests.swift */; };
 		5E325C28259D25FE00FE50A6 /* IncidentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E325C27259D25FE00FE50A6 /* IncidentViewModel.swift */; };
 		5E325C2C259D2A8D00FE50A6 /* DateHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E325C2B259D2A8D00FE50A6 /* DateHelper.swift */; };
 		5E325C2F259D408600FE50A6 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E325C2E259D408500FE50A6 /* Constants.swift */; };
@@ -37,6 +38,16 @@
 		5EE442FB25A3C35E00DFA672 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE442FA25A3C35D00DFA672 /* LocationManager.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		5E1647F32C2DC7BE007D1FBB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5E79998C259BD1A50079D0A6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5E799993259BD1A60079D0A6;
+			remoteInfo = NashvilleActiveDispatch;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		5E03054725A523D00092AEE5 /* ADPointAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ADPointAnnotation.swift; sourceTree = "<group>"; };
 		5E03054A25A7B2370092AEE5 /* ADError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ADError.swift; sourceTree = "<group>"; };
@@ -47,6 +58,8 @@
 		5E03055F25A7C4D30092AEE5 /* UIViewController+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Ext.swift"; sourceTree = "<group>"; };
 		5E03056325A7CA2D0092AEE5 /* ADCloseButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ADCloseButton.swift; sourceTree = "<group>"; };
 		5E03056625A7D6310092AEE5 /* ADArrowButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ADArrowButton.swift; sourceTree = "<group>"; };
+		5E1647EF2C2DC7BE007D1FBB /* NashvilleActiveDispatchTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NashvilleActiveDispatchTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		5E1647F12C2DC7BE007D1FBB /* NashvilleActiveDispatchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NashvilleActiveDispatchTests.swift; sourceTree = "<group>"; };
 		5E325C27259D25FE00FE50A6 /* IncidentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncidentViewModel.swift; sourceTree = "<group>"; };
 		5E325C2B259D2A8D00FE50A6 /* DateHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateHelper.swift; sourceTree = "<group>"; };
 		5E325C2E259D408500FE50A6 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -71,6 +84,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		5E1647EC2C2DC7BE007D1FBB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		5E799991259BD1A60079D0A6 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -99,6 +119,14 @@
 				5E8019E725A8BCB400BDBA39 /* ADMapButton.swift */,
 			);
 			path = Buttons;
+			sourceTree = "<group>";
+		};
+		5E1647F02C2DC7BE007D1FBB /* NashvilleActiveDispatchTests */ = {
+			isa = PBXGroup;
+			children = (
+				5E1647F12C2DC7BE007D1FBB /* NashvilleActiveDispatchTests.swift */,
+			);
+			path = NashvilleActiveDispatchTests;
 			sourceTree = "<group>";
 		};
 		5E325C26259D25EC00FE50A6 /* ViewModels */ = {
@@ -132,6 +160,7 @@
 			isa = PBXGroup;
 			children = (
 				5E799996259BD1A60079D0A6 /* NashvilleActiveDispatch */,
+				5E1647F02C2DC7BE007D1FBB /* NashvilleActiveDispatchTests */,
 				5E799995259BD1A60079D0A6 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -140,6 +169,7 @@
 			isa = PBXGroup;
 			children = (
 				5E799994259BD1A60079D0A6 /* NashvilleActiveDispatch.app */,
+				5E1647EF2C2DC7BE007D1FBB /* NashvilleActiveDispatchTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -216,6 +246,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		5E1647EE2C2DC7BE007D1FBB /* NashvilleActiveDispatchTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5E1647F52C2DC7BE007D1FBB /* Build configuration list for PBXNativeTarget "NashvilleActiveDispatchTests" */;
+			buildPhases = (
+				5E1647EB2C2DC7BE007D1FBB /* Sources */,
+				5E1647EC2C2DC7BE007D1FBB /* Frameworks */,
+				5E1647ED2C2DC7BE007D1FBB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5E1647F42C2DC7BE007D1FBB /* PBXTargetDependency */,
+			);
+			name = NashvilleActiveDispatchTests;
+			productName = NashvilleActiveDispatchTests;
+			productReference = 5E1647EF2C2DC7BE007D1FBB /* NashvilleActiveDispatchTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		5E799993259BD1A60079D0A6 /* NashvilleActiveDispatch */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5E7999A8259BD1AB0079D0A6 /* Build configuration list for PBXNativeTarget "NashvilleActiveDispatch" */;
@@ -240,9 +288,13 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastSwiftUpdateCheck = 1220;
+				LastSwiftUpdateCheck = 1530;
 				LastUpgradeCheck = 1530;
 				TargetAttributes = {
+					5E1647EE2C2DC7BE007D1FBB = {
+						CreatedOnToolsVersion = 15.3;
+						TestTargetID = 5E799993259BD1A60079D0A6;
+					};
 					5E799993259BD1A60079D0A6 = {
 						CreatedOnToolsVersion = 12.2;
 					};
@@ -262,11 +314,19 @@
 			projectRoot = "";
 			targets = (
 				5E799993259BD1A60079D0A6 /* NashvilleActiveDispatch */,
+				5E1647EE2C2DC7BE007D1FBB /* NashvilleActiveDispatchTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		5E1647ED2C2DC7BE007D1FBB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		5E799992259BD1A60079D0A6 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -279,6 +339,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		5E1647EB2C2DC7BE007D1FBB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5E1647F22C2DC7BE007D1FBB /* NashvilleActiveDispatchTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		5E799990259BD1A60079D0A6 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -314,6 +382,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		5E1647F42C2DC7BE007D1FBB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5E799993259BD1A60079D0A6 /* NashvilleActiveDispatch */;
+			targetProxy = 5E1647F32C2DC7BE007D1FBB /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		5E7999A2259BD1AB0079D0A6 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
@@ -326,6 +402,53 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		5E1647F62C2DC7BE007D1FBB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = V72YQ3KT7F;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = ConchaLabs.NashvilleActiveDispatchTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NashvilleActiveDispatch.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/NashvilleActiveDispatch";
+			};
+			name = Debug;
+		};
+		5E1647F72C2DC7BE007D1FBB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = V72YQ3KT7F;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = ConchaLabs.NashvilleActiveDispatchTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NashvilleActiveDispatch.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/NashvilleActiveDispatch";
+			};
+			name = Release;
+		};
 		5E7999A6259BD1AB0079D0A6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -451,6 +574,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 5PKBVW8P3C;
 				INFOPLIST_FILE = NashvilleActiveDispatch/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -458,6 +582,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.scottquintana.ActiveDispatch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -473,6 +598,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 5PKBVW8P3C;
 				INFOPLIST_FILE = NashvilleActiveDispatch/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -480,6 +606,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.scottquintana.ActiveDispatch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -491,6 +618,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		5E1647F52C2DC7BE007D1FBB /* Build configuration list for PBXNativeTarget "NashvilleActiveDispatchTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5E1647F62C2DC7BE007D1FBB /* Debug */,
+				5E1647F72C2DC7BE007D1FBB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		5E79998F259BD1A60079D0A6 /* Build configuration list for PBXProject "NashvilleActiveDispatch" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
