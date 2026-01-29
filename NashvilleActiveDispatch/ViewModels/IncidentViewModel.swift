@@ -35,11 +35,13 @@ class IncidentViewModel {
     }
     
     var lastUpdatedDate: String {
-        return DateHelper.convertISO8601ToDateString(alertData.updatedAt)
+        guard let date = alertData.updatedAt else { return "N/A" }
+        return DateHelper.convertISO8601ToDateString(date)
     }
     
     var lastUpdatedTime: String {
-        return DateHelper.convertISO8601ToTimeString(alertData.updatedAt)
+        guard let time = alertData.updatedAt else { return "N/A" }
+        return DateHelper.convertISO8601ToTimeString(time)
     }
     
     var neighborhood: String {

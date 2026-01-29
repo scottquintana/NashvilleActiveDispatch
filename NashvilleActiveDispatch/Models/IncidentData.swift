@@ -21,16 +21,12 @@ struct Place: Codable {
     let lon: Double
     let address: String
     let callTimeReceived: String
-    let updatedAt: String
+    let updatedAt: String?
     let extras: IncidentExtras
 }
 
 struct IncidentExtras: Codable {
-    let incidentTypeCode: String
+    let incidentTypeCode: String?
     let incidentTypeName: String
-}
-
-// Define the geometry struct (as it's null in the provided JSON, this can be optional)
-struct Geometry: Codable {
-    // Define the properties of Geometry if known
+    let incidentId: String?
 }
