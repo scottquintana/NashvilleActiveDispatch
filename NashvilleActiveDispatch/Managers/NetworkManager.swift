@@ -10,39 +10,79 @@ import Foundation
 struct NetworkManager {
     static let shared = NetworkManager()
     
-    private init() {}  
+    private init() {}
     
-    let baseURL = "https://services2.arcgis.com/HdTo6HJqh92wn4D8/arcgis/rest/services/Metro_Nashville_Police_Department_Active_Dispatch_Table_view/FeatureServer/0/query?outFields=*&where=1%3D1&f=geojson"
+    let baseURL = "https://activedispatch-313918647466.us-east4.run.app/v1/city/nashville"
     
-    func getAlerts(completed: @escaping (Result<[IncidentData], ADError>) -> Void) {
-        guard let url = URL(string: baseURL) else { return }
-        
-        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
-            if let _ = error {
-                completed(.failure(.invalidURL))
-            }
-            
-            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+    func getAlerts(completed: @escaping (Result<[Place], ADError>) -> Void) {
+        let endpoint = "get_alerts"
+
+        guard let url = URL(string: baseURL) else {
+            AnalyticsManager.shared.logAlertsFetchFailed(endpoint: endpoint)
+            completed(.failure(.invalidURL))
+            return
+        }
+
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+
+            if let error = error {
+                AnalyticsManager.shared.logAlertsFetchFailed(
+                    endpoint: endpoint,
+                    error: error
+                )
                 completed(.failure(.invalidResponse))
                 return
             }
-            
+
+            guard let http = response as? HTTPURLResponse else {
+                AnalyticsManager.shared.logAlertsFetchFailed(endpoint: endpoint)
+                completed(.failure(.invalidResponse))
+                return
+            }
+
+            guard http.statusCode == 200 else {
+                AnalyticsManager.shared.logAlertsFetchFailed(
+                    endpoint: endpoint,
+                    httpStatus: http.statusCode
+                )
+                completed(.failure(.invalidResponse))
+                return
+            }
+
             guard let data = data else {
+                AnalyticsManager.shared.logAlertsFetchFailed(
+                    endpoint: endpoint,
+                    httpStatus: http.statusCode
+                )
                 completed(.failure(.invalidData))
                 return
             }
-            
+
             do {
                 let decoder = JSONDecoder()
                 decoder.keyDecodingStrategy = .convertFromSnakeCase
                 decoder.dateDecodingStrategy = .iso8601
+
                 let payload = try decoder.decode(DispatchPayload.self, from: data)
-                let alerts = payload.features.map { $0.properties }
-                completed(.success(alerts))
+
+                if payload.places.isEmpty {
+                    AnalyticsManager.shared.logAlertsFetchEmpty(
+                        endpoint: endpoint,
+                        httpStatus: http.statusCode
+                    )
+                }
+
+                completed(.success(payload.places))
             } catch {
+                AnalyticsManager.shared.logAlertsFetchFailed(
+                    endpoint: endpoint,
+                    httpStatus: http.statusCode,
+                    error: error
+                )
                 completed(.failure(.invalidData))
             }
         }
+
         task.resume()
     }
 }

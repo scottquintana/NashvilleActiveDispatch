@@ -20,21 +20,15 @@ class ADCell: UITableViewCell {
         return LocationManager.shared.currentLocation
     }
     
-    var distanceAway: String? {
-        guard let distanceInMeters = currentLocation?.distance(from: alertViewModel.incidentLocation) else { return "" }
-        let distance = Measurement(value: distanceInMeters, unit: UnitLength.meters)
-        let miles = distance.converted(to: .miles)
-        let milesString = String(format: "%.1f", miles.value)
-        return "\(alertViewModel.neighborhood) - \(milesString) mi. away"
-    }
-    
     var alertViewModel: IncidentViewModel! {
         didSet {
             callTimeLabel.text = alertViewModel.timeSinceCall
             incidentLabel.text = alertViewModel.incidentDescription
-            if currentLocation == nil {
-                locationLabel.text = "Calculating distance..."
-            } else { locationLabel.text = distanceAway }
+            locationLabel.text = DistanceCalculator.distanceString(
+                from: currentLocation,
+                to: alertViewModel.incidentLocation,
+                neighborhood: alertViewModel.neighborhood
+            )
             alertImage.image = alertViewModel.incidentBadge.symbol
             alertImage.tintColor = alertViewModel.incidentBadge.color
         }
