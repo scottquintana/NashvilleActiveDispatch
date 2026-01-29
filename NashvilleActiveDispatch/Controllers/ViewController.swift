@@ -52,6 +52,12 @@ final class ViewController: UIViewController {
     private let headerHeight: CGFloat = 200
     private let headerBaseImageAlpha: CGFloat = 0.5
 
+    // MARK: - Loading / Empty state overlay
+
+    private let stateOverlayView = UIView()
+    private let stateSpinner = UIActivityIndicatorView(style: .large)
+    private let stateLabel = UILabel()
+
     let locationManager = LocationManager()
     let mapButton = ADMapButton()
 
@@ -69,6 +75,9 @@ final class ViewController: UIViewController {
         configureHeader()
         configureSortButton()
         configureMapButton()
+        configureStateOverlay()
+
+        showLoadingState(text: "Loading incidents…")
         loadAlerts()
 
         // Ensure initial header state is applied (no snapping)
@@ -78,8 +87,6 @@ final class ViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
-        // Keep header subviews sized correctly if rotation/layout changes.
-        // tableHeaderView sizing is NOT automatic; we must reassign after changing the frame.
         let width = view.bounds.width
         headerContainerView.frame = CGRect(x: 0, y: 0, width: width, height: headerHeight)
         imageView.frame = headerContainerView.bounds
@@ -95,11 +102,7 @@ final class ViewController: UIViewController {
         )
 
         // Re-assign to force UITableView to respect updated header sizing.
-        if tableView.tableHeaderView !== headerContainerView {
-            tableView.tableHeaderView = headerContainerView
-        } else {
-            tableView.tableHeaderView = headerContainerView
-        }
+        tableView.tableHeaderView = headerContainerView
 
         updateHeader(for: tableView)
     }
@@ -107,7 +110,6 @@ final class ViewController: UIViewController {
     // MARK: - Nav Bar (custom large title)
 
     private func configureNavigationBarForCustomLargeTitle() {
-        // Small title appears after the header fades out.
         navigationItem.title = ""
         navigationItem.largeTitleDisplayMode = .never
         navigationController?.navigationBar.prefersLargeTitles = false
@@ -136,9 +138,6 @@ final class ViewController: UIViewController {
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.frame = view.bounds
-
-        // ✅ Make content start at the very top (behind the transparent nav bar),
-        // so the header image has no “top border” gap.
         tableView.contentInsetAdjustmentBehavior = .never
 
         tableView.rowHeight = 100
@@ -156,7 +155,6 @@ final class ViewController: UIViewController {
     // MARK: - Header (tableHeaderView)
 
     private func configureHeader() {
-        // Container becomes tableHeaderView so it scrolls immediately with cells.
         headerContainerView.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: headerHeight)
         headerContainerView.clipsToBounds = true
         headerContainerView.backgroundColor = .clear
@@ -180,7 +178,6 @@ final class ViewController: UIViewController {
     }
 
     private func updateHeader(for scrollView: UIScrollView) {
-        // With tableHeaderView, contentOffset is 0 at rest and increases immediately on scroll up.
         let y = max(0, scrollView.contentOffset.y)
 
         let fadeDistance: CGFloat = 120
@@ -191,6 +188,60 @@ final class ViewController: UIViewController {
         largeTitleLabel.transform = CGAffineTransform(translationX: 0, y: -10 * t)
 
         navigationItem.title = (t >= 1.0) ? "Active Dispatch" : ""
+    }
+
+    // MARK: - Loading / Empty overlay
+
+    private func configureStateOverlay() {
+        stateOverlayView.translatesAutoresizingMaskIntoConstraints = false
+        stateOverlayView.backgroundColor = .clear
+        stateOverlayView.isHidden = true
+        view.addSubview(stateOverlayView)
+
+        stateSpinner.translatesAutoresizingMaskIntoConstraints = false
+        stateSpinner.hidesWhenStopped = true
+
+        stateLabel.translatesAutoresizingMaskIntoConstraints = false
+        stateLabel.textColor = .white
+        stateLabel.numberOfLines = 0
+        stateLabel.textAlignment = .center
+        stateLabel.font = UIFont.systemFont(ofSize: 15, weight: .semibold)
+
+        stateOverlayView.addSubview(stateSpinner)
+        stateOverlayView.addSubview(stateLabel)
+
+        NSLayoutConstraint.activate([
+            // Center in the visible content area
+            stateOverlayView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            stateOverlayView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            stateOverlayView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: 24),
+            stateOverlayView.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -24),
+
+            stateSpinner.centerXAnchor.constraint(equalTo: stateOverlayView.centerXAnchor),
+            stateSpinner.topAnchor.constraint(equalTo: stateOverlayView.topAnchor),
+
+            stateLabel.topAnchor.constraint(equalTo: stateSpinner.bottomAnchor, constant: 12),
+            stateLabel.leadingAnchor.constraint(equalTo: stateOverlayView.leadingAnchor),
+            stateLabel.trailingAnchor.constraint(equalTo: stateOverlayView.trailingAnchor),
+            stateLabel.bottomAnchor.constraint(equalTo: stateOverlayView.bottomAnchor)
+        ])
+    }
+
+    private func showLoadingState(text: String) {
+        stateOverlayView.isHidden = false
+        stateLabel.text = text
+        stateSpinner.startAnimating()
+    }
+
+    private func showEmptyState(text: String) {
+        stateOverlayView.isHidden = false
+        stateLabel.text = text
+        stateSpinner.stopAnimating()
+    }
+
+    private func hideStateOverlay() {
+        stateSpinner.stopAnimating()
+        stateOverlayView.isHidden = true
     }
 
     // MARK: - Sort Button
@@ -237,22 +288,32 @@ final class ViewController: UIViewController {
 
     private func loadAlerts() {
         NetworkManager.shared.getAlerts { [weak self] result in
-            guard let self = self else { return }
+            guard let self else { return }
 
             switch result {
             case .success(let alerts):
                 self.alertViewModels = alerts.map { IncidentViewModel(alert: $0) }
                 self.sortAlerts()
+
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
+
+                    if self.alertViewModels.isEmpty {
+                        self.showEmptyState(text: "No active incidents.")
+                    } else {
+                        self.hideStateOverlay()
+                    }
                 }
 
             case .failure(let error):
-                self.presentADAlertOnMainThread(
-                    title: "Networking error.",
-                    message: error.rawValue,
-                    buttonTitle: "Ok."
-                )
+                DispatchQueue.main.async {
+                    self.hideStateOverlay()
+                    self.presentADAlertOnMainThread(
+                        title: "Networking error.",
+                        message: error.rawValue,
+                        buttonTitle: "Ok."
+                    )
+                }
             }
         }
     }
@@ -305,6 +366,7 @@ final class ViewController: UIViewController {
 
     @objc private func refreshTableView(_ sender: Any) {
         AnalyticsManager.shared.logRefreshTriggered(endpoint: "get_alerts")
+        showLoadingState(text: "Refreshing…")
 
         NetworkManager.shared.getAlerts { [weak self] result in
             guard let self else { return }
@@ -315,15 +377,25 @@ final class ViewController: UIViewController {
 
                 self.alertViewModels = alerts.map { IncidentViewModel(alert: $0) }
                 self.sortAlerts()
+
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
                     self.pullControl.endRefreshing()
+
+                    if self.alertViewModels.isEmpty {
+                        self.showEmptyState(text: "No active incidents.")
+                    } else {
+                        self.hideStateOverlay()
+                    }
                 }
 
             case .failure:
                 AnalyticsManager.shared.logRefreshFailed(endpoint: "get_alerts", error: nil)
+
                 DispatchQueue.main.async {
                     self.pullControl.endRefreshing()
+                    // Keep previous content; show a lightweight message instead of nuking the list.
+                    self.hideStateOverlay()
                 }
             }
         }
