@@ -9,60 +9,216 @@ import UIKit
 import Combine
 import CoreLocation
 
-class ViewController: UIViewController {
-    
+enum SortOption: Int, CaseIterable {
+    case timeNewest = 0
+    case timeOldest = 1
+    case distanceNearest = 2
+    case distanceFarthest = 3
+
+    var displayText: String {
+        switch self {
+        case .timeNewest: return "Time"
+        case .timeOldest: return "Time"
+        case .distanceNearest: return "Distance"
+        case .distanceFarthest: return "Distance"
+        }
+    }
+
+    var triangleDirection: String {
+        switch self {
+        case .timeNewest, .distanceNearest: return "▼"
+        case .timeOldest, .distanceFarthest: return "▲"
+        }
+    }
+
+    func next() -> SortOption {
+        let allCases = SortOption.allCases
+        let currentIndex = allCases.firstIndex(of: self) ?? 0
+        let nextIndex = (currentIndex + 1) % allCases.count
+        return allCases[nextIndex]
+    }
+}
+
+final class ViewController: UIViewController {
+
     private let tableView = UITableView()
-    private let imageView = UIImageView()
     private var pullControl = UIRefreshControl()
-    
+    private let sortButton = UIButton(type: .system)
+
+    private let headerContainerView = UIView()
+    private let imageView = UIImageView()
+    private let largeTitleLabel = UILabel()
+
+    private let headerHeight: CGFloat = 200
+    private let headerBaseImageAlpha: CGFloat = 0.5
+
     let locationManager = LocationManager()
-    
     let mapButton = ADMapButton()
+
     var alertViewModels = [IncidentViewModel]()
+    var currentSort: SortOption = .timeNewest
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Active Dispatch"
+
         locationManager.delegate = self
         view.backgroundColor = Colors.backgroundBlue
-    
+
+        configureNavigationBarForCustomLargeTitle()
         configureTableView()
-        configureHeaderImage()
+        configureHeader()
+        configureSortButton()
         configureMapButton()
         loadAlerts()
+
+        // Ensure initial header state is applied (no snapping)
+        updateHeader(for: tableView)
     }
-    
-    
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        // Keep header subviews sized correctly if rotation/layout changes.
+        // tableHeaderView sizing is NOT automatic; we must reassign after changing the frame.
+        let width = view.bounds.width
+        headerContainerView.frame = CGRect(x: 0, y: 0, width: width, height: headerHeight)
+        imageView.frame = headerContainerView.bounds
+
+        let leftInset: CGFloat = 16
+        let bottomInset: CGFloat = 10
+        let labelHeight: CGFloat = 48
+        largeTitleLabel.frame = CGRect(
+            x: leftInset,
+            y: headerHeight - labelHeight - bottomInset,
+            width: width - (leftInset * 2),
+            height: labelHeight
+        )
+
+        // Re-assign to force UITableView to respect updated header sizing.
+        if tableView.tableHeaderView !== headerContainerView {
+            tableView.tableHeaderView = headerContainerView
+        } else {
+            tableView.tableHeaderView = headerContainerView
+        }
+
+        updateHeader(for: tableView)
+    }
+
+    // MARK: - Nav Bar (custom large title)
+
+    private func configureNavigationBarForCustomLargeTitle() {
+        // Small title appears after the header fades out.
+        navigationItem.title = ""
+        navigationItem.largeTitleDisplayMode = .never
+        navigationController?.navigationBar.prefersLargeTitles = false
+
+        guard let navBar = navigationController?.navigationBar else { return }
+
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithTransparentBackground()
+        appearance.backgroundColor = .clear
+        appearance.shadowColor = .clear
+        appearance.titleTextAttributes = [
+            .foregroundColor: UIColor.white
+        ]
+
+        navBar.standardAppearance = appearance
+        navBar.scrollEdgeAppearance = appearance
+        navBar.compactAppearance = appearance
+
+        navBar.tintColor = .white
+        navBar.isTranslucent = true
+    }
+
+    // MARK: - Table
+
     private func configureTableView() {
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.frame = view.bounds
+
+        // ✅ Make content start at the very top (behind the transparent nav bar),
+        // so the header image has no “top border” gap.
+        tableView.contentInsetAdjustmentBehavior = .never
+
         tableView.rowHeight = 100
         tableView.backgroundColor = .clear
         tableView.delegate = self
         tableView.dataSource = self
         tableView.separatorStyle = .none
         tableView.register(ADCell.self, forCellReuseIdentifier: ADCell.reuseID)
-        tableView.contentInset = UIEdgeInsets(top: 100, left: 0, bottom: 0, right: 0)
-        
+
         pullControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
         pullControl.addTarget(self, action: #selector(refreshTableView), for: .valueChanged)
-        
         tableView.refreshControl = pullControl
     }
-    
-        
-    private func configureHeaderImage() {
-        let image = UIImage(named: "nashvilleHeader")
-        imageView.image = image
+
+    // MARK: - Header (tableHeaderView)
+
+    private func configureHeader() {
+        // Container becomes tableHeaderView so it scrolls immediately with cells.
+        headerContainerView.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: headerHeight)
+        headerContainerView.clipsToBounds = true
+        headerContainerView.backgroundColor = .clear
+
+        imageView.image = UIImage(named: "nashvilleHeader")
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
-        imageView.alpha = 0.5
-        imageView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 200)
-        view.addSubview(imageView)
+        imageView.alpha = headerBaseImageAlpha
+        imageView.frame = headerContainerView.bounds
+
+        largeTitleLabel.text = "Active Dispatch"
+        largeTitleLabel.textColor = .white
+        largeTitleLabel.alpha = 1.0
+        largeTitleLabel.numberOfLines = 1
+        largeTitleLabel.font = UIFont.systemFont(ofSize: 36, weight: .bold)
+
+        headerContainerView.addSubview(imageView)
+        headerContainerView.addSubview(largeTitleLabel)
+
+        tableView.tableHeaderView = headerContainerView
     }
-    
-    
+
+    private func updateHeader(for scrollView: UIScrollView) {
+        // With tableHeaderView, contentOffset is 0 at rest and increases immediately on scroll up.
+        let y = max(0, scrollView.contentOffset.y)
+
+        let fadeDistance: CGFloat = 120
+        let t = min(1, y / fadeDistance)
+
+        imageView.alpha = headerBaseImageAlpha * (1 - t)
+        largeTitleLabel.alpha = 1 - t
+        largeTitleLabel.transform = CGAffineTransform(translationX: 0, y: -10 * t)
+
+        navigationItem.title = (t >= 1.0) ? "Active Dispatch" : ""
+    }
+
+    // MARK: - Sort Button
+
+    private func configureSortButton() {
+        sortButton.setTitleColor(.white, for: .normal)
+        sortButton.titleLabel?.font = UIFont.systemFont(ofSize: 12, weight: .medium)
+        sortButton.addTarget(self, action: #selector(sortButtonTapped), for: .touchUpInside)
+
+        updateSortButton()
+
+        sortButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            sortButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 95),
+            sortButton.heightAnchor.constraint(equalToConstant: 32)
+        ])
+
+        let buttonItem = UIBarButtonItem(customView: sortButton)
+        navigationItem.rightBarButtonItem = buttonItem
+    }
+
+    private func updateSortButton() {
+        let text = "\(currentSort.displayText) \(currentSort.triangleDirection)"
+        sortButton.setTitle(text, for: .normal)
+    }
+
+    // MARK: - Map Button
+
     private func configureMapButton() {
         mapButton.frame = CGRect(x: view.frame.width - 80, y: view.frame.height - 120, width: 60, height: 60)
         mapButton.layer.cornerRadius = mapButton.bounds.size.width / 2
@@ -72,87 +228,168 @@ class ViewController: UIViewController {
         mapButton.layer.shadowOpacity = 0.4
         mapButton.layer.shadowOffset = CGSize(width: 0, height: 3)
         mapButton.layer.shadowColor = UIColor.black.cgColor
-        
+
         mapButton.addTarget(self, action: #selector(viewAllOnMap), for: .touchUpInside)
-        
         view.addSubview(mapButton)
-        
     }
-    
-    
+
+    // MARK: - Data
+
     private func loadAlerts() {
         NetworkManager.shared.getAlerts { [weak self] result in
             guard let self = self else { return }
-            
+
             switch result {
             case .success(let alerts):
-                self.alertViewModels = alerts.map({ return IncidentViewModel(alert: $0)})
-                
-                self.alertViewModels.sort { (vm, vm2) -> Bool in
-                    vm.callReceivedTime > vm2.callReceivedTime
-                }
-                
+                self.alertViewModels = alerts.map { IncidentViewModel(alert: $0) }
+                self.sortAlerts()
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
                 }
-                
+
             case .failure(let error):
-                self.presentADAlertOnMainThread(title: "Networking error.", message: error.rawValue, buttonTitle: "Ok.")
+                self.presentADAlertOnMainThread(
+                    title: "Networking error.",
+                    message: error.rawValue,
+                    buttonTitle: "Ok."
+                )
             }
         }
     }
-    
-    
-    @objc private func refreshTableView(_ sender: Any) {
-        loadAlerts()
-        pullControl.endRefreshing()
-        
+
+    private func sortAlerts() {
+        switch currentSort {
+        case .timeNewest:
+            alertViewModels.sort { vm1, vm2 in
+                let date1 = DateHelper.convertISO8601ToDate(vm1.alertData.callTimeReceived)
+                let date2 = DateHelper.convertISO8601ToDate(vm2.alertData.callTimeReceived)
+                return date1 > date2
+            }
+
+        case .timeOldest:
+            alertViewModels.sort { vm1, vm2 in
+                let date1 = DateHelper.convertISO8601ToDate(vm1.alertData.callTimeReceived)
+                let date2 = DateHelper.convertISO8601ToDate(vm2.alertData.callTimeReceived)
+                return date1 < date2
+            }
+
+        case .distanceNearest:
+            guard let userLocation = locationManager.currentLocation else {
+                currentSort = .timeNewest
+                updateSortButton()
+                sortAlerts()
+                return
+            }
+            alertViewModels.sort { vm1, vm2 in
+                let distance1 = userLocation.distance(from: vm1.incidentLocation)
+                let distance2 = userLocation.distance(from: vm2.incidentLocation)
+                return distance1 < distance2
+            }
+
+        case .distanceFarthest:
+            guard let userLocation = locationManager.currentLocation else {
+                currentSort = .timeNewest
+                updateSortButton()
+                sortAlerts()
+                return
+            }
+            alertViewModels.sort { vm1, vm2 in
+                let distance1 = userLocation.distance(from: vm1.incidentLocation)
+                let distance2 = userLocation.distance(from: vm2.incidentLocation)
+                return distance1 > distance2
+            }
+        }
     }
-    
-    
+
+    // MARK: - Actions
+
+    @objc private func refreshTableView(_ sender: Any) {
+        AnalyticsManager.shared.logRefreshTriggered(endpoint: "get_alerts")
+
+        NetworkManager.shared.getAlerts { [weak self] result in
+            guard let self else { return }
+
+            switch result {
+            case .success(let alerts):
+                AnalyticsManager.shared.logRefreshSucceeded(endpoint: "get_alerts", httpStatus: 200)
+
+                self.alertViewModels = alerts.map { IncidentViewModel(alert: $0) }
+                self.sortAlerts()
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                    self.pullControl.endRefreshing()
+                }
+
+            case .failure:
+                AnalyticsManager.shared.logRefreshFailed(endpoint: "get_alerts", error: nil)
+                DispatchQueue.main.async {
+                    self.pullControl.endRefreshing()
+                }
+            }
+        }
+    }
+
+    @objc private func sortButtonTapped() {
+        currentSort = currentSort.next()
+        AnalyticsManager.shared.logSortChanged(option: currentSort)
+        updateSortButton()
+        sortAlerts()
+        tableView.reloadData()
+    }
+
     @objc private func viewAllOnMap() {
+        AnalyticsManager.shared.logMapOpened(source: .button)
         let mapVC = MapViewController(incidents: alertViewModels)
         present(mapVC, animated: true)
     }
 }
 
-//MARK: - TableView Extensions
+// MARK: - UITableView
 
 extension ViewController: UITableViewDelegate, UITableViewDataSource {
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return alertViewModels.count
+        alertViewModels.count
     }
-    
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ADCell.reuseID) as! ADCell
-        let alert = alertViewModels[indexPath.row]
-        cell.alertViewModel = alert
-        
+        cell.alertViewModel = alertViewModels[indexPath.row]
         return cell
     }
-    
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let alert = alertViewModels[indexPath.row]
+
+        if let distanceMiles = DistanceCalculator.distanceInMiles(
+            from: locationManager.currentLocation,
+            to: alert.incidentLocation
+        ) {
+            AnalyticsManager.shared.logIncidentTapped(
+                incidentType: alert.incidentDescription,
+                neighborhood: alert.neighborhood,
+                distanceMiles: distanceMiles
+            )
+        }
+
+        AnalyticsManager.shared.logMapOpened(source: .tap)
+
         let mapVC = MapViewController(incidents: alertViewModels)
         mapVC.selectedIndex = indexPath.row
-
         present(mapVC, animated: true)
     }
-    
-        
+
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let y = -scrollView.contentOffset.y
-        let height = max(y, 85)
-        imageView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: height)
+        updateHeader(for: scrollView)
     }
 }
+
+// MARK: - LocationManagerDelegate
 
 extension ViewController: LocationManagerDelegate {
     func didUpdateCurrentLocation() {
         DispatchQueue.main.async {
             self.tableView.reloadData()
         }
-
     }
 }

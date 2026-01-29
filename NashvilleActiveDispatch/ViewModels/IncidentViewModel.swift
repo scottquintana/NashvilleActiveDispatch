@@ -9,15 +9,15 @@ import UIKit
 import CoreLocation
 
 class IncidentViewModel {
-    let alertData: IncidentData!
-    var incidentLocation = CLLocation()
+    let alertData: Place!
+    var incidentLocation: CLLocation
     
     var incidentDescription: String {
-        return alertData.incidentTypeName.capitalized
+        return alertData.extras.incidentTypeName.capitalized
     }
     
     var timeSinceCall: String {
-        let callDate = DateHelper.convertInt64ToDate(alertData.callReceivedTime)
+        let callDate = DateHelper.convertISO8601ToDate(alertData.callTimeReceived)
         let timeInterval: TimeInterval = abs(callDate.timeIntervalSinceNow)
         if timeInterval < 3599 {
             return "\(timeInterval.format(using: [.minute])!) ago"
@@ -27,23 +27,25 @@ class IncidentViewModel {
     }
     
     var callReceivedDate: String {
-        return DateHelper.convertInt64ToDateString(alertData.callReceivedTime)
+        return DateHelper.convertISO8601ToDateString(alertData.callTimeReceived)
     }
     
     var callReceivedTime: String {
-        return DateHelper.convertInt64ToTimeString(alertData.callReceivedTime)
+        return DateHelper.convertISO8601ToTimeString(alertData.callTimeReceived)
     }
     
     var lastUpdatedDate: String {
-        return DateHelper.convertInt64ToDateString(alertData.lastUpdated)
+        return DateHelper.convertISO8601ToDateString(alertData.updatedAt)
     }
     
     var lastUpdatedTime: String {
-        return DateHelper.convertInt64ToTimeString(alertData.lastUpdated)
+        return DateHelper.convertISO8601ToTimeString(alertData.updatedAt)
     }
     
     var neighborhood: String {
-        return alertData.cityName.capitalized
+        // Extract neighborhood from address (after first comma)
+        let components = alertData.address.components(separatedBy: ", ")
+        return components.count > 1 ? components[1].capitalized : ""
     }
     
     var locationString: String {
@@ -51,15 +53,17 @@ class IncidentViewModel {
     }
     
     var streetAddress: String {
-        return "\(alertData.location.capitalized)"
+        // Extract street address (before first comma)
+        let components = alertData.address.components(separatedBy: ", ")
+        return components.first?.capitalized ?? alertData.address.capitalized
     }
     
     var fullAddress: String {
-        return "\(streetAddress) Nashville, TN"
+        return alertData.address
     }
         
     var incidentBadge: AlertBadge {
-        switch alertData.incidentTypeCode {
+        switch alertData.extras.incidentTypeCode {
         case "52P", "53P":
             return AlertBadge(color: Colors.accentRed, symbol: SFSymbols.bell!)
         case "70A", "70P":
@@ -81,18 +85,9 @@ class IncidentViewModel {
         }
     }
     
-    init(alert: IncidentData) {
+    init(alert: Place) {
         self.alertData = alert
-        getLocation(address: fullAddress)
-   
+        // Use the coordinates directly from the API instead of geocoding
+        self.incidentLocation = CLLocation(latitude: alert.lat, longitude: alert.lon)
     }
-    
-    
-    func getLocation(address: String) {
-        LocationManager.coordinates(forAddress: fullAddress) { location in
-            guard let location = location else { return }
-            self.incidentLocation = location
-        }
-    }
-    
 }

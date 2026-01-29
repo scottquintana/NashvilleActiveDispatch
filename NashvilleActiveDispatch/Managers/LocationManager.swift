@@ -12,76 +12,107 @@ protocol LocationManagerDelegate: AnyObject {
     func didUpdateCurrentLocation()
 }
 
-class LocationManager: NSObject {
+final class LocationManager: NSObject {
     
     weak var delegate: LocationManagerDelegate?
     
     static let shared: LocationManager = {
-        let instance = LocationManager()
-        return instance
+        LocationManager()
     }()
     
-    var currentLocation: CLLocation?
+    private let locationManager = CLLocationManager()
+    
+    private(set) var currentLocation: CLLocation?
     
     var coords: CLLocation? {
-        return currentLocation
+        currentLocation
     }
-    
-    var timer = 0
-    private let locationManager = CLLocationManager()
     
     override init() {
         super.init()
-        setupLocationManager()
-        checkLocationServices()
+        configureManager()
+        // Initial evaluation: do NOT call locationServicesEnabled() on main.
+        evaluateAuthorizationAndStartIfNeeded()
     }
     
+    // MARK: - Setup
     
-    private func setupLocationManager() {
+    private func configureManager() {
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.pausesLocationUpdatesAutomatically = true
     }
     
+    // MARK: - Authorization / Start
     
-    private func checkLocationServices() {
-        if CLLocationManager.locationServicesEnabled() {
-            setupLocationManager()
-            checkLocationAuthorization()
-            
-        } else {
-            print(ADError.invalidLocation)
-        }
-    }
-    
-    private func checkLocationAuthorization() {
-        switch locationManager.authorizationStatus {
+    private func evaluateAuthorizationAndStartIfNeeded() {
+        let status = currentAuthorizationStatus()
         
+        switch status {
         case .notDetermined:
             locationManager.requestWhenInUseAuthorization()
+            
+        case .authorizedWhenInUse, .authorizedAlways:
+            startUpdatingIfServicesEnabled()
+            
         case .restricted:
-            break
+            AnalyticsManager.shared.logLocationPermissionRestricted()
+            locationManager.stopUpdatingLocation()
+            
         case .denied:
-            break
-        case .authorizedAlways:
-            print("always")
-        case .authorizedWhenInUse:
-            locationManager.startUpdatingLocation()
-        default:
-            break
+            AnalyticsManager.shared.logLocationPermissionDenied()
+            locationManager.stopUpdatingLocation()
+            
+        @unknown default:
+            AnalyticsManager.shared.logError(
+                type: "LocationManager",
+                message: "Unknown authorization status",
+                context: "status: \(status.rawValue)"
+            )
+            locationManager.stopUpdatingLocation()
         }
     }
     
-    func getLocation() -> CLLocation? {
-        let coords = self.currentLocation
-        return coords
+    private func startUpdatingIfServicesEnabled() {
+        // Do the potentially "blocking" call off-main, then hop back to main for startUpdatingLocation.
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            let enabled = CLLocationManager.locationServicesEnabled()
+            
+            DispatchQueue.main.async {
+                guard let self else { return }
+                
+                if enabled {
+                    self.locationManager.startUpdatingLocation()
+                } else {
+                    // Services disabled at OS level.
+                    AnalyticsManager.shared.logLocationServicesDisabled()
+                    AnalyticsManager.shared.logError(ADError.invalidLocation, context: "LocationManager")
+                    self.locationManager.stopUpdatingLocation()
+                }
+            }
+        }
     }
+    
+    private func currentAuthorizationStatus() -> CLAuthorizationStatus {
+        return locationManager.authorizationStatus
+    }
+    
+    // MARK: - Public
+    
+    func getLocation() -> CLLocation? {
+        currentLocation
+    }
+    
     static func coordinates(forAddress address: String, completion: @escaping (CLLocation?) -> Void) {
         let geocoder = CLGeocoder()
-        geocoder.geocodeAddressString(address) {
-            (placemarks, error) in
+        geocoder.geocodeAddressString(address) { placemarks, error in
             guard error == nil else {
-                print("Geocoding error: \(error!)")
+                let errorMessage = error!.localizedDescription
+                AnalyticsManager.shared.logError(
+                    type: "GeocodingError",
+                    message: errorMessage,
+                    context: "address: \(address)"
+                )
                 completion(nil)
                 return
             }
@@ -90,16 +121,29 @@ class LocationManager: NSObject {
     }
 }
 
+// MARK: - CLLocationManagerDelegate
+
 extension LocationManager: CLLocationManagerDelegate {
+    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
+        currentLocation = location
         
-        self.currentLocation = location
+        AnalyticsManager.shared.logLocationAccuracy(location)
+        
         delegate?.didUpdateCurrentLocation()
+    }
     
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        AnalyticsManager.shared.logError(
+            type: "CLLocationManagerError",
+            message: error.localizedDescription,
+            context: "LocationManager delegate"
+        )
     }
     
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        checkLocationAuthorization()
+        // Called whenever auth changes; this is the preferred "re-evaluate" hook.
+        evaluateAuthorizationAndStartIfNeeded()
     }
 }
