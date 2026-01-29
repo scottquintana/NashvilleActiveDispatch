@@ -287,7 +287,7 @@ final class ViewController: UIViewController {
     // MARK: - Data
 
     private func loadAlerts() {
-        NetworkManager.shared.getAlerts { [weak self] result in
+        NetworkManager.shared.getAlerts(city: .sf) { [weak self] result in
             guard let self else { return }
 
             switch result {
@@ -368,7 +368,7 @@ final class ViewController: UIViewController {
         AnalyticsManager.shared.logRefreshTriggered(endpoint: "get_alerts")
         showLoadingState(text: "Refreshing…")
 
-        NetworkManager.shared.getAlerts { [weak self] result in
+        NetworkManager.shared.getAlerts(city: .sf) { [weak self] result in
             guard let self else { return }
 
             switch result {

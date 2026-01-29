@@ -7,17 +7,38 @@
 
 import Foundation
 
+enum City {
+    case nashville
+    case pdx
+    case sf
+
+    var pathComponent: String {
+        switch self {
+        case .nashville:
+            return "nashville"
+        case .pdx:
+            return "pdx"
+        case .sf:
+            return "sf"
+        }
+    }
+}
+
 struct NetworkManager {
     static let shared = NetworkManager()
     
     private init() {}
     
-    let baseURL = "https://activedispatch-313918647466.us-east4.run.app/v1/city/nashville"
+    private let baseURL = "https://activedispatch-313918647466.us-east4.run.app/v1/city"
     
-    func getAlerts(completed: @escaping (Result<[Place], ADError>) -> Void) {
+    func getAlerts(
+        city: City,
+        completed: @escaping (Result<[Place], ADError>) -> Void
+    ) {
         let endpoint = "get_alerts"
+        let urlString = "\(baseURL)/\(city.pathComponent)"
 
-        guard let url = URL(string: baseURL) else {
+        guard let url = URL(string: urlString) else {
             AnalyticsManager.shared.logAlertsFetchFailed(endpoint: endpoint)
             completed(.failure(.invalidURL))
             return
