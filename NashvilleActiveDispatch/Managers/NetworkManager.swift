@@ -32,9 +32,9 @@ struct NetworkManager {
     private let baseURL = "https://activedispatch-313918647466.us-east4.run.app/v1/city"
     
     func getAlerts(
-        city: City,
         completed: @escaping (Result<[Place], ADError>) -> Void
     ) {
+        let city = CityConstants.currentCity
         let endpoint = "get_alerts"
         let urlString = "\(baseURL)/\(city.pathComponent)"
 

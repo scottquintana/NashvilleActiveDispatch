@@ -68,7 +68,7 @@ final class ViewController: UIViewController {
         super.viewDidLoad()
 
         locationManager.delegate = self
-        view.backgroundColor = Colors.backgroundBlue
+        view.backgroundColor = Colors.background
 
         configureNavigationBarForCustomLargeTitle()
         configureTableView()
@@ -153,13 +153,23 @@ final class ViewController: UIViewController {
     }
 
     // MARK: - Header (tableHeaderView)
-
+    
+    private func getHeaderImage() -> String {
+        switch CityConstants.currentCity {
+        case .nashville:
+            return "nashvilleHeader"
+        case .pdx:
+            return "pdxHeader"
+        case .sf:
+            return "sfHeader"
+        }
+    }
     private func configureHeader() {
         headerContainerView.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: headerHeight)
         headerContainerView.clipsToBounds = true
         headerContainerView.backgroundColor = .clear
 
-        imageView.image = UIImage(named: "nashvilleHeader")
+        imageView.image = UIImage(named: getHeaderImage())
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         imageView.alpha = headerBaseImageAlpha
@@ -287,7 +297,7 @@ final class ViewController: UIViewController {
     // MARK: - Data
 
     private func loadAlerts() {
-        NetworkManager.shared.getAlerts(city: .sf) { [weak self] result in
+        NetworkManager.shared.getAlerts { [weak self] result in
             guard let self else { return }
 
             switch result {
@@ -368,7 +378,7 @@ final class ViewController: UIViewController {
         AnalyticsManager.shared.logRefreshTriggered(endpoint: "get_alerts")
         showLoadingState(text: "Refreshing…")
 
-        NetworkManager.shared.getAlerts(city: .sf) { [weak self] result in
+        NetworkManager.shared.getAlerts { [weak self] result in
             guard let self else { return }
 
             switch result {
