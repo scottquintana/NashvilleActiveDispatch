@@ -42,6 +42,17 @@
 		5EE442F5259E892100DFA672 /* AlertBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE442F4259E892100DFA672 /* AlertBadge.swift */; };
 		5EE442F825A27AC500DFA672 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE442F725A27AC300DFA672 /* MapViewController.swift */; };
 		5EE442FB25A3C35E00DFA672 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE442FA25A3C35D00DFA672 /* LocationManager.swift */; };
+		5EEB339E2FA7FCE600DA8821 /* City.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EEB339C2FA7FCE600DA8821 /* City.swift */; };
+		5EEB339F2FA7FCE600DA8821 /* CityTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EEB339D2FA7FCE600DA8821 /* CityTheme.swift */; };
+		5EEB33A12FA7FCF100DA8821 /* CityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EEB33A02FA7FCF100DA8821 /* CityManager.swift */; };
+		5EEB33A42FA7FD0300DA8821 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EEB33A32FA7FD0300DA8821 /* SettingsViewController.swift */; };
+		5EEB33A52FA7FD0300DA8821 /* CitySelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EEB33A22FA7FD0300DA8821 /* CitySelectionViewController.swift */; };
+		5EEB33A72FA7FD1000DA8821 /* CityCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EEB33A62FA7FD1000DA8821 /* CityCell.swift */; };
+		5EEB33B02FA7FD5C00DA8821 /* City+SF.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EEB33AD2FA7FD5C00DA8821 /* City+SF.swift */; };
+		5EEB33B12FA7FD5C00DA8821 /* City+Nashville.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EEB33A92FA7FD5C00DA8821 /* City+Nashville.swift */; };
+		5EEB33B22FA7FD5C00DA8821 /* City+PDX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EEB33AB2FA7FD5C00DA8821 /* City+PDX.swift */; };
+		5EEB33B42FA8185D00DA8821 /* FilterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EEB33B32FA8185D00DA8821 /* FilterManager.swift */; };
+		5EEB33B72FA8186900DA8821 /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = 5EEB33B62FA8186900DA8821 /* FirebaseRemoteConfig */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -90,6 +101,16 @@
 		5EE442F4259E892100DFA672 /* AlertBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertBadge.swift; sourceTree = "<group>"; };
 		5EE442F725A27AC300DFA672 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		5EE442FA25A3C35D00DFA672 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		5EEB339C2FA7FCE600DA8821 /* City.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = City.swift; sourceTree = "<group>"; };
+		5EEB339D2FA7FCE600DA8821 /* CityTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityTheme.swift; sourceTree = "<group>"; };
+		5EEB33A02FA7FCF100DA8821 /* CityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityManager.swift; sourceTree = "<group>"; };
+		5EEB33A22FA7FD0300DA8821 /* CitySelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CitySelectionViewController.swift; sourceTree = "<group>"; };
+		5EEB33A32FA7FD0300DA8821 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		5EEB33A62FA7FD1000DA8821 /* CityCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityCell.swift; sourceTree = "<group>"; };
+		5EEB33A92FA7FD5C00DA8821 /* City+Nashville.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "City+Nashville.swift"; sourceTree = "<group>"; };
+		5EEB33AB2FA7FD5C00DA8821 /* City+PDX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "City+PDX.swift"; sourceTree = "<group>"; };
+		5EEB33AD2FA7FD5C00DA8821 /* City+SF.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "City+SF.swift"; sourceTree = "<group>"; };
+		5EEB33B32FA8185D00DA8821 /* FilterManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +128,7 @@
 				5ECF50C72F2AF00900BB3553 /* FirebaseCrashlytics in Frameworks */,
 				5ECF50C32F2AF00900BB3553 /* FirebaseAnalytics in Frameworks */,
 				5ECF50C52F2AF00900BB3553 /* FirebaseAnalyticsCore in Frameworks */,
+				5EEB33B72FA8186900DA8821 /* FirebaseRemoteConfig in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -174,6 +196,7 @@
 			children = (
 				5E799996259BD1A60079D0A6 /* NashvilleActiveDispatch */,
 				5E1647F02C2DC7BE007D1FBB /* NashvilleActiveDispatchTests */,
+				5EEB33B52FA8186900DA8821 /* Frameworks */,
 				5E799995259BD1A60079D0A6 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -190,19 +213,20 @@
 		5E799996259BD1A60079D0A6 /* NashvilleActiveDispatch */ = {
 			isa = PBXGroup;
 			children = (
-				5E03055625A7C14A0092AEE5 /* Extensions */,
-				5E325C2A259D2A7B00FE50A6 /* Utilities */,
-				5E325C26259D25EC00FE50A6 /* ViewModels */,
-				5E7999B6259BE03F0079D0A6 /* Views */,
-				5E7999B5259BE0260079D0A6 /* Models */,
-				5E7999B4259BE01F0079D0A6 /* Controllers */,
-				5E7999B3259BE0160079D0A6 /* Managers */,
+				5ECF50BF2F2AEDA100BB3553 /* GoogleService-Info.plist */,
+				5E7999A5259BD1AB0079D0A6 /* Info.plist */,
 				5E799997259BD1A60079D0A6 /* AppDelegate.swift */,
 				5E799999259BD1A60079D0A6 /* SceneDelegate.swift */,
 				5E7999A0259BD1AB0079D0A6 /* Assets.xcassets */,
+				5EEB33AF2FA7FD5C00DA8821 /* Cities */,
+				5E7999B4259BE01F0079D0A6 /* Controllers */,
+				5E03055625A7C14A0092AEE5 /* Extensions */,
 				5E7999A2259BD1AB0079D0A6 /* LaunchScreen.storyboard */,
-				5ECF50BF2F2AEDA100BB3553 /* GoogleService-Info.plist */,
-				5E7999A5259BD1AB0079D0A6 /* Info.plist */,
+				5E7999B3259BE0160079D0A6 /* Managers */,
+				5E7999B5259BE0260079D0A6 /* Models */,
+				5E325C2A259D2A7B00FE50A6 /* Utilities */,
+				5E325C26259D25EC00FE50A6 /* ViewModels */,
+				5E7999B6259BE03F0079D0A6 /* Views */,
 			);
 			path = NashvilleActiveDispatch;
 			sourceTree = "<group>";
@@ -210,6 +234,8 @@
 		5E7999B3259BE0160079D0A6 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				5EEB33B32FA8185D00DA8821 /* FilterManager.swift */,
+				5EEB33A02FA7FCF100DA8821 /* CityManager.swift */,
 				5ECF50C82F2AF04300BB3553 /* AnalyticsManager.swift */,
 				5E7999B8259BE05E0079D0A6 /* NetworkManager.swift */,
 				5EE442FA25A3C35D00DFA672 /* LocationManager.swift */,
@@ -220,6 +246,8 @@
 		5E7999B4259BE01F0079D0A6 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				5EEB33A22FA7FD0300DA8821 /* CitySelectionViewController.swift */,
+				5EEB33A32FA7FD0300DA8821 /* SettingsViewController.swift */,
 				5E79999B259BD1A60079D0A6 /* ViewController.swift */,
 				5EE442F725A27AC300DFA672 /* MapViewController.swift */,
 				5E03055B25A7C2800092AEE5 /* ADAlertVC.swift */,
@@ -230,6 +258,8 @@
 		5E7999B5259BE0260079D0A6 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				5EEB339C2FA7FCE600DA8821 /* City.swift */,
+				5EEB339D2FA7FCE600DA8821 /* CityTheme.swift */,
 				5E7999AD259BD4170079D0A6 /* IncidentData.swift */,
 				5EE442F4259E892100DFA672 /* AlertBadge.swift */,
 			);
@@ -253,9 +283,51 @@
 		5E7999B7259BE0460079D0A6 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				5EEB33A62FA7FD1000DA8821 /* CityCell.swift */,
 				5E7999B0259BDD840079D0A6 /* ADCell.swift */,
 			);
 			path = Cells;
+			sourceTree = "<group>";
+		};
+		5EEB33AA2FA7FD5C00DA8821 /* Nashville */ = {
+			isa = PBXGroup;
+			children = (
+				5EEB33A92FA7FD5C00DA8821 /* City+Nashville.swift */,
+			);
+			path = Nashville;
+			sourceTree = "<group>";
+		};
+		5EEB33AC2FA7FD5C00DA8821 /* PDX */ = {
+			isa = PBXGroup;
+			children = (
+				5EEB33AB2FA7FD5C00DA8821 /* City+PDX.swift */,
+			);
+			path = PDX;
+			sourceTree = "<group>";
+		};
+		5EEB33AE2FA7FD5C00DA8821 /* SF */ = {
+			isa = PBXGroup;
+			children = (
+				5EEB33AD2FA7FD5C00DA8821 /* City+SF.swift */,
+			);
+			path = SF;
+			sourceTree = "<group>";
+		};
+		5EEB33AF2FA7FD5C00DA8821 /* Cities */ = {
+			isa = PBXGroup;
+			children = (
+				5EEB33AA2FA7FD5C00DA8821 /* Nashville */,
+				5EEB33AC2FA7FD5C00DA8821 /* PDX */,
+				5EEB33AE2FA7FD5C00DA8821 /* SF */,
+			);
+			path = Cities;
+			sourceTree = "<group>";
+		};
+		5EEB33B52FA8186900DA8821 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -305,7 +377,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1530;
-				LastUpgradeCheck = 1530;
+				LastUpgradeCheck = 2630;
 				TargetAttributes = {
 					5E1647EE2C2DC7BE007D1FBB = {
 						CreatedOnToolsVersion = 15.3;
@@ -398,9 +470,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				5ECF50C92F2AF04300BB3553 /* AnalyticsManager.swift in Sources */,
+				5EEB33B42FA8185D00DA8821 /* FilterManager.swift in Sources */,
 				5E7999B9259BE05E0079D0A6 /* NetworkManager.swift in Sources */,
 				5E03056425A7CA2D0092AEE5 /* ADCloseButton.swift in Sources */,
 				5E325C2C259D2A8D00FE50A6 /* DateHelper.swift in Sources */,
+				5EEB33A12FA7FCF100DA8821 /* CityManager.swift in Sources */,
 				5EE442FB25A3C35E00DFA672 /* LocationManager.swift in Sources */,
 				5E03055325A7BBF50092AEE5 /* ADTextButton.swift in Sources */,
 				5E325C32259D4EC200FE50A6 /* GradientView.swift in Sources */,
@@ -417,13 +491,21 @@
 				5E8019E825A8BCB400BDBA39 /* ADMapButton.swift in Sources */,
 				5EE442F5259E892100DFA672 /* AlertBadge.swift in Sources */,
 				5E03056025A7C4D30092AEE5 /* UIViewController+Ext.swift in Sources */,
+				5EEB33A42FA7FD0300DA8821 /* SettingsViewController.swift in Sources */,
+				5EEB33A52FA7FD0300DA8821 /* CitySelectionViewController.swift in Sources */,
 				5E03055C25A7C2800092AEE5 /* ADAlertVC.swift in Sources */,
 				5E03054825A523D00092AEE5 /* ADPointAnnotation.swift in Sources */,
 				5E325C28259D25FE00FE50A6 /* IncidentViewModel.swift in Sources */,
 				5E03055025A7BADE0092AEE5 /* ADAlertContainerView.swift in Sources */,
 				5E325C2F259D408600FE50A6 /* Constants.swift in Sources */,
+				5EEB33A72FA7FD1000DA8821 /* CityCell.swift in Sources */,
 				5E03054B25A7B2380092AEE5 /* ADError.swift in Sources */,
+				5EEB339E2FA7FCE600DA8821 /* City.swift in Sources */,
+				5EEB339F2FA7FCE600DA8821 /* CityTheme.swift in Sources */,
 				5EE442F825A27AC500DFA672 /* MapViewController.swift in Sources */,
+				5EEB33B02FA7FD5C00DA8821 /* City+SF.swift in Sources */,
+				5EEB33B12FA7FD5C00DA8821 /* City+Nashville.swift in Sources */,
+				5EEB33B22FA7FD5C00DA8821 /* City+PDX.swift in Sources */,
 				5E373DE525AB97C00012130A /* MapNavigationView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -626,12 +708,13 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 5PKBVW8P3C;
 				INFOPLIST_FILE = NashvilleActiveDispatch/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Active Dispatch";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.scottquintana.ActiveDispatch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -650,12 +733,13 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5PKBVW8P3C;
 				INFOPLIST_FILE = NashvilleActiveDispatch/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Active Dispatch";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.scottquintana.ActiveDispatch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -722,6 +806,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 5ECF50C12F2AF00900BB3553 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseCrashlytics;
+		};
+		5EEB33B62FA8186900DA8821 /* FirebaseRemoteConfig */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5ECF50C12F2AF00900BB3553 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseRemoteConfig;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

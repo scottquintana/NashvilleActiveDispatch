@@ -22,7 +22,7 @@ final class NashvilleActiveDispatchTests: XCTestCase {
     func testUrlIsValid() async throws {
         let expectation1 = XCTestExpectation(description: "test that data is valid")
 
-        networkManager.getAlerts { result in
+        networkManager.getAlerts(for: .nashville) { result in
             switch result {
             case .success(_):
                 expectation1.fulfill()

@@ -12,7 +12,7 @@ class ADAlertVC: UIViewController {
     let containerView = ADAlertContainerView()
     let titleLabel = AlertTitleLabel(fontSize: 20)
     let messageLabel = AlertBodyLabel(fontSize: 16)
-    let actionButton = ADTextButton(backgroundColor: Colors.buttonBlue, textColor: .white, title: "Ok")
+    let actionButton = ADTextButton(backgroundColor: CityManager.shared.currentTheme.buttonColor, textColor: .white, title: "Ok")
     
     var alertTitle: String?
     var message: String?

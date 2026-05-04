@@ -32,7 +32,7 @@ class AlertBodyLabel: UILabel {
     
     
     private func configure() {
-        textColor = Colors.detailText
+        textColor = CityManager.shared.currentTheme.detailText
         adjustsFontSizeToFitWidth = false
         lineBreakMode = .byTruncatingTail
         translatesAutoresizingMaskIntoConstraints = false

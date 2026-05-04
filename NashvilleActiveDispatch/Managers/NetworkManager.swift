@@ -12,12 +12,13 @@ struct NetworkManager {
     
     private init() {}
     
-    let baseURL = "https://activedispatch-313918647466.us-east4.run.app/v1/city/nashville"
-    
-    func getAlerts(completed: @escaping (Result<[Place], ADError>) -> Void) {
-        let endpoint = "get_alerts"
+    private let baseURL = "https://activedispatch-313918647466.us-east4.run.app/v1/city"
 
-        guard let url = URL(string: baseURL) else {
+    func getAlerts(for city: City, completed: @escaping (Result<[Place], ADError>) -> Void) {
+        let endpoint = "get_alerts"
+        let urlString = "\(baseURL)/\(city.apiSlug)"
+
+        guard let url = URL(string: urlString) else {
             AnalyticsManager.shared.logAlertsFetchFailed(endpoint: endpoint)
             completed(.failure(.invalidURL))
             return
