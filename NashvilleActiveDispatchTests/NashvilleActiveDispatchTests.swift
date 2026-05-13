@@ -19,29 +19,44 @@ final class NashvilleActiveDispatchTests: XCTestCase {
         networkManager = nil
     }
 
-    func testUrlIsValid() async throws {
-        let expectation1 = XCTestExpectation(description: "test that data is valid")
+    func testNashvilleFeed() async throws {
+        try await assertCityFeedIsReachable(.nashville)
+    }
 
-        networkManager.getAlerts { result in
+    func testPortlandFeed() async throws {
+        try await assertCityFeedIsReachable(.pdx)
+    }
+
+    func testSanFranciscoFeed() async throws {
+        try await assertCityFeedIsReachable(.sf)
+    }
+
+    func testOrlandoFeed() async throws {
+        try await assertCityFeedIsReachable(.orlando)
+    }
+
+    private func assertCityFeedIsReachable(_ city: City) async throws {
+        let expectation = XCTestExpectation(description: "\(city.displayName) feed reachable")
+
+        networkManager.getAlerts(for: city) { result in
             switch result {
             case .success(_):
-                expectation1.fulfill()
+                expectation.fulfill()
             case .failure(let error):
                 switch error {
                 case .invalidURL:
-                    XCTFail("URL failed")
+                    XCTFail("\(city.displayName): invalid URL")
                 case .invalidResponse:
-                    XCTFail("Response failed")
+                    XCTFail("\(city.displayName): invalid response")
                 case .invalidData:
-                    XCTFail("Cannot parse incident data")
+                    XCTFail("\(city.displayName): could not parse data")
                 case .invalidLocation:
-                    XCTFail("Invalid location")
+                    XCTFail("\(city.displayName): invalid location")
                 }
-                
-                expectation1.fulfill()
+                expectation.fulfill()
             }
         }
-        
-        await fulfillment(of: [expectation1], timeout: 30.0)
+
+        await fulfillment(of: [expectation], timeout: 30.0)
     }
 }

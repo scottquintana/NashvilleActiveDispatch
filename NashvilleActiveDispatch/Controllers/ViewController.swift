@@ -41,6 +41,17 @@ enum SortOption: Int, CaseIterable {
 
 final class ViewController: UIViewController {
 
+    private let city: City
+
+    init(city: City) {
+        self.city = city
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     private let tableView = UITableView()
     private var pullControl = UIRefreshControl()
     private let sortButton = UIButton(type: .system)
@@ -62,18 +73,27 @@ final class ViewController: UIViewController {
     let mapButton = ADMapButton()
 
     var alertViewModels = [IncidentViewModel]()
-    var currentSort: SortOption = .timeNewest
+    var currentSort: SortOption = .timeNewest {
+        didSet {
+            UserDefaults.standard.set(currentSort.rawValue, forKey: "sortOption")
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         locationManager.delegate = self
-        view.backgroundColor = Colors.backgroundBlue
+        view.backgroundColor = city.theme.background
+
+        if let saved = SortOption(rawValue: UserDefaults.standard.integer(forKey: "sortOption")) {
+            currentSort = saved
+        }
 
         configureNavigationBarForCustomLargeTitle()
         configureTableView()
         configureHeader()
         configureSortButton()
+        configureSettingsButton()
         configureMapButton()
         configureStateOverlay()
 
@@ -159,7 +179,7 @@ final class ViewController: UIViewController {
         headerContainerView.clipsToBounds = true
         headerContainerView.backgroundColor = .clear
 
-        imageView.image = UIImage(named: "nashvilleHeader")
+        imageView.image = UIImage(named: city.headerImageName)
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         imageView.alpha = headerBaseImageAlpha
@@ -246,6 +266,26 @@ final class ViewController: UIViewController {
 
     // MARK: - Sort Button
 
+    // MARK: - Settings Button
+
+    private func configureSettingsButton() {
+        let gearImage = UIImage(systemName: "gearshape.fill")
+        let settingsButton = UIBarButtonItem(
+            image: gearImage,
+            style: .plain,
+            target: self,
+            action: #selector(openSettings)
+        )
+        navigationItem.leftBarButtonItem = settingsButton
+    }
+
+    @objc private func openSettings() {
+        let settingsVC = SettingsViewController()
+        navigationController?.pushViewController(settingsVC, animated: true)
+    }
+
+    // MARK: - Sort Button
+
     private func configureSortButton() {
         sortButton.setTitleColor(.white, for: .normal)
         sortButton.titleLabel?.font = UIFont.systemFont(ofSize: 12, weight: .medium)
@@ -287,12 +327,13 @@ final class ViewController: UIViewController {
     // MARK: - Data
 
     private func loadAlerts() {
-        NetworkManager.shared.getAlerts { [weak self] result in
+        NetworkManager.shared.getAlerts(for: city) { [weak self] result in
             guard let self else { return }
 
             switch result {
             case .success(let alerts):
-                self.alertViewModels = alerts.map { IncidentViewModel(alert: $0) }
+                let all = alerts.map { IncidentViewModel(alert: $0, city: self.city) }
+                self.alertViewModels = FilterManager.shared.apply(to: all, city: self.city)
                 self.sortAlerts()
 
                 DispatchQueue.main.async {
@@ -368,14 +409,15 @@ final class ViewController: UIViewController {
         AnalyticsManager.shared.logRefreshTriggered(endpoint: "get_alerts")
         showLoadingState(text: "Refreshing…")
 
-        NetworkManager.shared.getAlerts { [weak self] result in
+        NetworkManager.shared.getAlerts(for: city) { [weak self] result in
             guard let self else { return }
 
             switch result {
             case .success(let alerts):
                 AnalyticsManager.shared.logRefreshSucceeded(endpoint: "get_alerts", httpStatus: 200)
 
-                self.alertViewModels = alerts.map { IncidentViewModel(alert: $0) }
+                let all = alerts.map { IncidentViewModel(alert: $0, city: self.city) }
+                self.alertViewModels = FilterManager.shared.apply(to: all, city: self.city)
                 self.sortAlerts()
 
                 DispatchQueue.main.async {
@@ -411,7 +453,7 @@ final class ViewController: UIViewController {
 
     @objc private func viewAllOnMap() {
         AnalyticsManager.shared.logMapOpened(source: .button)
-        let mapVC = MapViewController(incidents: alertViewModels)
+        let mapVC = MapViewController(incidents: alertViewModels, city: city)
         present(mapVC, animated: true)
     }
 }
@@ -446,7 +488,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
 
         AnalyticsManager.shared.logMapOpened(source: .tap)
 
-        let mapVC = MapViewController(incidents: alertViewModels)
+        let mapVC = MapViewController(incidents: alertViewModels, city: city)
         mapVC.selectedIndex = indexPath.row
         present(mapVC, animated: true)
     }

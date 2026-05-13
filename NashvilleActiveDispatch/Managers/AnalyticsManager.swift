@@ -63,6 +63,14 @@ final class AnalyticsManager {
         static let locationAccuracyM = "location_accuracy_m"
         static let accuracyBad = "accuracy_bad"             // 0/1
         static let accuracyExtreme = "accuracy_extreme"     // 0/1
+
+        static let city = "city"
+    }
+
+    // MARK: - City
+
+    private var citySlug: String {
+        CityManager.shared.selectedCity?.apiSlug ?? "unknown"
     }
 
     // MARK: - Reachability (is_offline)
@@ -94,7 +102,8 @@ final class AnalyticsManager {
     private func baseNetworkParams(endpoint: String, httpStatus: Int? = nil, error: Error? = nil) -> [String: Any] {
         var params: [String: Any] = [
             ParameterKey.endpoint: endpoint,
-            ParameterKey.isOffline: isOffline() ? 1 : 0
+            ParameterKey.isOffline: isOffline() ? 1 : 0,
+            ParameterKey.city: citySlug
         ]
 
         if let httpStatus {
@@ -115,26 +124,28 @@ final class AnalyticsManager {
         Analytics.logEvent(EventName.incidentTapped, parameters: [
             ParameterKey.incidentType: incidentType,
             ParameterKey.neighborhood: neighborhood,
-            ParameterKey.distanceMiles: distanceMiles
+            ParameterKey.distanceMiles: distanceMiles,
+            ParameterKey.city: citySlug
         ])
     }
 
     func logLocationPermissionDenied() {
-        Analytics.logEvent(EventName.locationPermissionDenied, parameters: nil)
+        Analytics.logEvent(EventName.locationPermissionDenied, parameters: [ParameterKey.city: citySlug])
     }
 
     func logLocationPermissionRestricted() {
-        Analytics.logEvent(EventName.locationPermissionRestricted, parameters: nil)
+        Analytics.logEvent(EventName.locationPermissionRestricted, parameters: [ParameterKey.city: citySlug])
     }
 
     func logLocationServicesDisabled() {
-        Analytics.logEvent(EventName.locationServicesDisabled, parameters: nil)
+        Analytics.logEvent(EventName.locationServicesDisabled, parameters: [ParameterKey.city: citySlug])
     }
 
     func logError(type: String, message: String, context: String? = nil, extra: [String: Any]? = nil) {
         var parameters: [String: Any] = [
             ParameterKey.errorType: type,
-            ParameterKey.errorMessage: message
+            ParameterKey.errorMessage: message,
+            ParameterKey.city: citySlug
         ]
 
         if let context {
@@ -155,7 +166,8 @@ final class AnalyticsManager {
 
     func logMapOpened(source: MapOpenSource) {
         Analytics.logEvent(EventName.mapOpened, parameters: [
-            ParameterKey.mapSource: source.rawValue
+            ParameterKey.mapSource: source.rawValue,
+            ParameterKey.city: citySlug
         ])
     }
 
@@ -180,7 +192,8 @@ final class AnalyticsManager {
         let (dimension, direction) = sortMetadata(option)
         Analytics.logEvent(EventName.sortChanged, parameters: [
             ParameterKey.sortDimension: dimension,
-            ParameterKey.sortDirection: direction
+            ParameterKey.sortDirection: direction,
+            ParameterKey.city: citySlug
         ])
     }
 
@@ -220,7 +233,8 @@ final class AnalyticsManager {
         Analytics.logEvent(EventName.locationAccuracy, parameters: [
             ParameterKey.locationAccuracyM: accuracy,
             ParameterKey.accuracyBad: isBad ? 1 : 0,
-            ParameterKey.accuracyExtreme: isExtreme ? 1 : 0
+            ParameterKey.accuracyExtreme: isExtreme ? 1 : 0,
+            ParameterKey.city: citySlug
         ])
     }
 }

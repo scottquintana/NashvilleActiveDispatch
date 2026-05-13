@@ -11,8 +11,8 @@ final class GradientView: UIView {
 
     private let gradientLayer = CAGradientLayer()
 
-    private var color1: CGColor = Colors.gradientTop.cgColor
-    private var color2: CGColor = Colors.gradientBottom.cgColor
+    private var color1: CGColor = CityManager.shared.currentTheme.gradientTop.cgColor
+    private var color2: CGColor = CityManager.shared.currentTheme.gradientBottom.cgColor
 
     convenience init(cgColor1: CGColor, cgColor2: CGColor) {
         self.init(frame: .zero)
@@ -49,6 +49,12 @@ final class GradientView: UIView {
 
     func updateColor(newTop: CGColor) {
         color1 = newTop
+        updateGradientColors()
+    }
+
+    func updateColors(top: CGColor, bottom: CGColor) {
+        color1 = top
+        color2 = bottom
         updateGradientColors()
     }
 }

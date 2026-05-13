@@ -7,18 +7,8 @@
 
 import UIKit
 
-enum Colors {
-    static let backgroundBlue = UIColor(red: 0.06, green: 0.05, blue: 0.27, alpha: 1.00)
-    static let gradientTop = UIColor(red: 0.14, green: 0.13, blue: 0.38, alpha: 1.00)
-    static let gradientBottom = UIColor(red: 0.19, green: 0.19, blue: 0.46, alpha: 1.00)
-    static let buttonBlue = UIColor(red: 0.20, green: 0.33, blue: 0.98, alpha: 1.00)
-    static let accentGold = UIColor(red: 0.97, green: 0.58, blue: 0.15, alpha: 1.00)
-    static let accentRed = UIColor(red: 0.94, green: 0.20, blue: 0.38, alpha: 1.00)
-    static let accentBlue = UIColor(red: 0.23, green: 0.62, blue: 0.96, alpha: 1.00)
-    static let accentGreen = UIColor(red: 0.30, green: 0.89, blue: 0.39, alpha: 1.00)
-    static let accentLightPurple = UIColor(red: 0.38, green: 0.50, blue: 0.92, alpha: 1.00)
-    static let detailText = UIColor(red: 0.49, green: 0.55, blue: 0.73, alpha: 1.00)
-}
+// All colors are now city-specific and live in CityTheme (see Models/CityTheme.swift).
+// Access them via CityManager.shared.currentTheme or city.theme.
 
 enum SFSymbols {
     static let arrowLeft = UIImage(systemName: "arrowtriangle.left.fill")
@@ -28,7 +18,12 @@ enum SFSymbols {
     static let bell = UIImage(systemName: "bell.circle.fill")
     static let car = UIImage(systemName: "car.circle.fill")
     static let flag = UIImage(systemName: "flag.circle.fill")
-    static let sheild = UIImage(systemName: "exclamationmark.sheild.fill")
+    static let flashlight = UIImage(systemName: "flashlight.on.circle.fill")
+    static let hazard = UIImage(systemName: "exclamationmark.triangle")
+    static let noPerson = UIImage(systemName: "person.badge.minus")
+    static let roadBlock = UIImage(systemName: "road.lanes")
+    static let trashSlash = UIImage(systemName: "trash.slash")
+    static let scribble = UIImage(systemName: "scribble")
     static let personExclamation = UIImage(systemName: "person.crop.circle.fill.badge.exclamationmark")
     static let residence = UIImage(systemName: "house.circle.fill")
     static let business = UIImage(systemName: "building.2.crop.circle.fill")

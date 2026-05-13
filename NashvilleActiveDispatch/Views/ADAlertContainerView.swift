@@ -9,7 +9,10 @@ import UIKit
 
 class ADAlertContainerView: UIView {
     
-    let gradientView = GradientView(cgColor1: Colors.gradientTop.cgColor, cgColor2: Colors.gradientBottom.cgColor)
+    let gradientView = GradientView(
+        cgColor1: CityManager.shared.currentTheme.gradientTop.cgColor,
+        cgColor2: CityManager.shared.currentTheme.gradientBottom.cgColor
+    )
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -28,7 +31,7 @@ class ADAlertContainerView: UIView {
         
         gradientView.layer.cornerRadius = 24
         gradientView.layer.borderWidth = 1
-        gradientView.layer.borderColor = Colors.accentLightPurple.cgColor
+        gradientView.layer.borderColor = CityManager.shared.currentTheme.secondary.cgColor
         gradientView.clipsToBounds = true
         translatesAutoresizingMaskIntoConstraints = false
         gradientView.translatesAutoresizingMaskIntoConstraints = false

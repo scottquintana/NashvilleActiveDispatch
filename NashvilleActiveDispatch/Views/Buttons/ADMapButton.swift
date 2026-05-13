@@ -22,7 +22,7 @@ class ADMapButton: UIButton {
     
     private func configure() {
         addSubview(mapImage)
-        backgroundColor = Colors.buttonBlue
+        backgroundColor = CityManager.shared.currentTheme.buttonColor
         
 
         mapImage.translatesAutoresizingMaskIntoConstraints = false

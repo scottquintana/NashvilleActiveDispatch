@@ -44,10 +44,13 @@ final class MapViewController: UIViewController {
     private let mapNavigationView = MapNavigationView()
     private let closeButton = ADCloseButton()
 
+    private let city: City
+
     // MARK: - Init
 
-    init(incidents: [IncidentViewModel]) {
+    init(incidents: [IncidentViewModel], city: City) {
         self.viewModels = incidents
+        self.city = city
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -104,8 +107,8 @@ final class MapViewController: UIViewController {
     // MARK: - UI Setup
 
     private func configureUI() {
-        let topColor = selectedVM?.incidentBadge.color.cgColor ?? Colors.gradientTop.cgColor
-        gradientView = GradientView(cgColor1: topColor, cgColor2: Colors.gradientBottom.cgColor)
+        let topColor = selectedVM?.incidentBadge.color.cgColor ?? city.theme.gradientTop.cgColor
+        gradientView = GradientView(cgColor1: topColor, cgColor2: city.theme.gradientBottom.cgColor)
         gradientView.translatesAutoresizingMaskIntoConstraints = false
 
         view.layer.cornerRadius = 26
@@ -200,7 +203,7 @@ final class MapViewController: UIViewController {
             guard !allAnnotations.isEmpty else { return }
             mapView.showAnnotations(allAnnotations, animated: true)
             updateLabels()
-            updateGradientColor(selectedVM?.incidentBadge.color.cgColor ?? Colors.gradientTop.cgColor)
+            updateGradientColor(selectedVM?.incidentBadge.color.cgColor ?? city.theme.gradientTop.cgColor)
         }
     }
 
@@ -227,7 +230,7 @@ extension MapViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
         selectedIndex = nil
         updateLabels()
-        updateGradientColor(Colors.gradientTop.cgColor)
+        updateGradientColor(city.theme.gradientTop.cgColor)
     }
 
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
@@ -244,7 +247,7 @@ extension MapViewController: MKMapViewDelegate {
 
         annotationView.annotation = annotation
 
-        if badgeInfo.color == Colors.accentRed {
+        if badgeInfo.color == city.theme.danger {
             annotationView.displayPriority = .required
         } else {
             annotationView.displayPriority = .defaultLow

@@ -20,7 +20,7 @@ class DistanceCalculator {
     
     static func distanceString(from userLocation: CLLocation?, to incidentLocation: CLLocation, neighborhood: String) -> String {
         guard let miles = distanceInMiles(from: userLocation, to: incidentLocation) else {
-            return "Calculating distance..."
+            return "\(neighborhood) - Calculating..."
         }
         let milesString = String(format: "%.1f", miles)
         return "\(neighborhood) - \(milesString) mi. away"
