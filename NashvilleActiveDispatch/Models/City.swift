@@ -13,6 +13,7 @@ import Foundation
 
 enum City: String, CaseIterable {
     case nashville
+    case orlando
     case pdx
     case sf
 
@@ -23,6 +24,7 @@ enum City: String, CaseIterable {
         case .nashville: return "Nashville"
         case .pdx:       return "Portland"
         case .sf:        return "San Francisco"
+        case .orlando:   return "Orlando"
         }
     }
 
@@ -33,6 +35,7 @@ enum City: String, CaseIterable {
         case .nashville: return "nashville"
         case .pdx:       return "pdx"
         case .sf:        return "sf"
+        case .orlando:   return "orlando"
         }
     }
 
@@ -43,6 +46,7 @@ enum City: String, CaseIterable {
         case .nashville: return "nashvilleHeader"
         case .pdx:       return "pdxHeader"
         case .sf:        return "sfHeader"
+        case .orlando:   return "orlandoHeader"
         }
     }
 
@@ -51,6 +55,7 @@ enum City: String, CaseIterable {
         case .nashville: return "activedispatch-logo"
         case .pdx:       return "pdx_splash_logo"
         case .sf:        return "sf_splash_logo"
+        case .orlando:   return "orlando_splash_logo"
         }
     }
 
@@ -61,6 +66,7 @@ enum City: String, CaseIterable {
         case .nashville: return nashvilleTheme
         case .pdx:       return pdxTheme
         case .sf:        return sfTheme
+        case .orlando:   return orlandoTheme
         }
     }
 
@@ -71,6 +77,7 @@ enum City: String, CaseIterable {
         case .nashville: return nashvilleBadge(for: place)
         case .pdx:       return pdxBadge(for: place)
         case .sf:        return sfBadge(for: place)
+        case .orlando:   return orlandoBadge(for: place)
         }
     }
 }

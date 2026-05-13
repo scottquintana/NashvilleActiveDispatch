@@ -49,15 +49,24 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
         }
     }
 
+    func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        guard section == 0 else { return nil }
+        return "Some cities include parking enforcement and administrative data in their dispatch feed. This is hidden by default."
+    }
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SettingsCell", for: indexPath)
         cell.backgroundColor = CityManager.shared.currentTheme.gradientTop
+
+        let textColor = CityManager.shared.currentTheme.detailText
 
         switch indexPath.section {
         case 0:
             var config = cell.defaultContentConfiguration()
             config.text = "Show all incident types"
+            config.textProperties.color = textColor
             config.image = UIImage(systemName: "line.3.horizontal.decrease.circle")
+            config.imageProperties.tintColor = textColor
             cell.contentConfiguration = config
             let toggle = UISwitch()
             toggle.isOn = FilterManager.shared.showAllIncidentTypes
@@ -67,7 +76,9 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
         case 1:
             var config = cell.defaultContentConfiguration()
             config.text = "Change City"
+            config.textProperties.color = textColor
             config.image = UIImage(systemName: "building.2")
+            config.imageProperties.tintColor = textColor
             cell.contentConfiguration = config
             cell.accessoryType = .disclosureIndicator
             cell.accessoryView = nil

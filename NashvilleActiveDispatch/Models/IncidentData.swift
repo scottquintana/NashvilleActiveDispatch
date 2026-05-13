@@ -29,4 +29,5 @@ struct IncidentExtras: Codable {
     let incidentTypeCode: String?
     let incidentTypeName: String
     let incidentId: String?
+    let neighborhood: String?
 }

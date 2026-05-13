@@ -46,7 +46,10 @@ class IncidentViewModel {
     }
     
     var neighborhood: String {
-        // Extract neighborhood from address (after first comma)
+        if let neighborhood = alertData.extras.neighborhood {
+            return neighborhood
+        }
+        // Fall back to city extracted from address (after first comma)
         let components = alertData.address.components(separatedBy: ", ")
         return components.count > 1 ? components[1].capitalized : ""
     }
