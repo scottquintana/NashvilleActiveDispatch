@@ -73,6 +73,13 @@ final class ViewController: UIViewController {
     let mapButton = ADMapButton()
 
     var alertViewModels = [IncidentViewModel]()
+    private var allViewModels = [IncidentViewModel]()
+
+    private var emptyStateMessage: String {
+        allViewModels.isEmpty
+            ? "Unable to load incidents from this city's feed."
+            : "No incidents match your current time window. Try adjusting it in Settings."
+    }
     var currentSort: SortOption = .timeNewest {
         didSet {
             UserDefaults.standard.set(currentSort.rawValue, forKey: "sortOption")
@@ -99,6 +106,8 @@ final class ViewController: UIViewController {
 
         showLoadingState(text: "Loading incidents…")
         loadAlerts()
+
+        NotificationCenter.default.addObserver(self, selector: #selector(reapplyFilters), name: FilterManager.timeWindowChanged, object: nil)
 
         // Ensure initial header state is applied (no snapping)
         updateHeader(for: tableView)
@@ -332,15 +341,15 @@ final class ViewController: UIViewController {
 
             switch result {
             case .success(let alerts):
-                let all = alerts.map { IncidentViewModel(alert: $0, city: self.city) }
-                self.alertViewModels = FilterManager.shared.apply(to: all, city: self.city)
+                self.allViewModels = alerts.map { IncidentViewModel(alert: $0, city: self.city) }
+                self.alertViewModels = FilterManager.shared.apply(to: self.allViewModels, city: self.city)
                 self.sortAlerts()
 
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
 
                     if self.alertViewModels.isEmpty {
-                        self.showEmptyState(text: "No active incidents.")
+                        self.showEmptyState(text: self.emptyStateMessage)
                     } else {
                         self.hideStateOverlay()
                     }
@@ -355,6 +364,20 @@ final class ViewController: UIViewController {
                         buttonTitle: "Ok."
                     )
                 }
+            }
+        }
+    }
+
+    @objc private func reapplyFilters() {
+        guard !allViewModels.isEmpty else { return }
+        alertViewModels = FilterManager.shared.apply(to: allViewModels, city: city)
+        sortAlerts()
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+            if self.alertViewModels.isEmpty {
+                self.showEmptyState(text: self.emptyStateMessage)
+            } else {
+                self.hideStateOverlay()
             }
         }
     }
@@ -425,7 +448,7 @@ final class ViewController: UIViewController {
                     self.pullControl.endRefreshing()
 
                     if self.alertViewModels.isEmpty {
-                        self.showEmptyState(text: "No active incidents.")
+                        self.showEmptyState(text: "Unable to load incidents from this city's feed.")
                     } else {
                         self.hideStateOverlay()
                     }
@@ -453,7 +476,7 @@ final class ViewController: UIViewController {
 
     @objc private func viewAllOnMap() {
         AnalyticsManager.shared.logMapOpened(source: .button)
-        let mapVC = MapViewController(incidents: alertViewModels, city: city)
+        let mapVC = MapViewController(incidents: alertViewModels, city: city, emptyMessage: emptyStateMessage)
         present(mapVC, animated: true)
     }
 }
@@ -488,7 +511,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
 
         AnalyticsManager.shared.logMapOpened(source: .tap)
 
-        let mapVC = MapViewController(incidents: alertViewModels, city: city)
+        let mapVC = MapViewController(incidents: alertViewModels, city: city, emptyMessage: emptyStateMessage)
         mapVC.selectedIndex = indexPath.row
         present(mapVC, animated: true)
     }
