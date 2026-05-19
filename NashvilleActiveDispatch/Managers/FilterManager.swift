@@ -12,11 +12,34 @@ final class FilterManager {
 
     private let remoteConfig = RemoteConfig.remoteConfig()
     private let showAllKey = "showAllIncidentTypes"
+    private let maxAgeKey = "maxAgeHours"
+
+    static let maxAgeUnlimited = 12
 
     // Whether the user has opted in to see unfiltered results.
     var showAllIncidentTypes: Bool {
         get { UserDefaults.standard.bool(forKey: showAllKey) }
         set { UserDefaults.standard.set(newValue, forKey: showAllKey) }
+    }
+
+    static let timeWindowChanged = Notification.Name("FilterManager.timeWindowChanged")
+
+    // Maximum age of incidents to show, in hours. 12 = no age filter.
+    var maxAgeHours: Int {
+        get {
+            let v = UserDefaults.standard.integer(forKey: maxAgeKey)
+            return v == 0 ? FilterManager.maxAgeUnlimited : v
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: maxAgeKey)
+            NotificationCenter.default.post(name: FilterManager.timeWindowChanged, object: nil)
+        }
+    }
+
+    var recencyLabel: String {
+        maxAgeHours >= FilterManager.maxAgeUnlimited
+            ? "All incidents (12+ hours)"
+            : "Last \(maxAgeHours) hour\(maxAgeHours == 1 ? "" : "s")"
     }
 
     private init() {
@@ -57,17 +80,31 @@ final class FilterManager {
         return blockedList.contains(normalized)
     }
 
-    /// Applies the filter to a list of view models.
+    /// Applies all active filters to a list of view models.
     func apply(to viewModels: [IncidentViewModel], city: City) -> [IncidentViewModel] {
-        guard !showAllIncidentTypes else { return viewModels }
+        var result = viewModels
 
-        let blockedList = blockedTypes(for: city)
-        guard !blockedList.isEmpty else { return viewModels }
-
-        return viewModels.filter { vm in
-            let normalized = vm.incidentDescription.uppercased().trimmingCharacters(in: .whitespaces)
-            return !blockedList.contains(normalized)
+        // Type filter
+        if !showAllIncidentTypes {
+            let blockedList = blockedTypes(for: city)
+            if !blockedList.isEmpty {
+                result = result.filter { vm in
+                    let normalized = vm.incidentDescription.uppercased().trimmingCharacters(in: .whitespaces)
+                    return !blockedList.contains(normalized)
+                }
+            }
         }
+
+        // Age filter
+        if maxAgeHours < FilterManager.maxAgeUnlimited {
+            let cutoff = Date().addingTimeInterval(-Double(maxAgeHours) * 3600)
+            result = result.filter { vm in
+                let date = DateHelper.convertISO8601ToDate(vm.alertData.callTimeReceived)
+                return date >= cutoff
+            }
+        }
+
+        return result
     }
 
     // MARK: - Helpers

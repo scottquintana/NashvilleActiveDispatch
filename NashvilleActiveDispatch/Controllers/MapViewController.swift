@@ -48,9 +48,12 @@ final class MapViewController: UIViewController {
 
     // MARK: - Init
 
-    init(incidents: [IncidentViewModel], city: City) {
+    private let emptyMessage: String
+
+    init(incidents: [IncidentViewModel], city: City, emptyMessage: String = "Unable to load incidents from this city's feed.") {
         self.viewModels = incidents
         self.city = city
+        self.emptyMessage = emptyMessage
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -83,8 +86,8 @@ final class MapViewController: UIViewController {
 
             if self.viewModels.isEmpty {
                 self.presentADAlertOnMainThread(
-                    title: "Alert.",
-                    message: "There are no active incidents!",
+                    title: "Alert",
+                    message: self.emptyMessage,
                     buttonTitle: "Ok."
                 )
             }

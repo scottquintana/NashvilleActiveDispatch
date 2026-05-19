@@ -12,7 +12,7 @@ struct NetworkManager {
     
     private init() {}
     
-    private let baseURL = "https://activedispatch-313918647466.us-east4.run.app/v1/city" //http://localhost:8081/v1/city"
+    private let baseURL = "https://activedispatch-313918647466.us-east4.run.app/v1/city"
 
     func getAlerts(for city: City, completed: @escaping (Result<[Place], ADError>) -> Void) {
         let endpoint = "get_alerts"
@@ -71,6 +71,7 @@ struct NetworkManager {
                         endpoint: endpoint,
                         httpStatus: http.statusCode
                     )
+                    AnalyticsManager.shared.logCityFeedEmpty()
                 }
 
                 completed(.success(payload.places))

@@ -31,6 +31,7 @@ final class AnalyticsManager {
 
         static let alertsFetchFailed = "alerts_fetch_failed"
         static let alertsFetchEmpty = "alerts_fetch_empty"
+        static let cityFeedEmpty = "city_feed_empty"
 
         static let locationPermissionDenied = "location_permission_denied"
         static let locationPermissionRestricted = "location_permission_restricted"
@@ -212,6 +213,12 @@ final class AnalyticsManager {
 
     func logAlertsFetchEmpty(endpoint: String, httpStatus: Int? = nil) {
         Analytics.logEvent(EventName.alertsFetchEmpty, parameters: baseNetworkParams(endpoint: endpoint, httpStatus: httpStatus))
+    }
+
+    /// Fired when the server returns HTTP 200 but places array is empty —
+    /// indicates a feed outage or geocoding failure on the backend.
+    func logCityFeedEmpty() {
+        Analytics.logEvent(EventName.cityFeedEmpty, parameters: [ParameterKey.city: citySlug])
     }
 
     /// Logs the most recent horizontalAccuracy.
