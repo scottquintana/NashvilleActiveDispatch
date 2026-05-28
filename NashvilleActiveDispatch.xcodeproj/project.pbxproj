@@ -54,6 +54,7 @@
 		5EEB33B22FA7FD5C00DA8821 /* City+PDX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EEB33AB2FA7FD5C00DA8821 /* City+PDX.swift */; };
 		5EEB33B42FA8185D00DA8821 /* FilterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EEB33B32FA8185D00DA8821 /* FilterManager.swift */; };
 		5EEB33B72FA8186900DA8821 /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = 5EEB33B62FA8186900DA8821 /* FirebaseRemoteConfig */; };
+		A1B2C3D42F2AF00900BB3553 /* PostHog in Frameworks */ = {isa = PBXBuildFile; productRef = A1B2C3D52F2AF00900BB3553 /* PostHog */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -131,6 +132,7 @@
 				5ECF50C32F2AF00900BB3553 /* FirebaseAnalytics in Frameworks */,
 				5ECF50C52F2AF00900BB3553 /* FirebaseAnalyticsCore in Frameworks */,
 				5EEB33B72FA8186900DA8821 /* FirebaseRemoteConfig in Frameworks */,
+				A1B2C3D42F2AF00900BB3553 /* PostHog in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -376,6 +378,9 @@
 			dependencies = (
 			);
 			name = NashvilleActiveDispatch;
+			packageProductDependencies = (
+				A1B2C3D52F2AF00900BB3553 /* PostHog */,
+			);
 			productName = NashvillePoliceAlerts;
 			productReference = 5E799994259BD1A60079D0A6 /* NashvilleActiveDispatch.app */;
 			productType = "com.apple.product-type.application";
@@ -410,6 +415,7 @@
 			mainGroup = 5E79998B259BD1A50079D0A6;
 			packageReferences = (
 				5ECF50C12F2AF00900BB3553 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				A1B2C3D62F2AF00900BB3553 /* XCRemoteSwiftPackageReference "posthog-ios" */,
 			);
 			productRefGroup = 5E799995259BD1A60079D0A6 /* Products */;
 			projectDirPath = "";
@@ -793,6 +799,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		A1B2C3D62F2AF00900BB3553 /* XCRemoteSwiftPackageReference "posthog-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/PostHog/posthog-ios";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.59.1;
+			};
+		};
 		5ECF50C12F2AF00900BB3553 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -804,6 +818,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		A1B2C3D52F2AF00900BB3553 /* PostHog */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A1B2C3D62F2AF00900BB3553 /* XCRemoteSwiftPackageReference "posthog-ios" */;
+			productName = PostHog;
+		};
 		5ECF50C22F2AF00900BB3553 /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 5ECF50C12F2AF00900BB3553 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;

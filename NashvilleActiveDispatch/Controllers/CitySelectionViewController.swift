@@ -117,11 +117,13 @@ extension CitySelectionViewController: UITableViewDelegate, UITableViewDataSourc
         // If we were presented modally (from Settings), dismiss ourselves first
         // so the modal is fully gone before the root VC swap happens.
         if presentingViewController != nil {
+            AnalyticsManager.shared.logCityChanged(city: selectedCity)
             dismiss(animated: true) { [weak self] in
                 self?.onCitySelected?(selectedCity)
             }
         } else {
             // Initial launch: we are the root, just hand off.
+            AnalyticsManager.shared.logCitySelected(city: selectedCity)
             onCitySelected?(selectedCity)
         }
     }

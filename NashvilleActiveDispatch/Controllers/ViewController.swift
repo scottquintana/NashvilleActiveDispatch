@@ -289,6 +289,7 @@ final class ViewController: UIViewController {
     }
 
     @objc private func openSettings() {
+        AnalyticsManager.shared.logSettingsOpened()
         let settingsVC = SettingsViewController()
         navigationController?.pushViewController(settingsVC, animated: true)
     }
@@ -341,6 +342,7 @@ final class ViewController: UIViewController {
 
             switch result {
             case .success(let alerts):
+                AnalyticsManager.shared.logIncidentsLoaded(count: alerts.count)
                 self.allViewModels = alerts.map { IncidentViewModel(alert: $0, city: self.city) }
                 self.alertViewModels = FilterManager.shared.apply(to: self.allViewModels, city: self.city)
                 self.sortAlerts()

@@ -187,6 +187,7 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
 
     @objc private func filterToggleChanged(_ sender: UISwitch) {
         FilterManager.shared.showAllIncidentTypes = sender.isOn
+        AnalyticsManager.shared.logFilterToggled(showAll: sender.isOn)
     }
 
     @objc private func recencySliderChanged(_ sender: UISlider) {
@@ -206,6 +207,7 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
         recencyDebounceTimer = Timer.scheduledTimer(withTimeInterval: 0.4, repeats: false) { [weak self] _ in
             guard self != nil else { return }
             FilterManager.shared.maxAgeHours = hours
+            AnalyticsManager.shared.logTimeWindowChanged(hours: hours)
         }
     }
 

@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import FirebaseAnalytics
+import PostHog
 import Network
 import CoreLocation
 
@@ -38,6 +38,18 @@ final class AnalyticsManager {
         static let locationServicesDisabled = "location_services_disabled"
         static let locationAccuracy = "location_accuracy"
 
+        static let cityChanged = "city_changed"
+        static let citySelected = "city_selected"
+
+        static let filterToggled = "filter_toggled"
+        static let timeWindowChanged = "time_window_changed"
+
+        static let mapAnnotationTapped = "map_annotation_tapped"
+        static let mapNavigated = "map_navigated"
+
+        static let settingsOpened = "settings_opened"
+        static let incidentsLoaded = "incidents_loaded"
+
         static let error = "error_occurred"
     }
 
@@ -64,6 +76,11 @@ final class AnalyticsManager {
         static let locationAccuracyM = "location_accuracy_m"
         static let accuracyBad = "accuracy_bad"             // 0/1
         static let accuracyExtreme = "accuracy_extreme"     // 0/1
+
+        static let showAll = "show_all"
+        static let hours = "hours"
+        static let direction = "direction"
+        static let count = "count"
 
         static let city = "city"
     }
@@ -122,7 +139,7 @@ final class AnalyticsManager {
     // MARK: - Existing events
 
     func logIncidentTapped(incidentType: String, neighborhood: String, distanceMiles: Double) {
-        Analytics.logEvent(EventName.incidentTapped, parameters: [
+        PostHogSDK.shared.capture(EventName.incidentTapped, properties: [
             ParameterKey.incidentType: incidentType,
             ParameterKey.neighborhood: neighborhood,
             ParameterKey.distanceMiles: distanceMiles,
@@ -131,32 +148,32 @@ final class AnalyticsManager {
     }
 
     func logLocationPermissionDenied() {
-        Analytics.logEvent(EventName.locationPermissionDenied, parameters: [ParameterKey.city: citySlug])
+        PostHogSDK.shared.capture(EventName.locationPermissionDenied, properties: [ParameterKey.city: citySlug])
     }
 
     func logLocationPermissionRestricted() {
-        Analytics.logEvent(EventName.locationPermissionRestricted, parameters: [ParameterKey.city: citySlug])
+        PostHogSDK.shared.capture(EventName.locationPermissionRestricted, properties: [ParameterKey.city: citySlug])
     }
 
     func logLocationServicesDisabled() {
-        Analytics.logEvent(EventName.locationServicesDisabled, parameters: [ParameterKey.city: citySlug])
+        PostHogSDK.shared.capture(EventName.locationServicesDisabled, properties: [ParameterKey.city: citySlug])
     }
 
     func logError(type: String, message: String, context: String? = nil, extra: [String: Any]? = nil) {
-        var parameters: [String: Any] = [
+        var properties: [String: Any] = [
             ParameterKey.errorType: type,
             ParameterKey.errorMessage: message,
             ParameterKey.city: citySlug
         ]
 
         if let context {
-            parameters[ParameterKey.errorContext] = context
+            properties[ParameterKey.errorContext] = context
         }
         if let extra {
-            for (k, v) in extra { parameters[k] = v }
+            for (k, v) in extra { properties[k] = v }
         }
 
-        Analytics.logEvent(EventName.error, parameters: parameters)
+        PostHogSDK.shared.capture(EventName.error, properties: properties)
     }
 
     func logError(_ error: ADError, context: String? = nil, extra: [String: Any]? = nil) {
@@ -166,7 +183,7 @@ final class AnalyticsManager {
     // MARK: - New events you requested
 
     func logMapOpened(source: MapOpenSource) {
-        Analytics.logEvent(EventName.mapOpened, parameters: [
+        PostHogSDK.shared.capture(EventName.mapOpened, properties: [
             ParameterKey.mapSource: source.rawValue,
             ParameterKey.city: citySlug
         ])
@@ -178,20 +195,20 @@ final class AnalyticsManager {
     }
 
     func logRefreshTriggered(endpoint: String) {
-        Analytics.logEvent(EventName.refreshTriggered, parameters: baseNetworkParams(endpoint: endpoint))
+        PostHogSDK.shared.capture(EventName.refreshTriggered, properties: baseNetworkParams(endpoint: endpoint))
     }
 
     func logRefreshSucceeded(endpoint: String, httpStatus: Int? = nil) {
-        Analytics.logEvent(EventName.refreshSucceeded, parameters: baseNetworkParams(endpoint: endpoint, httpStatus: httpStatus))
+        PostHogSDK.shared.capture(EventName.refreshSucceeded, properties: baseNetworkParams(endpoint: endpoint, httpStatus: httpStatus))
     }
 
     func logRefreshFailed(endpoint: String, httpStatus: Int? = nil, error: Error? = nil) {
-        Analytics.logEvent(EventName.refreshFailed, parameters: baseNetworkParams(endpoint: endpoint, httpStatus: httpStatus, error: error))
+        PostHogSDK.shared.capture(EventName.refreshFailed, properties: baseNetworkParams(endpoint: endpoint, httpStatus: httpStatus, error: error))
     }
 
     func logSortChanged(option: SortOption) {
         let (dimension, direction) = sortMetadata(option)
-        Analytics.logEvent(EventName.sortChanged, parameters: [
+        PostHogSDK.shared.capture(EventName.sortChanged, properties: [
             ParameterKey.sortDimension: dimension,
             ParameterKey.sortDirection: direction,
             ParameterKey.city: citySlug
@@ -208,39 +225,92 @@ final class AnalyticsManager {
     }
 
     func logAlertsFetchFailed(endpoint: String, httpStatus: Int? = nil, error: Error? = nil) {
-        Analytics.logEvent(EventName.alertsFetchFailed, parameters: baseNetworkParams(endpoint: endpoint, httpStatus: httpStatus, error: error))
+        PostHogSDK.shared.capture(EventName.alertsFetchFailed, properties: baseNetworkParams(endpoint: endpoint, httpStatus: httpStatus, error: error))
     }
 
     func logAlertsFetchEmpty(endpoint: String, httpStatus: Int? = nil) {
-        Analytics.logEvent(EventName.alertsFetchEmpty, parameters: baseNetworkParams(endpoint: endpoint, httpStatus: httpStatus))
+        PostHogSDK.shared.capture(EventName.alertsFetchEmpty, properties: baseNetworkParams(endpoint: endpoint, httpStatus: httpStatus))
     }
 
-    /// Fired when the server returns HTTP 200 but places array is empty —
-    /// indicates a feed outage or geocoding failure on the backend.
     func logCityFeedEmpty() {
-        Analytics.logEvent(EventName.cityFeedEmpty, parameters: [ParameterKey.city: citySlug])
+        PostHogSDK.shared.capture(EventName.cityFeedEmpty, properties: [ParameterKey.city: citySlug])
     }
 
-    /// Logs the most recent horizontalAccuracy.
-    /// - Parameters:
-    ///   - location: The latest location.
-    ///   - badThresholdMeters: "Bad" accuracy cutoff.
-    ///   - extremeThresholdMeters: "Extreme" cutoff (likely useless).  (~31 miles).
     func logLocationAccuracy(
         _ location: CLLocation,
         badThresholdMeters: CLLocationAccuracy = 10_000,
         extremeThresholdMeters: CLLocationAccuracy = 50_000
     ) {
         let accuracy = location.horizontalAccuracy
-        guard accuracy >= 0 else { return } // negative means invalid
+        guard accuracy >= 0 else { return }
 
         let isBad = accuracy >= badThresholdMeters
         let isExtreme = accuracy >= extremeThresholdMeters
 
-        Analytics.logEvent(EventName.locationAccuracy, parameters: [
+        PostHogSDK.shared.capture(EventName.locationAccuracy, properties: [
             ParameterKey.locationAccuracyM: accuracy,
             ParameterKey.accuracyBad: isBad ? 1 : 0,
             ParameterKey.accuracyExtreme: isExtreme ? 1 : 0,
+            ParameterKey.city: citySlug
+        ])
+    }
+
+    // MARK: - City selection
+
+    func logCityChanged(city: City) {
+        PostHogSDK.shared.capture(EventName.cityChanged, properties: [ParameterKey.city: city.apiSlug])
+    }
+
+    func logCitySelected(city: City) {
+        PostHogSDK.shared.capture(EventName.citySelected, properties: [ParameterKey.city: city.apiSlug])
+    }
+
+    // MARK: - Settings
+
+    func logFilterToggled(showAll: Bool) {
+        PostHogSDK.shared.capture(EventName.filterToggled, properties: [
+            ParameterKey.showAll: showAll,
+            ParameterKey.city: citySlug
+        ])
+    }
+
+    func logTimeWindowChanged(hours: Int) {
+        PostHogSDK.shared.capture(EventName.timeWindowChanged, properties: [
+            ParameterKey.hours: hours,
+            ParameterKey.city: citySlug
+        ])
+    }
+
+    func logSettingsOpened() {
+        PostHogSDK.shared.capture(EventName.settingsOpened, properties: [ParameterKey.city: citySlug])
+    }
+
+    // MARK: - Map
+
+    func logMapAnnotationTapped(incidentType: String, neighborhood: String) {
+        PostHogSDK.shared.capture(EventName.mapAnnotationTapped, properties: [
+            ParameterKey.incidentType: incidentType,
+            ParameterKey.neighborhood: neighborhood,
+            ParameterKey.city: citySlug
+        ])
+    }
+
+    enum MapNavDirection: String {
+        case left, right
+    }
+
+    func logMapNavigated(direction: MapNavDirection) {
+        PostHogSDK.shared.capture(EventName.mapNavigated, properties: [
+            ParameterKey.direction: direction.rawValue,
+            ParameterKey.city: citySlug
+        ])
+    }
+
+    // MARK: - Feed
+
+    func logIncidentsLoaded(count: Int) {
+        PostHogSDK.shared.capture(EventName.incidentsLoaded, properties: [
+            ParameterKey.count: count,
             ParameterKey.city: citySlug
         ])
     }

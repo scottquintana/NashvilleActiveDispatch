@@ -6,13 +6,31 @@
 //
 
 import FirebaseCore
+import PostHog
 import UIKit
+
+enum PostHogEnv: String {
+    case projectToken = "POSTHOG_PROJECT_TOKEN"
+    case host = "POSTHOG_HOST"
+
+    var value: String {
+        guard let value = ProcessInfo.processInfo.environment[rawValue] else {
+            fatalError("Set \(rawValue) in the Xcode scheme environment variables.")
+        }
+        return value
+    }
+}
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         FirebaseApp.configure()
+
+        let config = PostHogConfig(apiKey: PostHogEnv.projectToken.value, host: PostHogEnv.host.value)
+        config.captureApplicationLifecycleEvents = true
+        PostHogSDK.shared.setup(config)
+
         return true
     }
 
