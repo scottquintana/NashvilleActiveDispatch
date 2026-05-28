@@ -100,3 +100,6 @@ iOSInjectionProject/
 
 
 .DS_Store
+
+# Secrets — copy Secrets.swift.example to Secrets.swift and fill in values
+NashvilleActiveDispatch/Secrets.swift

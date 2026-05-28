@@ -228,6 +228,10 @@ extension MapViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         guard let anno = view.annotation as? ADPointAnnotation else { return }
         selectedIndex = anno.index
+        if let idx = anno.index, viewModels.indices.contains(idx) {
+            let vm = viewModels[idx]
+            AnalyticsManager.shared.logMapAnnotationTapped(incidentType: vm.incidentDescription, neighborhood: vm.neighborhood)
+        }
     }
 
     func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
@@ -285,6 +289,7 @@ extension MapViewController: MapNavigationViewDelegate {
         } else {
             selectedIndex = 0
         }
+        AnalyticsManager.shared.logMapNavigated(direction: .left)
     }
 
     private func rightArrowTapped() {
@@ -295,5 +300,6 @@ extension MapViewController: MapNavigationViewDelegate {
         } else {
             selectedIndex = 0
         }
+        AnalyticsManager.shared.logMapNavigated(direction: .right)
     }
 }
