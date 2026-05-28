@@ -55,6 +55,7 @@
 		5EEB33B42FA8185D00DA8821 /* FilterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EEB33B32FA8185D00DA8821 /* FilterManager.swift */; };
 		5EEB33B72FA8186900DA8821 /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = 5EEB33B62FA8186900DA8821 /* FirebaseRemoteConfig */; };
 		A1B2C3D42F2AF00900BB3553 /* PostHog in Frameworks */ = {isa = PBXBuildFile; productRef = A1B2C3D52F2AF00900BB3553 /* PostHog */; };
+		AA00010B2F2AEDA100BB3553 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00010A2F2AEDA100BB3553 /* Secrets.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -114,6 +115,7 @@
 		5EEB33AB2FA7FD5C00DA8821 /* City+PDX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "City+PDX.swift"; sourceTree = "<group>"; };
 		5EEB33AD2FA7FD5C00DA8821 /* City+SF.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "City+SF.swift"; sourceTree = "<group>"; };
 		5EEB33B32FA8185D00DA8821 /* FilterManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterManager.swift; sourceTree = "<group>"; };
+		AA00010A2F2AEDA100BB3553 /* Secrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -220,6 +222,7 @@
 				5ECF50BF2F2AEDA100BB3553 /* GoogleService-Info.plist */,
 				5E7999A5259BD1AB0079D0A6 /* Info.plist */,
 				5E799997259BD1A60079D0A6 /* AppDelegate.swift */,
+				AA00010A2F2AEDA100BB3553 /* Secrets.swift */,
 				5E799999259BD1A60079D0A6 /* SceneDelegate.swift */,
 				5E7999A0259BD1AB0079D0A6 /* Assets.xcassets */,
 				5EEB33AF2FA7FD5C00DA8821 /* Cities */,
@@ -501,6 +504,7 @@
 				5E79999C259BD1A60079D0A6 /* ViewController.swift in Sources */,
 				5E7999AE259BD4170079D0A6 /* IncidentData.swift in Sources */,
 				5E799998259BD1A60079D0A6 /* AppDelegate.swift in Sources */,
+				AA00010B2F2AEDA100BB3553 /* Secrets.swift in Sources */,
 				5E03056725A7D6310092AEE5 /* ADArrowButton.swift in Sources */,
 				5E325C36259D5AD800FE50A6 /* AlertTitleLabel.swift in Sources */,
 				5E79999A259BD1A60079D0A6 /* SceneDelegate.swift in Sources */,
