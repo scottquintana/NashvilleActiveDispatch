@@ -15,7 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         FirebaseApp.configure()
 
-        let config = PostHogConfig(apiKey: Secrets.postHogProjectToken, host: Secrets.postHogHost)
+        let config = PostHogConfig(projectToken: Secrets.postHogProjectToken, host: Secrets.postHogHost)
         config.captureApplicationLifecycleEvents = true
         PostHogSDK.shared.setup(config)
 
