@@ -194,8 +194,10 @@ final class AnalyticsManager {
         case tap
     }
 
-    func logRefreshTriggered(endpoint: String) {
-        PostHogSDK.shared.capture(EventName.refreshTriggered, properties: baseNetworkParams(endpoint: endpoint))
+    func logRefreshTriggered(endpoint: String, source: String = "pull") {
+        var params = baseNetworkParams(endpoint: endpoint)
+        params["source"] = source
+        PostHogSDK.shared.capture(EventName.refreshTriggered, properties: params)
     }
 
     func logRefreshSucceeded(endpoint: String, httpStatus: Int? = nil) {
